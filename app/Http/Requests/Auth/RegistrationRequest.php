@@ -26,6 +26,12 @@ class RegistrationRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'cpf' => [
+                'required', 'confirmed', 'regex:/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/'
+            ],
+            'phone' => [
+                'required', 'confirmed', 'regex:/^[(]\d{2}[)]\s[9]\d{4}-\d{4}$/'
+            ]
         ];
     }
 }

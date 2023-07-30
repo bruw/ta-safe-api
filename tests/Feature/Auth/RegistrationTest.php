@@ -24,10 +24,14 @@ class RegistrationTest extends TestCase
     public function test_new_users_can_register(): void
     {
         $response = $this->postJson('/api/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'password' => $this->user->password,
+            'password_confirmation' => $this->user->password,
+            'cpf' => $this->user->cpf,
+            'cpf_confirmation' => $this->user->cpf,
+            'phone' => $this->user->phone,
+            'phone_confirmation' => $this->user->phone
         ]);
 
         $this->assertAuthenticated();
@@ -35,12 +39,14 @@ class RegistrationTest extends TestCase
 
         $response->assertJson(
             fn (AssertableJson $json) =>
-            $json->where('user.name', 'Test User')
-                ->where('user.email',  fn (string $email) => str($email)->is('test@example.com'))
-                ->has('user.id')
+            $json->has('user.id')
                 ->has('user.createdAt')
                 ->has('user.updatedAt')
                 ->has('token')
+                ->where('user.name', $this->user->name)
+                ->where('user.email',  fn (string $email) => str($email)->is($this->user->email))
+                ->where('user.cpf', fn (string $cpf) => str($cpf)->is($this->user->cpf))
+                ->where('user.phone', fn (string $phone) => str($phone)->is($this->user->phone))
                 ->missing('user.password')
                 ->etc()
         );
@@ -52,7 +58,7 @@ class RegistrationTest extends TestCase
         $response->assertUnprocessable();
 
         $response->assertJsonValidationErrors([
-            'name', 'email', 'password'
+            'name', 'email', 'password', 'cpf', 'phone'
         ]);
     }
 
@@ -68,6 +74,10 @@ class RegistrationTest extends TestCase
                 'email' => $this->user->name,
                 'password' => $this->user->password,
                 'password_confirmation' => $this->user->password,
+                'cpf' => $this->user->cpf,
+                'cpf_confirmation' => $this->user->cpf,
+                'phone' => $this->user->phone,
+                'phone_confirmation' => $this->user->phone
             ]);
 
             $response->assertUnprocessable();
@@ -87,6 +97,10 @@ class RegistrationTest extends TestCase
                 'email' => $invalidEmail,
                 'password' => $this->user->password,
                 'password_confirmation' => $this->user->password,
+                'cpf' => $this->user->cpf,
+                'cpf_confirmation' => $this->user->cpf,
+                'phone' => $this->user->phone,
+                'phone_confirmation' => $this->user->phone
             ]);
 
             $response->assertUnprocessable();
@@ -106,10 +120,118 @@ class RegistrationTest extends TestCase
                 'email' => $this->user->email,
                 'password' => $invalidPassword,
                 'password_confirmation' => $invalidPassword,
+                'cpf' => $this->user->cpf,
+                'cpf_confirmation' => $this->user->cpf,
+                'phone' => $this->user->phone,
+                'phone_confirmation' => $this->user->phone
             ]);
 
             $response->assertUnprocessable();
             $response->assertJsonValidationErrors('password');
         }
+    }
+
+    public function test_password_confirmation_field_validation_is_working()
+    {
+        $response = $this->postJson('/api/register', [
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'password' => fake()->password(10, 16),
+            'password_confirmation' => fake()->password(10, 16) . 0,
+            'cpf' => $this->user->cpf,
+            'cpf_confirmation' => $this->user->cpf,
+            'phone' => $this->user->phone,
+            'phone_confirmation' => $this->user->phone
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('password');
+    }
+
+    public function test_new_users_cannot_register_invalid_cpf()
+    {
+        $invalidCpfs =  [
+            null, "", true, false, Str::random(14), '00000000000', '000.000.000.00',
+            '000-000-000-00', 'a00.000.000-01', '000.000.000-a1'
+        ];
+
+        foreach ($invalidCpfs as $invalidCpf) {
+            $response = $this->postJson('/api/register', [
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+                'password' => $this->user->password,
+                'password_confirmation' => $this->user->password,
+                'cpf' => $invalidCpf,
+                'cpf_confirmation' => $invalidCpf,
+                'phone' => $this->user->phone,
+                'phone_confirmation' => $this->user->phone
+            ]);
+
+            $response->assertUnprocessable();
+            $response->assertJsonValidationErrors('cpf');
+        }
+    }
+
+    public function test_cpf_confirmation_field_validation_is_working()
+    {
+        $faker = \Faker\Factory::create('pt_BR');
+
+        $response = $this->postJson('/api/register', [
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'password' => $this->user->password,
+            'password_confirmation' => $this->user->password,
+            'cpf' => $faker->cpf(),
+            'cpf_confirmation' => $faker->cpf() . 0,
+            'phone' => $this->user->phone,
+            'phone_confirmation' => $this->user->phone
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('cpf');
+    }
+
+    public function test_new_users_cannot_register_invalid_phone()
+    {
+        $invalidPhones =  [
+            null, "", true, false, Str::random(15), '00) 90000-0001', '(00 90000-0001',
+            '(00)90000-0001', '(00) 90000000', '(00) 900000001', '(00) 90000-000',
+            '(00) 90000-000a', '(x0) 90000-0001', '(00) 80000-0001'
+        ];
+
+        foreach ($invalidPhones as $invalidPhone) {
+            $response = $this->postJson('/api/register', [
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+                'password' => $this->user->password,
+                'password_confirmation' => $this->user->password,
+                'cpf' => $this->user->cpf,
+                'cpf_confirmation' => $this->user->cpf,
+                'phone' => $invalidPhone,
+                'phone_confirmation' => $invalidPhone
+            ]);
+
+            $response->assertUnprocessable();
+            $response->assertJsonValidationErrors('phone');
+        }
+    }
+
+    public function test_phone_confirmation_field_validation_is_working()
+    {
+        $faker = \Faker\Factory::create('pt_BR');
+
+        $response = $this->postJson('/api/register', [
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'password' => $this->user->password,
+            'password_confirmation' => $this->user->password,
+            'cpf' => $this->user->cpf,
+            'cpf_confirmation' => $this->user->cpf,
+            'phone' => $faker->cellPhoneNumber(),
+            'phone_confirmation' => $faker->cellPhoneNumber() . 0
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('phone');
     }
 }
