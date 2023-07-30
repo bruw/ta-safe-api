@@ -30,6 +30,8 @@ class RegisteredUserController extends Controller
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
+                'cpf' => $data['cpf'],
+                'phone' => $data['phone']
             ]);
 
             $token = $user->createToken('api-token')->plainTextToken;
