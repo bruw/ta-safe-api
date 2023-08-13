@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\CpfRule;
+
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
 
@@ -27,10 +29,12 @@ class RegistrationRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'cpf' => [
-                'required', 'confirmed', 'regex:/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/'
+                'required',
+                'regex:/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/',
+                new CpfRule()
             ],
             'phone' => [
-                'required', 'confirmed', 'regex:/^[(]\d{2}[)]\s[9]\d{4}-\d{4}$/'
+                'required', 'regex:/^[(]\d{2}[)]\s[9]\d{4}-\d{4}$/'
             ]
         ];
     }
