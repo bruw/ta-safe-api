@@ -152,9 +152,11 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
-        ],
+        'cpf' => [
+            'invalid_format' => 'O cpf deve possuir 11 dígitos.',
+            'repeated_sequence' => 'O CPF não pode ser uma sequência de dígitos repetidos.',
+            'invalid_check_digits' => 'O cpf é inválido.',
+        ]
     ],
 
     /*
