@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Resources\UserResource;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/user', function (Request $request) {
-        return new UserResource($request->user());
-    })->name('api.user');
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/user', 'currentUser');
+        Route::put('/user', 'update');
+    });
 });
 
 require __DIR__ . '/auth.php';
