@@ -17,12 +17,13 @@ return new class extends Migration
             $table->string('consumer_cpf', 14)->nullable();
             $table->string('consumer_name')->nullable();
             $table->text('product_description')->nullable();
-            $table->timestamps();
 
             $table->unsignedBigInteger('device_id');
             $table->foreign('device_id')
                 ->references('id')
                 ->on('devices');
+
+            $table->timestamps();
         });
     }
 

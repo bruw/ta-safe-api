@@ -16,12 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('ram');
             $table->string('storage');
-            $table->timestamps();
-
+            
             $table->unsignedBigInteger('brand_id');
             $table->foreign('brand_id')
                 ->references('id')
                 ->on('brands');
+                
+            $table->timestamps();
         });
     }
 

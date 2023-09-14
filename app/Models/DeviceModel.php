@@ -18,14 +18,8 @@ class DeviceModel extends Model
      */
     protected $fillable = [
         'name',
-        'chipset',
         'ram',
-        'storage',
-        'screen_size',
-        'screen_resolution',
-        'battery_capacity',
-        'year_of_manufacture',
-        'os'
+        'storage'
     ];
 
     /**
