@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\DeviceModels\DeviceModelsSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             BrandSeeder::class,
-            DeviceModelsSeeder::class
+            DeviceModelSeeder::class
         ]);
     }
 }

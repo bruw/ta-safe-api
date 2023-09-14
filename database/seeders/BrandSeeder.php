@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Brand;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 
 class BrandSeeder extends Seeder
 {
@@ -12,11 +14,13 @@ class BrandSeeder extends Seeder
      */
     public function run(): void
     {
-        Brand::upsert([
-            ['id' => 1, 'name' => 'Apple'],
-            ['id' => 2, 'name' => 'Motorola'],
-            ['id' => 3, 'name' => 'Samsung'],
-            ['id' => 4, 'name' => 'Xiaomi']
-        ], ['id', 'name'], ['name']);
+        $json = File::get(database_path('data/brands.json'));
+        $data = json_decode($json);
+
+        foreach ($data as $item) {
+            Brand::updateOrCreate([
+                'name' => $item->name
+            ]);
+        }
     }
 }

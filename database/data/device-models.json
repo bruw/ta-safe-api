@@ -1,0 +1,110 @@
+[
+    {
+        "name": "Edge 20",
+        "ram": "8 GB",
+        "storage": "128 GB",
+        "brand": "Motorola"
+    },
+    {
+        "name": "Edge 30",
+        "ram": "8 GB",
+        "storage": "256 GB",
+        "brand": "Motorola"
+    },
+    {
+        "name": "Galaxy A31",
+        "ram": "4 GB",
+        "storage": "128 GB",
+        "brand": "Samsung"
+    },
+    {
+        "name": "Galaxy S20",
+        "ram": "8 GB",
+        "storage": "128 GB",
+        "brand": "Samsung"
+    },
+    {
+        "name": "Galaxy S21",
+        "ram": "8 GB",
+        "storage": "128 GB",
+        "brand": "Samsung"
+    },
+    {
+        "name": "Galaxy S22",
+        "ram": "8 GB",
+        "storage": "256 GB",
+        "brand": "Samsung"
+    },
+    {
+        "name": "Iphone 11",
+        "ram": "4 GB",
+        "storage": "64 GB",
+        "brand": "Apple"
+    },
+    {
+        "name": "Iphone 11",
+        "ram": "4 GB",
+        "storage": "128 GB",
+        "brand": "Apple"
+    },
+    {
+        "name": "Iphone 11",
+        "ram": "4 GB",
+        "storage": "256 GB",
+        "brand": "Apple"
+    },
+    {
+        "name": "Iphone 12",
+        "ram": "4 GB",
+        "storage": "64 GB",
+        "brand": "Apple"
+    },
+    {
+        "name": "Iphone 12",
+        "ram": "4 GB",
+        "storage": "128 GB",
+        "brand": "Apple"
+    },
+    {
+        "name": "Iphone 12",
+        "ram": "4 GB",
+        "storage": "256 GB",
+        "brand": "Apple"
+    },
+    {
+        "name": "Iphone 13",
+        "ram": "4 GB",
+        "storage": "128 GB",
+        "brand": "Apple"
+    },
+    {
+        "name": "Iphone 13",
+        "ram": "4 GB",
+        "storage": "256 GB",
+        "brand": "Apple"
+    },
+    {
+        "name": "Iphone 13",
+        "ram": "4 GB",
+        "storage": "512 GB",
+        "brand": "Apple"
+    },
+    {
+        "name": "Poco X3 Pro",
+        "ram": "6 GB",
+        "storage": "128 GB",
+        "brand": "Xiaomi"
+    },
+    {
+        "name": "Poco X4 Pro",
+        "ram": "6 GB",
+        "storage": "128 GB",
+        "brand": "Xiaomi"
+    },
+    {
+        "name": "Poco X5 Pro",
+        "ram": "8 GB",
+        "storage": "256 GB",
+        "brand": "Xiaomi"
+    }
+]
