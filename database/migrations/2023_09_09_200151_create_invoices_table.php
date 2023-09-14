@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('access_key');
-            $table->string('consumer_cpf', 14);
-            $table->string('consumer_name');
-            $table->text('product_description');
+            $table->string('access_key', 44);
+            $table->string('consumer_cpf', 14)->nullable();
+            $table->string('consumer_name')->nullable();
+            $table->text('product_description')->nullable();
             $table->timestamps();
+
+            $table->unsignedBigInteger('device_id');
+            $table->foreign('device_id')
+                ->references('id')
+                ->on('devices');
         });
     }
 
