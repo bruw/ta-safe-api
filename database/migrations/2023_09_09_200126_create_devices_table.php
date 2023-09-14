@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('validation_status', array_column(
                 DeviceValidationStatus::cases(),
                 'name'
-            ))->default('waiting');
+            ))->default('pending');
 
             $table->string('color');
             $table->timestamps();
