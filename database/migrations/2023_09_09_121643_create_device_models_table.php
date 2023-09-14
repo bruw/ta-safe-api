@@ -14,14 +14,8 @@ return new class extends Migration
         Schema::create('device_models', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('chipset');
             $table->string('ram');
             $table->string('storage');
-            $table->string('screen_size');
-            $table->string('screen_resolution');
-            $table->string('battery_capacity');
-            $table->string('year_of_manufacture');
-            $table->string('os');
             $table->timestamps();
 
             $table->unsignedBigInteger('brand_id');
