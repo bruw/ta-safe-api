@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Actions\Device\RegisterDeviceAction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -44,4 +45,27 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get the user devices.
+     */
+    public function devices(): HasMany
+    {
+        return $this->hasMany(Device::class);
+    }
+
+    /**
+     * Invoke device registration action.
+     */
+    public function registerDevice(string $deviceModelId, string $color, string $accesKey): bool
+    {
+        $registerDevice = new RegisterDeviceAction(
+            $this,
+            $deviceModelId,
+            $color,
+            $accesKey
+        );
+
+        return $registerDevice->execute();
+    }
 }

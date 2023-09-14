@@ -16,6 +16,7 @@ class Invoice extends Model
      * @var array
      */
     protected $fillable = [
+        'device_id',
         'access_key',
         'consumer_cpf',
         'consumer_name',
