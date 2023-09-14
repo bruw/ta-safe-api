@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Device\DeviceValidationStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,8 +16,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('device_model_id');
-            $table->unsignedBigInteger('invoice_id');
-            $table->boolean('is_validated')->default(false);
+
+            $table->enum('validation_status', array_column(
+                DeviceValidationStatus::cases(),
+                'name'
+            ))->default('waiting');
+
             $table->string('color');
             $table->timestamps();
 
@@ -27,10 +32,6 @@ return new class extends Migration
             $table->foreign('device_model_id')
                 ->references('id')
                 ->on('device_models');
-
-            $table->foreign('invoice_id')
-                ->references('id')
-                ->on('invoices');
         });
     }
 

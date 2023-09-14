@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Device\RegisterDeviceStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,15 @@ class Device extends Model
     use HasFactory;
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'validation_status' => RegisterDeviceStatus::class
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -22,7 +32,7 @@ class Device extends Model
         'invoice_id',
         'device_model_id',
         'color',
-        'is_validated'
+        'validation_status'
     ];
 
     /**
@@ -47,13 +57,5 @@ class Device extends Model
     public function deviceModel(): HasOne
     {
         return $this->hasOne(DeviceModel::class);
-    }
-
-    /**
-     * check whether the device invoice has already been validated.
-     */
-    public function isValidated(): bool
-    {
-        return $this->is_validated ? true : false;
     }
 }
