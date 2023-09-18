@@ -2,10 +2,10 @@
 
 namespace App\Enums\Device;
 
-enum DeviceValidationStatus: string
+enum DeviceValidationStatus
 {
-    case PENDING = 'pending';
-    case REJECTED = 'rejected';
-    case VALIDATED = 'validated';
-    case FAIL = 'fail';
+    case PENDING;
+    case REJECTED;
+    case VALIDATED;
+    case FAIL;
 }

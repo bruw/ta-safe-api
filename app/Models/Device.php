@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Device\RegisterDeviceStatus;
+use App\Enums\Device\DeviceValidationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +19,7 @@ class Device extends Model
      * @var array
      */
     protected $casts = [
-        'validation_status' => RegisterDeviceStatus::class
+        'validation_status' => DeviceValidationStatus::class
     ];
 
     /**
