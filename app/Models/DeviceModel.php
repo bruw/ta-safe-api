@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DeviceModel extends Model
 {
@@ -33,8 +33,8 @@ class DeviceModel extends Model
     /**
      * Get devices that have this model.
      */
-    public function devices(): BelongsToMany
+    public function devices(): HasMany
     {
-        return $this->belongsToMany(Device::class);
+        return $this->hasMany(Device::class);
     }
 }

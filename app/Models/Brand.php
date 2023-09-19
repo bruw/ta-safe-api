@@ -20,7 +20,7 @@ class Brand extends Model
     /**
      * Get the devices models associated with the brand.
      */
-    public function deviceModel(): HasMany
+    public function deviceModels(): HasMany
     {
         return $this->hasMany(DeviceModel::class);
     }

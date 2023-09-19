@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Enums\Device\DeviceValidationStatus;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Device extends Model
 {
@@ -38,7 +38,7 @@ class Device extends Model
     /**
      * Get the user who owns the device.
      */
-    public function owner(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -54,8 +54,8 @@ class Device extends Model
     /**
      * Get the device model.
      */
-    public function deviceModel(): HasOne
+    public function deviceModel(): BelongsTo
     {
-        return $this->hasOne(DeviceModel::class);
+        return $this->belongsTo(DeviceModel::class);
     }
 }
