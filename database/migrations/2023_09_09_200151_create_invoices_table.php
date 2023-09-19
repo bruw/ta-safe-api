@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('access_key', 44);
+            $table->string('access_key', 44)->unique();
             $table->string('consumer_cpf', 14)->nullable();
             $table->string('consumer_name')->nullable();
             $table->text('product_description')->nullable();
