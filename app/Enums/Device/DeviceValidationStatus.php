@@ -7,5 +7,4 @@ enum DeviceValidationStatus
     case PENDING;
     case REJECTED;
     case VALIDATED;
-    case FAIL;
 }
