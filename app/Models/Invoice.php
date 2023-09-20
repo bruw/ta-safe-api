@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Invoice extends Model
 {
@@ -26,8 +26,8 @@ class Invoice extends Model
     /**
      * Get the device associated with the invoice.
      */
-    public function device(): HasOne
+    public function device(): BelongsTo
     {
-        return $this->hasOne(Device::class);
+        return $this->BelongsTo(Device::class);
     }
 }
