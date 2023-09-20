@@ -32,6 +32,12 @@
     {
         "name": "Galaxy S22",
         "ram": "8 GB",
+        "storage": "128 GB",
+        "brand": "Samsung"
+    },
+    {
+        "name": "Galaxy S22",
+        "ram": "8 GB",
         "storage": "256 GB",
         "brand": "Samsung"
     },
