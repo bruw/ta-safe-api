@@ -12,6 +12,8 @@ class BrandSeederTest extends TestCase
 {
     use RefreshDatabase;
 
+    private array $data;
+
     protected function setUp(): void
     {
         parent::SetUp();
@@ -19,26 +21,22 @@ class BrandSeederTest extends TestCase
         $this->seed([
             BrandSeeder::class
         ]);
+
+        $json = File::get(database_path('data/brands.json'));
+        $this->data = json_decode($json);
     }
 
     public function test_must_have_created_the_correct_number_of_brands(): void
     {
-        $json = File::get(database_path('data/brands.json'));
-        $data = json_decode($json);
-
-        $this->assertEquals(Brand::count(), count($data));
+        $this->assertEquals(Brand::count(), count($this->data));
     }
 
     public function test_the_brands_attributes_must_have_been_generated_correctly(): void
     {
-        $json = File::get(database_path('data/brands.json'));
-        $data = json_decode($json);
-
-        foreach ($data as $item) {
+        foreach ($this->data as $item) {
             $brand = Brand::where(['name' => $item->name])->first();
 
             $this->assertNotNull($brand);
-
             $this->assertEquals($brand->name, $item->name);
         }
     }
