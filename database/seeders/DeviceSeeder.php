@@ -34,8 +34,8 @@ class DeviceSeeder extends Seeder
 
             $device = Device::updateOrCreate([
                 'color' => $item->color,
-                'imei1' => $item->imei1,
-                'imei2' => $item->imei2,
+                'imei_1' => $item->imei1,
+                'imei_2' => $item->imei2,
                 'validation_status' => DeviceValidationStatus::VALIDATED,
                 'user_id' => $user->id,
                 'device_model_id' => $deviceModel->id,

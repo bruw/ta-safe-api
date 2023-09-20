@@ -46,12 +46,12 @@ class DeviceSeederTest extends TestCase
     {
         foreach ($this->data as $item) {
             $device = Device::where([
-                'imei1' => $item->imei1
+                'imei_1' => $item->imei1
             ])->first();
 
             $this->assertNotNull($device);
 
-            $this->assertEquals($device->imei2, $item->imei2);
+            $this->assertEquals($device->imei_2, $item->imei2);
             $this->assertEquals($device->color, $item->color);
             $this->assertEquals($device->user->name, $item->user->name);
 

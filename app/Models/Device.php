@@ -32,8 +32,8 @@ class Device extends Model
         'invoice_id',
         'device_model_id',
         'color',
-        'imei1',
-        'imei2',
+        'imei_1',
+        'imei_2',
         'validation_status'
     ];
 

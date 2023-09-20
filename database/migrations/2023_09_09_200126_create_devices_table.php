@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
             $table->string('color');
-            $table->string('imei1', 15)->unique();
-            $table->string('imei2', 15)->unique();
+            $table->string('imei_1', 15)->unique();
+            $table->string('imei_2', 15)->unique();
 
             $table->enum('validation_status', array_column(
                 DeviceValidationStatus::cases(),
