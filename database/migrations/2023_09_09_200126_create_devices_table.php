@@ -18,8 +18,8 @@ return new class extends Migration
 
             $table->enum('validation_status', array_column(
                 DeviceValidationStatus::cases(),
-                'name'
-            ))->default('PENDING');
+                'value'
+            ))->default('pending');
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
