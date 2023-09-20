@@ -1,0 +1,106 @@
+[
+    {
+        "color": "Preto",
+        "validation_status": "VALIDATED",
+        "imei1": "548392761049285",
+        "imei2": "302576918437592",
+        "model": {
+            "name": "Galaxy S22",
+            "ram": "8 GB",
+            "storage": "256 GB",
+            "link": "https://shop.samsung.com/br/galaxy-s22-5g/p"
+        },
+        "brand": {
+            "name": "Samsung"
+        },
+        "user": {
+            "name": "Monkey D. Luffy",
+            "email": "user1@email.com",
+            "cpf": "273.623.457-04"
+        },
+        "invoice": {
+            "access_key": "73948592610726394857263504972658304792635",
+            "consumer_name": "Monkey D. Luffy",
+            "consumer_cpf": "273.623.457-04",
+            "product_description": "Smartphone Samsung Galaxy S22 5G, 128GB, 8GB RAM, Tela Infinita de 6.1''s Preto"
+        }
+    },
+    {
+        "color": "Branco",
+        "validation_status": "VALIDATED",
+        "imei1": "654701982374165",
+        "imei2": "193847205619834",
+        "model": {
+            "name": "Iphone 11",
+            "ram": "4 GB",
+            "storage": "64 GB",
+            "link": "https://www.mercadolivre.com.br/apple-iphone-11-64-gb-branco/p/MLB15149562?pdp_filters=category:MLB1055#searchVariation=MLB15149562&position=3&search_layout=stack&type=product&tracking_id=73c76e27-5410-4872-a0f5-df461dd1f89e"
+        },
+        "brand": {
+            "name": "Apple"
+        },
+        "user": {
+            "name": "Roronoa Zoro",
+            "email": "user2@email.com",
+            "cpf": "548.074.611-17"
+        },
+        "invoice": {
+            "access_key": "79234105813792645820314980236571492703628154",
+            "consumer_name": "Roronoa Zoro",
+            "consumer_cpf": "548.074.611-17",
+            "product_description": "Apple iPhone 11 (64 GB) - Branco"
+        }
+    },
+    {
+        "color": "Azul",
+        "validation_status": "VALIDATED",
+        "imei1": "892347106512938",
+        "imei2": "756182904375619",
+        "model": {
+            "name": "Poco X3 Pro",
+            "ram": "6 GB",
+            "storage": "128 GB",
+            "link": "https://www.magazineluiza.com.br/smartphone-xiaomi-poco-x3-pro-tela-667-6gb-128gb-azul/p/dhda2231j4/te/xiao/?=&seller_id=xiaomioficial"
+        },
+        "brand": {
+            "name": "Xiaomi"
+        },
+        "user": {
+            "name": "Nami",
+            "email": "user3@email.com",
+            "cpf": "354.273.593-03"
+        },
+        "invoice": {
+            "access_key": "83597246108472319506783241950682714305972631",
+            "consumer_name": "Nami",
+            "consumer_cpf": "354.273.593-03",
+            "product_description": "Smartphone xiaomi poco x3 pro tela 6,67'' 6gb/128gb azul"
+        }
+    },
+    {
+        "color": "Preto",
+        "validation_status": "VALIDATED",
+        "imei1": "301928475610923",
+        "imei2": "472985301726495",
+        "model": {
+            "name": "Edge 30",
+            "ram": "8 GB",
+            "storage": "256 GB",
+            "link": "https://www.carrefour.com.br/smartphone-motorola-edge-30-fusion-256gb-preto-5g-tela-6-55-p-oled-144hz-camera-tripla-50mp-8k-selfie-32mp-4k-dual-chip-6810012/p"
+        },
+        "brand": {
+            "name": "Motorola"
+        },
+        "user": {
+            "name": "Nico Robin",
+            "email": "user4@email.com",
+            "cpf": "323.699.455-08"
+        },
+        "invoice": {
+            "access_key": "42983507614902836751079468273104582679301428",
+            "consumer_name": "Nico Robin",
+            "consumer_cpf": "323.699.455-08",
+            "product_description": "Smartphone Motorola Edge 30 Fusion 256GB Preto 5G Tela 6,55'' P-OLED 144Hz Câmera Tripla 50MP 8K Selfie 32MP 4K Dual Chip"
+        }
+    }
+]
