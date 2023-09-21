@@ -7,7 +7,7 @@ use App\Enums\Device\DeviceValidationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Device extends Model
 {
@@ -48,9 +48,9 @@ class Device extends Model
     /**
      * Get device invoices.
      */
-    public function invoices(): HasMany
+    public function invoice(): HasOne
     {
-        return $this->hasMany(Invoice::class);
+        return $this->hasOne(Invoice::class);
     }
 
     /**

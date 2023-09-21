@@ -66,7 +66,7 @@ class DeviceSeederTest extends TestCase
             );
 
             $this->assertEquals(
-                $device->invoices()->first()->access_key,
+                $device->invoice->access_key,
                 $item->invoice->access_key
             );
         }
