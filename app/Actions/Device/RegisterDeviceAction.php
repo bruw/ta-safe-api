@@ -15,20 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
 class RegisterDeviceAction
 {
     private readonly User $currentUser;
-    private readonly string $deviceModelId;
-    private readonly string $color;
-    private readonly string $accessKey;
+    private readonly array $data;
 
-    public function __construct(
-        User $currentUser,
-        string $deviceModelId,
-        string $color,
-        string $accessKey
-    ) {
+    public function __construct(User $currentUser, array $data)
+    {
         $this->currentUser = $currentUser;
-        $this->deviceModelId = $deviceModelId;
-        $this->color = mb_convert_case($color, MB_CASE_TITLE);
-        $this->accessKey = $accessKey;
+        $this->data = $data;
     }
 
     public function execute(): bool
@@ -37,12 +29,14 @@ class RegisterDeviceAction
             return DB::transaction(function () {
                 $device = Device::create([
                     'user_id' => $this->currentUser->id,
-                    'device_model_id' => $this->deviceModelId,
-                    'color' => $this->color
+                    'device_model_id' => $this->data['device_model_id'],
+                    'color' => mb_convert_case($this->data['color'], MB_CASE_TITLE),
+                    'imei_1' => $this->data['imei_1'],
+                    'imei_2' => $this->data['imei_2']
                 ]);
 
                 Invoice::create([
-                    'access_key' => $this->accessKey,
+                    'access_key' => $this->data['access_key'],
                     'device_id' => $device->id
                 ]);
 

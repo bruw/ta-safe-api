@@ -35,6 +35,19 @@ class RegisterDeviceRequest extends FormRequest
                 'required',
                 'digits:44',
                 'unique:invoices,access_key'
+            ],
+            'imei_1' => [
+                'required',
+                'digits:15',
+                'different:imei_2',
+                'unique:devices,imei_1',
+                'unique:devices,imei_2'
+            ],
+            'imei_2' => [
+                'required',
+                'digits:15',
+                'unique:devices,imei_1',
+                'unique:devices,imei_2'
             ]
         ];
     }

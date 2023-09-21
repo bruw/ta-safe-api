@@ -20,11 +20,7 @@ class DeviceController extends Controller
         $data = $request->validated();
         $currentUser = $request->user();
 
-        $currentUser->registerDevice(
-            $data['device_model_id'],
-            $data['color'],
-            $data['access_key']
-        );
+        $currentUser->registerDevice($data);
 
         return response()->noContent(Response::HTTP_CREATED);
     }

@@ -222,7 +222,9 @@ return [
         'birth_date' => 'data de nascimento',
         'color' => 'cor',
         'access_key' => 'chave de acesso',
-        'device_model_id' => 'identificador do modelo do dispositivo'
+        'device_model_id' => 'identificador do modelo do dispositivo',
+        'imei_1' => 'IMEI 1',
+        'imei_2' => 'IMEI 2',
     ],
 
 ];

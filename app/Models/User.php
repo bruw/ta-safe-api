@@ -57,13 +57,11 @@ class User extends Authenticatable
     /**
      * Invoke device registration action.
      */
-    public function registerDevice(string $deviceModelId, string $color, string $accesKey): bool
+    public function registerDevice(array $data): bool
     {
         $registerDevice = new RegisterDeviceAction(
             $this,
-            $deviceModelId,
-            $color,
-            $accesKey
+            $data
         );
 
         return $registerDevice->execute();
