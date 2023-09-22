@@ -38,12 +38,12 @@ class AuthenticationTest extends TestCase
                 ->where('user.email',  fn (string $email) => str($email)->is($this->user->email))
                 ->where('user.id', $this->user->id)
                 ->where(
-                    'user.createdAt',
+                    'user.created_at',
                     fn ($createdAt) =>
                     Carbon::createFromDate($createdAt)->equalTo($this->user->created_at)
                 )
                 ->where(
-                    'user.updatedAt',
+                    'user.updated_at',
                     fn ($updatedAt) =>
                     Carbon::createFromDate($updatedAt)->equalTo($this->user->updated_at)
                 )
