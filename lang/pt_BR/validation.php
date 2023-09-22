@@ -156,7 +156,11 @@ return [
             'invalid_format' => 'O cpf deve possuir 11 dígitos.',
             'repeated_sequence' => 'O CPF não pode ser uma sequência de dígitos repetidos.',
             'invalid_check_digits' => 'O cpf é inválido.',
-        ]
+        ],
+        'device_registration' => [
+            'unable_to_register_device' => 'Houve um problema ao tentar registrar o díspositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+        ],
     ],
 
     /*
@@ -215,7 +219,12 @@ return [
         'modality' => 'modalidade',
         'category' => 'categoria',
         'blood_type' => 'tipo sanguíneo',
-        'birth_date' => 'data de nascimento'
+        'birth_date' => 'data de nascimento',
+        'color' => 'cor',
+        'access_key' => 'chave de acesso',
+        'device_model_id' => 'identificador do modelo do dispositivo',
+        'imei_1' => 'IMEI 1',
+        'imei_2' => 'IMEI 2',
     ],
 
 ];

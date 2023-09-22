@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Monkey D. Luffy",
+        "email": "user1@email.com",
+        "password": "12345678",
+        "cpf": "273.623.457-04",
+        "phone": "(42) 99999-0001"
+    },
+    {
+        "name": "Roronoa Zoro",
+        "email": "user2@email.com",
+        "password": "12345678",
+        "cpf": "548.074.611-17",
+        "phone": "(42) 99999-0002"
+    },
+    {
+        "name": "Nami",
+        "email": "user3@email.com",
+        "password": "12345678",
+        "cpf": "354.273.593-03",
+        "phone": "(42) 99999-0003"
+    },
+    {
+        "name": "Nico Robin",
+        "email": "user4@email.com",
+        "password": "12345678",
+        "cpf": "323.699.455-08",
+        "phone": "(42) 99999-0004"
+    }
+]
