@@ -23,6 +23,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(DeviceController::class)->group(function () {
         Route::post('devices', 'registerDevice');
+        Route::get('devices/{device}', 'viewDevice');
     });
 });
 
