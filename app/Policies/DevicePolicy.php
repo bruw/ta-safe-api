@@ -14,4 +14,12 @@ class DevicePolicy
     {
         return $user->id == $device->user->id;
     }
+
+    /**
+     * Determine whether the user can generate the device registration sharing link.
+     */
+    public function generateSharingLink(User $user, Device $device): bool
+    {
+        return $user->id == $device->user->id;
+    }
 }
