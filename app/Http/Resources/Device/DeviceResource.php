@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\Device;
 
-use App\Http\Resources\UserResource;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
