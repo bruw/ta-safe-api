@@ -55,6 +55,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user's devices sorted by Id Desc.
+     */
+    public function devicesOrderedByIdDesc()
+    {
+        return Device::where([
+            'user_id' => $this->id
+        ])->orderByDesc('id')->get();
+    }
+
+    /**
      * Invoke device registration action.
      */
     public function registerDevice(array $data): bool

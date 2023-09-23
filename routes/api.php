@@ -20,6 +20,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('user', 'currentUser');
         Route::put('user', 'update');
+        Route::get('users/{user}/devices', 'getUserDevices');
     });
 
     Route::controller(DeviceController::class)->group(function () {
