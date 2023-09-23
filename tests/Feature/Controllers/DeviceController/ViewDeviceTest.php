@@ -79,6 +79,14 @@ class ViewDeviceTest extends TestCase
                     ->has('user.created_at')
                     ->has('user.updated_at')
                     ->missing('user.password')
+                    ->where('deviceModel.name', $this->device->deviceModel->name)
+                    ->where('deviceModel.ram', $this->device->deviceModel->ram)
+                    ->where('deviceModel.storage', $this->device->deviceModel->storage)
+                    ->has('deviceModel.created_at')
+                    ->has('deviceModel.updated_at')
+                    ->where('deviceModel.brand.name', $this->device->deviceModel->brand->name)
+                    ->has('deviceModel.brand.created_at')
+                    ->has('deviceModel.brand.updated_at')
                     ->etc()
             );
     }
