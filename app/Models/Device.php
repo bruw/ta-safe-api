@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\URL;
 
 class Device extends Model
 {
@@ -59,5 +60,15 @@ class Device extends Model
     public function deviceModel(): BelongsTo
     {
         return $this->belongsTo(DeviceModel::class);
+    }
+
+    /**
+     * Generate a url for sharing device data.
+     */
+    public function generateSharingUrl()
+    {
+        return URL::temporarySignedRoute('share.device', now()->addHour(), [
+            'device' => $this
+        ]);
     }
 }

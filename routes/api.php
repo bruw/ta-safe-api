@@ -28,7 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::controller(DeviceSharingController::class)->group(function () {
-        Route::post('devices/{device}/share', 'generateSharingLink');
+        Route::post('devices/{device}/share', 'generateSharingUrl');
     });
 });
 
