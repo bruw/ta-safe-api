@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Device\DeviceShareController;
+use App\Http\Controllers\Device\DeviceSharingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('devices/{device}/share', [
-    DeviceShareController::class, 'viewDeviceSharedByLink'
+    DeviceSharingController::class, 'viewDeviceSharedByLink'
 ])->name('share.device')->middleware('signed');

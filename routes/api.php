@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Device\DeviceController;
-use App\Http\Controllers\Device\DeviceShareController;
+use App\Http\Controllers\Device\DeviceSharingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,8 +27,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('devices/{device}', 'viewDevice');
     });
 
-    Route::controller(DeviceShareController::class)->group(function () {
-        Route::post('devices/{device}/share', 'generateShareLink');
+    Route::controller(DeviceSharingController::class)->group(function () {
+        Route::post('devices/{device}/share', 'generateSharingLink');
     });
 });
 
