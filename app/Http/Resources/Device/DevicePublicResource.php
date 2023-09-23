@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Device;
 
+use App\Http\Resources\DeviceModel\DeviceModelResource;
 use App\Http\Resources\User\UserPublicResource;
 use App\Traits\StringMasks;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class DevicePublicResource extends JsonResource
             'validation_status' => $this->validation_status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'user' => new UserPublicResource($this->user)
+            'user' => new UserPublicResource($this->user),
+            'deviceModel' => new DeviceModelResource($this->deviceModel)
         ];
     }
 }
