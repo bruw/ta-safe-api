@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\Device\DeviceResource;
 use App\Http\Resources\User\UserResource;
@@ -21,7 +22,8 @@ class UserController extends Controller
      */
     public function currentUser(Request $request): UserResource
     {
-        return new UserResource($request->user());
+        $currentUser = $request->user();
+        return new UserResource($currentUser);
     }
 
     /**
@@ -51,9 +53,7 @@ class UserController extends Controller
      */
     public function getUserDevices(Request $request, User $user): JsonResource
     {
-        if ($request->user()->cannot('getDevices', $user)) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        $this->authorize('getDevices', $user);
 
         $currentUser = $request->user();
         $devices = $currentUser->devicesOrderedByIdDesc();

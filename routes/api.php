@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Device\DeviceController;
 use App\Http\Controllers\Device\DeviceSharingController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
