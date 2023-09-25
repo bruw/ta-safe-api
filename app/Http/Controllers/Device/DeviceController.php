@@ -36,9 +36,7 @@ class DeviceController extends Controller
      */
     public function viewDevice(Request $request, Device $device): DeviceResource
     {
-        if ($request->user()->cannot('view', $device)) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        $this->authorize('view', $device);
 
         return new DeviceResource($device);
     }

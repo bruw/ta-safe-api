@@ -7,7 +7,6 @@ use App\Http\Resources\Device\DevicePublicResource;
 use App\Models\Device;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class DeviceSharingController extends Controller
 {
@@ -19,9 +18,7 @@ class DeviceSharingController extends Controller
      */
     public function generateSharingUrl(Request $request, Device $device): JsonResponse
     {
-        if ($request->user()->cannot('generateSharingLink', $device)) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
+        $this->authorize('generateSharingLink', $device);
 
         $url = $device->generateSharingUrl();
 
