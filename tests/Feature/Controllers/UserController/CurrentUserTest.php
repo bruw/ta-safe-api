@@ -39,8 +39,8 @@ class CurrentUserTest extends TestCase
                 ->where('email', $user->email)
                 ->where('cpf', $user->cpf)
                 ->where('phone', $user->phone)
-                ->has('createdAt')
-                ->has('updatedAt')
+                ->has('created_at')
+                ->has('updated_at')
                 ->missing('password')
                 ->etc()
         );

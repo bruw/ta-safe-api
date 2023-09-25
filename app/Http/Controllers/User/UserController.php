@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Resources\UserResource;
-
+use App\Http\Resources\Device\DeviceResource;
+use App\Http\Resources\User\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +22,8 @@ class UserController extends Controller
      */
     public function currentUser(Request $request): UserResource
     {
-        return new UserResource($request->user());
+        $currentUser = $request->user();
+        return new UserResource($currentUser);
     }
 
     /**
@@ -38,5 +42,22 @@ class UserController extends Controller
 
             return response()->noContent();
         });
+    }
+
+    /**
+     * Get the user's devices.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\User $user
+     * @return \Illuminate\Http\Resources\Json\JsonResource
+     */
+    public function getUserDevices(Request $request, User $user): JsonResource
+    {
+        $this->authorize('getDevices', $user);
+
+        $currentUser = $request->user();
+        $devices = $currentUser->devicesOrderedByIdDesc();
+
+        return DeviceResource::collection($devices);
     }
 }

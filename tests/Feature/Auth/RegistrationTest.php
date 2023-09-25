@@ -38,8 +38,8 @@ class RegistrationTest extends TestCase
         $response->assertJson(
             fn (AssertableJson $json) =>
             $json->has('user.id')
-                ->has('user.createdAt')
-                ->has('user.updatedAt')
+                ->has('user.created_at')
+                ->has('user.updated_at')
                 ->has('token')
                 ->where('user.name', $this->user->name)
                 ->where('user.email',  fn (string $email) => str($email)->is($this->user->email))

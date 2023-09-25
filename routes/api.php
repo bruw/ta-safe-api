@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Device\DeviceController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Device\DeviceSharingController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,11 +20,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('user', 'currentUser');
         Route::put('user', 'update');
+        Route::get('users/{user}/devices', 'getUserDevices');
     });
 
     Route::controller(DeviceController::class)->group(function () {
         Route::post('devices', 'registerDevice');
+        Route::get('devices/{device}', 'viewDevice');
+    });
+
+    Route::controller(DeviceSharingController::class)->group(function () {
+        Route::post('devices/{device}/share', 'generateSharingUrl');
     });
 });
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/public.php';
