@@ -48,13 +48,10 @@ class UserController extends Controller
      * Get the user's devices.
      * 
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function getUserDevices(Request $request, User $user): JsonResource
+    public function getUserDevices(Request $request): JsonResource
     {
-        $this->authorize('getDevices', $user);
-
         $currentUser = $request->user();
         $devices = $currentUser->devicesOrderedByIdDesc();
 
