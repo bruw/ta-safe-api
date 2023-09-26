@@ -21,6 +21,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('user', 'currentUser');
         Route::put('user', 'update');
         Route::get('user/devices', 'getUserDevices');
+        Route::get('user/search', 'search');
     });
 
     Route::controller(DeviceController::class)->group(function () {

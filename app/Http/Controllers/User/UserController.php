@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\SearchUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\Device\DeviceResource;
+use App\Http\Resources\User\UserPublicResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -56,5 +58,19 @@ class UserController extends Controller
         $devices = $currentUser->devicesOrderedByIdDesc();
 
         return DeviceResource::collection($devices);
+    }
+
+    /**
+     * Search for users by term.
+     * 
+     * @param \App\Http\Requests\User\SearchUserRequest $request
+     * @return \Illuminate\Http\Resources\Json\JsonResource
+     */
+    public function search(SearchUserRequest $request): JsonResource
+    {
+        $data = $request->validated();
+        $users = User::search($data['search_term']);
+
+        return UserPublicResource::collection($users);
     }
 }

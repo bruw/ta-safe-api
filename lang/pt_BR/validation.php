@@ -225,6 +225,7 @@ return [
         'device_model_id' => 'identificador do modelo do dispositivo',
         'imei_1' => 'IMEI 1',
         'imei_2' => 'IMEI 2',
+        'search_term' => 'termo de pesquisa',
     ],
 
 ];
