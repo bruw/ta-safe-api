@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Actions\Device\RegisterDeviceAction;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -68,13 +68,13 @@ class User extends Authenticatable
     /**
      * Search for users by email or phone.
      */
-    public static function search(string $searchTerm): LengthAwarePaginator
+    public static function search(string $searchTerm): Collection
     {
-        $searchTerm = "%{$searchTerm}%";
+        $searchTerm = strtolower($searchTerm);
 
-        return User::where('email', 'LIKE', $searchTerm)
-            ->orWhere('phone', 'LIKE', $searchTerm)
-            ->paginate(6);
+        return User::where('email', $searchTerm)
+            ->orWhere('phone', $searchTerm)
+            ->get();
     }
 
     /**
