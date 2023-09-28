@@ -152,6 +152,9 @@ return [
     */
 
     'custom' => [
+        'attribute' => [
+            'not_boolean' => 'O :attribute não pode ser booleano.',
+        ],
         'cpf' => [
             'invalid_format' => 'O cpf deve possuir 11 dígitos.',
             'repeated_sequence' => 'O CPF não pode ser uma sequência de dígitos repetidos.',
@@ -226,6 +229,7 @@ return [
         'imei_1' => 'IMEI 1',
         'imei_2' => 'IMEI 2',
         'search_term' => 'termo de pesquisa',
+        'target_user_id' => 'identificador do usuário de destino'
     ],
 
 ];
