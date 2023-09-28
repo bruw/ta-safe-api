@@ -3,13 +3,15 @@
 namespace Tests\Unit\Rules;
 
 use App\Rules\CpfRule;
-
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
 class CpfRuleTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_cpf_rule_with_valid_values(): void
     {
         $faker = \Faker\Factory::create('pt_BR');
