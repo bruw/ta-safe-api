@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+
 use App\Http\Requests\User\SearchUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+
 use App\Http\Resources\Device\DeviceResource;
+use App\Http\Resources\DeviceTransfer\DeviceTransferResource;
 use App\Http\Resources\User\UserPublicResource;
 use App\Http\Resources\User\UserResource;
-use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
@@ -58,6 +62,20 @@ class UserController extends Controller
         $devices = $currentUser->devicesOrderedByIdDesc();
 
         return DeviceResource::collection($devices);
+    }
+
+    /**
+     * Get user devices transfers.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Resources\Json\JsonResource
+     */
+    public function userDevicesTransfers(Request $request): JsonResource
+    {
+        $currentUser = $request->user();
+        $transfers = $currentUser->userDevicesTransfers();
+
+        return DeviceTransferResource::collection($transfers);
     }
 
     /**

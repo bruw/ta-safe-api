@@ -24,6 +24,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('user/search', 'search');
 
         Route::get('user/devices', 'userDevices');
+        Route::get('user/devices-transfers', 'userDevicesTransfers');
     });
 
     Route::controller(DeviceController::class)->group(function () {
