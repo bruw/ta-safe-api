@@ -15,7 +15,7 @@ use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class GetUserDevicesTest extends TestCase
+class UserDevicesTest extends TestCase
 {
     use RefreshDatabase;
 

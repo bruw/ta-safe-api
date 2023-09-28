@@ -52,7 +52,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function getUserDevices(Request $request): JsonResource
+    public function userDevices(Request $request): JsonResource
     {
         $currentUser = $request->user();
         $devices = $currentUser->devicesOrderedByIdDesc();
