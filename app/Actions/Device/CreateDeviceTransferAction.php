@@ -14,7 +14,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateTransferDeviceAction
+class CreateDeviceTransferAction
 {
     private readonly User $currentUser;
     private readonly User $targetUser;

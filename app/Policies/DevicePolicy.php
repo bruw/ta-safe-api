@@ -24,9 +24,9 @@ class DevicePolicy
     }
 
     /**
-     * Determine whether the user can transfer the device.
+     * Determine whether the user can create device transfer.
      */
-    public function transferDevice(User $user, Device $device): bool
+    public function createDeviceTransfer(User $user, Device $device): bool
     {
         return $user->id == $device->user->id;
     }

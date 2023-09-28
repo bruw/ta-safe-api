@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(DeviceController::class)->group(function () {
         Route::post('devices', 'registerDevice');
         Route::get('devices/{device}', 'viewDevice');
-        Route::post('devices/{device}', 'transferDevice');
+        Route::post('devices/{device}', 'createDeviceTransfer');
     });
 
     Route::controller(DeviceSharingController::class)->group(function () {

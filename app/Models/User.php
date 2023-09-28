@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Actions\Device\CreateTransferDeviceAction;
+use App\Actions\Device\CreateDeviceTransferAction;
 use App\Actions\Device\RegisterDeviceAction;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -60,7 +60,7 @@ class User extends Authenticatable
     /**
      * Get user transfers devices.
      */
-    public function devicesTransfers()
+    public function userDevicesTransfers(): Collection
     {
         return DeviceTransfer::where([
             'source_user_id' => $this->id
@@ -107,9 +107,9 @@ class User extends Authenticatable
     /**
      * Invoke the create device transfer action.
      */
-    public function transferDevice(User $targetUser, Device $device): bool
+    public function createDeviceTransfer(User $targetUser, Device $device): bool
     {
-        $transferDevice = new CreateTransferDeviceAction(
+        $transferDevice = new CreateDeviceTransferAction(
             $this,
             $targetUser,
             $device,

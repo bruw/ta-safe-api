@@ -5,14 +5,14 @@ namespace App\Http\Requests\Device;
 use App\Rules\AttributeCannotBeBoolean;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TransferDeviceRequest extends FormRequest
+class CreateDeviceTransferRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('transferDevice', $this->device);
+        return $this->user()->can('createDeviceTransfer', $this->device);
     }
 
     /**

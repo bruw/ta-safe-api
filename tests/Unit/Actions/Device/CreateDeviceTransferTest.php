@@ -15,7 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class CreateTransferDeviceTest extends TestCase
+class CreateDeviceTransferTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -45,14 +45,14 @@ class CreateTransferDeviceTest extends TestCase
     public function test_should_return_true_if_the_device_transfer_is_successfully_created(): void
     {
         $this->assertTrue(
-            $this->sourceUser->transferDevice($this->targetUser, $this->device)
+            $this->sourceUser->createDeviceTransfer($this->targetUser, $this->device)
         );
     }
 
     public function test_when_creating_a_device_transfer_the_status_should_be_pending(): void
     {
         $this->assertTrue(
-            $this->sourceUser->transferDevice($this->targetUser, $this->device)
+            $this->sourceUser->createDeviceTransfer($this->targetUser, $this->device)
         );
 
         $this->device->refresh();
@@ -62,8 +62,8 @@ class CreateTransferDeviceTest extends TestCase
             DeviceTransferStatus::PENDING
         );
 
-        $this->assertEquals($this->sourceUser->devicesTransfers()->count(), 1);
-        $this->assertEquals($this->targetUser->devicesTransfers()->count(), 1);
+        $this->assertEquals($this->sourceUser->userDevicesTransfers()->count(), 1);
+        $this->assertEquals($this->targetUser->userDevicesTransfers()->count(), 1);
     }
 
     public function test_should_thrown_an_exception_when_the_user_does_not_have_permission_to_create_the_device_transfer(): void
@@ -71,7 +71,7 @@ class CreateTransferDeviceTest extends TestCase
         $exceptionOcurred = false;
 
         try {
-            $this->targetUser->transferDevice($this->sourceUser, $this->device);
+            $this->targetUser->createDeviceTransfer($this->sourceUser, $this->device);
         } catch (Exception $e) {
             $exceptionOcurred = true;
 
@@ -88,8 +88,8 @@ class CreateTransferDeviceTest extends TestCase
 
         $this->assertTrue($exceptionOcurred);
 
-        $this->assertEquals($this->sourceUser->devicesTransfers()->count(), 0);
-        $this->assertEquals($this->targetUser->devicesTransfers()->count(), 0);
+        $this->assertEquals($this->sourceUser->userDevicesTransfers()->count(), 0);
+        $this->assertEquals($this->targetUser->userDevicesTransfers()->count(), 0);
     }
 
     public function test_should_thrown_an_exception_when_the_user_tries_to_transfer_a_device_to_yourself(): void
@@ -97,7 +97,7 @@ class CreateTransferDeviceTest extends TestCase
         $exceptionOcurred = false;
 
         try {
-            $this->sourceUser->transferDevice($this->sourceUser, $this->device);
+            $this->sourceUser->createDeviceTransfer($this->sourceUser, $this->device);
         } catch (Exception $e) {
             $exceptionOcurred = true;
 
@@ -114,18 +114,18 @@ class CreateTransferDeviceTest extends TestCase
 
         $this->assertTrue($exceptionOcurred);
 
-        $this->assertEquals($this->sourceUser->devicesTransfers()->count(), 0);
-        $this->assertEquals($this->targetUser->devicesTransfers()->count(), 0);
+        $this->assertEquals($this->sourceUser->userDevicesTransfers()->count(), 0);
+        $this->assertEquals($this->targetUser->userDevicesTransfers()->count(), 0);
     }
 
     public function test_should_thrown_an_exception_if_the_device_already_has_a_transfer_in_progress(): void
     {
         $exceptionOcurred = false;
 
-        $this->sourceUser->transferDevice($this->targetUser, $this->device);
+        $this->sourceUser->createDeviceTransfer($this->targetUser, $this->device);
 
         try {
-            $this->sourceUser->transferDevice($this->targetUser, $this->device);
+            $this->sourceUser->createDeviceTransfer($this->targetUser, $this->device);
         } catch (Exception $e) {
             $exceptionOcurred = true;
 
@@ -142,8 +142,8 @@ class CreateTransferDeviceTest extends TestCase
 
         $this->assertTrue($exceptionOcurred);
 
-        $this->assertEquals($this->sourceUser->devicesTransfers()->count(), 1);
-        $this->assertEquals($this->targetUser->devicesTransfers()->count(), 1);
+        $this->assertEquals($this->sourceUser->userDevicesTransfers()->count(), 1);
+        $this->assertEquals($this->targetUser->userDevicesTransfers()->count(), 1);
     }
 
     public function test_should_thrown_an_exception_if_the_devices_does_not_have_validated_status(): void
@@ -161,7 +161,7 @@ class CreateTransferDeviceTest extends TestCase
             $exceptionOcurred = false;
 
             try {
-                $this->sourceUser->transferDevice($this->targetUser, $this->device);
+                $this->sourceUser->createDeviceTransfer($this->targetUser, $this->device);
             } catch (Exception $e) {
                 $exceptionOcurred = true;
 
@@ -178,8 +178,8 @@ class CreateTransferDeviceTest extends TestCase
 
             $this->assertTrue($exceptionOcurred);
 
-            $this->assertEquals($this->sourceUser->devicesTransfers()->count(), 0);
-            $this->assertEquals($this->targetUser->devicesTransfers()->count(), 0);
+            $this->assertEquals($this->sourceUser->userDevicesTransfers()->count(), 0);
+            $this->assertEquals($this->targetUser->userDevicesTransfers()->count(), 0);
         }
     }
 }

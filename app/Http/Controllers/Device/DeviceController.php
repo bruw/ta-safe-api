@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Device;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Device\CreateDeviceTransferRequest;
 use App\Http\Requests\Device\RegisterDeviceRequest;
-use App\Http\Requests\Device\TransferDeviceRequest;
 use App\Http\Resources\Device\DeviceResource;
 use App\Models\Device;
 use App\Models\User;
@@ -45,11 +45,11 @@ class DeviceController extends Controller
     /**
      * Transfer a device to a user.
      * 
-     * @param \App\Http\Requests\Device\TransferDeviceRequest $request
+     * @param \App\Http\Requests\Device\CreateDeviceTransferRequest $request
      * @param \App\Models\Device $device
      * @return \Illuminate\Http\Response
      */
-    public function transferDevice(TransferDeviceRequest $request, Device $device): Response
+    public function createDeviceTransfer(CreateDeviceTransferRequest $request, Device $device): Response
     {
         $data = $request->validated();
 
@@ -59,7 +59,7 @@ class DeviceController extends Controller
             'id' => $data['target_user_id']
         ])->firstOrFail();
 
-        $currentUser->transferDevice($targetUser, $device);
+        $currentUser->createDeviceTransfer($targetUser, $device);
 
         return response()->noContent(Response::HTTP_CREATED);
     }
