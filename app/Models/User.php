@@ -56,6 +56,18 @@ class User extends Authenticatable
     }
 
     /**
+     * Get user transfers devices.
+     */
+    public function devicesTransfers()
+    {
+        return DeviceTransfer::where([
+            'source_user_id' => $this->id
+        ])->orWhere([
+            'target_user_id' => $this->id
+        ])->orderByDesc('id')->get();
+    }
+
+    /**
      * Get the user's devices sorted by Id Desc.
      */
     public function devicesOrderedByIdDesc()
