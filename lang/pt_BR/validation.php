@@ -164,6 +164,13 @@ return [
             'unable_to_register_device' => 'Houve um problema ao tentar registrar o díspositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
+        'device_transfer' => [
+            'not_yourself' => 'Não é possível criar uma transferência de dispositivo para si mesmo',
+            'in_progress' => 'Já existe uma transferência em andamento ainda não finalizada para este dispositivo.',
+            'register_not_validated' => 'Não é possível criar uma transferência para este dispositivo, pois o mesmo não foi validado.',
+            'unable_to_create_transfer' => 'Houve um problema ao criar a transferência do díspositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+        ]
     ],
 
     /*
