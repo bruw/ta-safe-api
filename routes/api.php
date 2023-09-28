@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Device\DeviceController;
 use App\Http\Controllers\Device\DeviceSharingController;
+use App\Http\Controllers\Device\DeviceTransferController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,13 +21,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('user', 'currentUser');
         Route::put('user', 'update');
-        Route::get('user/devices', 'userDevices');
         Route::get('user/search', 'search');
+
+        Route::get('user/devices', 'userDevices');
     });
 
     Route::controller(DeviceController::class)->group(function () {
         Route::post('devices', 'registerDevice');
         Route::get('devices/{device}', 'viewDevice');
+    });
+
+    Route::controller(DeviceTransferController::class)->group(function () {
         Route::post('devices/{device}', 'createDeviceTransfer');
     });
 
