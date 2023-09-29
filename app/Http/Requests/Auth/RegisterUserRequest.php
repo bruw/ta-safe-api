@@ -7,7 +7,7 @@ use App\Rules\CpfRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
 
-class RegistrationRequest extends FormRequest
+class RegisterUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,14 +27,17 @@ class RegistrationRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', 'max:255', Rules\Password::defaults()],
             'cpf' => [
                 'required',
+                'unique:users,cpf',
                 'regex:/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/',
                 new CpfRule()
             ],
             'phone' => [
-                'required', 'regex:/^[(]\d{2}[)]\s[9]\d{4}-\d{4}$/'
+                'required',
+                'unique:users,phone',
+                'regex:/^[(]\d{2}[)]\s[9]\d{4}-\d{4}$/'
             ]
         ];
     }

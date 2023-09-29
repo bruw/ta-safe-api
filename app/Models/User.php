@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Actions\Device\CreateDeviceTransferAction;
 use App\Actions\Device\RegisterDeviceAction;
+use App\Actions\User\RegisterUserAction;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -92,7 +93,17 @@ class User extends Authenticatable
     }
 
     /**
-     * Invoke device registration action.
+     * Invoke the user registration action.
+     */
+    public static function registerUser(array $data): array
+    {
+        $registerUser = new RegisterUserAction($data);
+
+        return $registerUser->execute();
+    }
+
+    /**
+     * Invoke the device registration action.
      */
     public function registerDevice(array $data): bool
     {
