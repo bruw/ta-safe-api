@@ -18,6 +18,7 @@ class UserPublicResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'cpf' => self::addAsteriskMaskForCpf($this->cpf),
             'phone' => self::addAsteriskMaskForPhone($this->phone),

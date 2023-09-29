@@ -15,7 +15,7 @@ use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-class GetUserDevicesTest extends TestCase
+class UserDevicesTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -61,7 +61,7 @@ class GetUserDevicesTest extends TestCase
 
     public function test_an_unauthenticated_user_must_not_be_authorized_to_view_devices(): void
     {
-        $response = $this->getJson("/api/users/{$this->user->id}/devices");
+        $response = $this->getJson("/api/user/devices");
 
         $response->assertStatus(Response::HTTP_UNAUTHORIZED)
             ->assertJson(
@@ -78,7 +78,7 @@ class GetUserDevicesTest extends TestCase
             []
         );
 
-        $response = $this->getJson("/api/users/{$this->user->id}/devices");
+        $response = $this->getJson("/api/user/devices");
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertJson(
@@ -114,23 +114,6 @@ class GetUserDevicesTest extends TestCase
             );
     }
 
-    public function test_a_user_should_not_be_allowed_to_view_another_user_devices(): void
-    {
-        Sanctum::actingAs(
-            $this->user2,
-            []
-        );
-
-        $response = $this->getJson("/api/users/{$this->user->id}/devices");
-
-        $response->assertStatus(Response::HTTP_FORBIDDEN)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->where('message', trans('auth.unauthorized'))
-                    ->etc()
-            );
-    }
-
     public function test_a_user_with_no_registered_devices_should_receive_an_empty_collection(): void
     {
         $user2 = User::factory()->create();
@@ -140,7 +123,7 @@ class GetUserDevicesTest extends TestCase
             []
         );
 
-        $response = $this->getJson("/api/users/{$user2->id}/devices");
+        $response = $this->getJson("/api/user/devices");
 
         $response->assertStatus(Response::HTTP_OK);
         $this->assertEmpty($response->getData());

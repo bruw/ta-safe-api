@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Resources\Device\DeviceResource;
-use App\Http\Resources\User\UserResource;
 use App\Models\User;
+
+use App\Http\Requests\User\SearchUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
+
+use App\Http\Resources\Device\DeviceResource;
+use App\Http\Resources\DeviceTransfer\DeviceTransferResource;
+use App\Http\Resources\User\UserPublicResource;
+use App\Http\Resources\User\UserResource;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
@@ -48,16 +54,41 @@ class UserController extends Controller
      * Get the user's devices.
      * 
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\User $user
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function getUserDevices(Request $request, User $user): JsonResource
+    public function userDevices(Request $request): JsonResource
     {
-        $this->authorize('getDevices', $user);
-
         $currentUser = $request->user();
         $devices = $currentUser->devicesOrderedByIdDesc();
 
         return DeviceResource::collection($devices);
+    }
+
+    /**
+     * Get user devices transfers.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Resources\Json\JsonResource
+     */
+    public function userDevicesTransfers(Request $request): JsonResource
+    {
+        $currentUser = $request->user();
+        $transfers = $currentUser->userDevicesTransfers();
+
+        return DeviceTransferResource::collection($transfers);
+    }
+
+    /**
+     * Search for users by term.
+     * 
+     * @param \App\Http\Requests\User\SearchUserRequest $request
+     * @return \Illuminate\Http\Resources\Json\JsonResource
+     */
+    public function search(SearchUserRequest $request): JsonResource
+    {
+        $data = $request->validated();
+        $users = User::search($data['search_term']);
+
+        return UserPublicResource::collection($users);
     }
 }

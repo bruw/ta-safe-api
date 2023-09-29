@@ -152,6 +152,9 @@ return [
     */
 
     'custom' => [
+        'attribute' => [
+            'not_boolean' => 'O :attribute não pode ser booleano.',
+        ],
         'cpf' => [
             'invalid_format' => 'O cpf deve possuir 11 dígitos.',
             'repeated_sequence' => 'O CPF não pode ser uma sequência de dígitos repetidos.',
@@ -161,6 +164,13 @@ return [
             'unable_to_register_device' => 'Houve um problema ao tentar registrar o díspositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
+        'device_transfer' => [
+            'not_yourself' => 'Não é possível criar uma transferência de dispositivo para si mesmo',
+            'in_progress' => 'Já existe uma transferência em andamento ainda não finalizada para este dispositivo.',
+            'register_not_validated' => 'Não é possível criar uma transferência para este dispositivo, pois o mesmo não foi validado.',
+            'unable_to_create_transfer' => 'Houve um problema ao criar a transferência do díspositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+        ]
     ],
 
     /*
@@ -225,6 +235,8 @@ return [
         'device_model_id' => 'identificador do modelo do dispositivo',
         'imei_1' => 'IMEI 1',
         'imei_2' => 'IMEI 2',
+        'search_term' => 'termo de pesquisa',
+        'target_user_id' => 'identificador do usuário de destino'
     ],
 
 ];

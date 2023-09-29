@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Device\RegisterDeviceRequest;
 use App\Http\Resources\Device\DeviceResource;
 use App\Models\Device;
-
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
