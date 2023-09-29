@@ -170,6 +170,10 @@ return [
             'register_not_validated' => 'Não é possível criar uma transferência para este dispositivo, pois o mesmo não foi validado.',
             'unable_to_create_transfer' => 'Houve um problema ao criar a transferência do díspositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+        ],
+        'register_user' => [
+            'unable_to_register_user' => 'Houve um problema ao criar o novo usuário. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ]
     ],
 
