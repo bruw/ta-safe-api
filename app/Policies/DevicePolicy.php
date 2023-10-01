@@ -16,9 +16,9 @@ class DevicePolicy
     }
 
     /**
-     * Determine whether the user can generate the device registration sharing link.
+     * Determine whether the user can create a device sharing token..
      */
-    public function generateSharingLink(User $user, Device $device): bool
+    public function createSharingToken(User $user, Device $device): bool
     {
         return $user->id == $device->user->id;
     }

@@ -3,36 +3,24 @@
 namespace App\Http\Controllers\Device;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Device\DevicePublicResource;
+use App\Http\Resources\Device\DeviceResource;
 use App\Models\Device;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class DeviceSharingController extends Controller
 {
     /**
-     * Generate device registration sharing link.
+     * Create token to share device registration.
      * 
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function generateSharingUrl(Request $request, Device $device): JsonResponse
-    {
-        $this->authorize('generateSharingLink', $device);
-
-        $url = $device->generateSharingUrl();
-
-        return response()->json(['url' => $url]);
-    }
-
-    /**
-     * View device data.
-     * 
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Device $device
      * @return \App\Http\Resources\Device\DeviceResource
      */
-    public function viewDeviceSharedByUrl(Device $device): DevicePublicResource
+    public function createSharingToken(Device $device): DeviceResource
     {
-        return new DevicePublicResource($device);
+        $this->authorize('createSharingToken', $device);
+        $device->createSharingToken();
+
+        $device->refresh();
+
+        return new DeviceResource($device);
     }
 }

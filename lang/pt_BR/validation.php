@@ -174,6 +174,11 @@ return [
         'register_user' => [
             'unable_to_register_user' => 'Houve um problema ao criar o novo usuário. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+        ],
+        'device_sharing_token' => [
+            'register_not_validated' => 'Não é possível compartilhar o registro de dispositivos não validados.',
+            'unable_to_create_token' => 'Houve um problema ao gerar o token de compartilhamento do dispositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ]
     ],
 
