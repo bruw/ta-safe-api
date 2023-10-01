@@ -92,9 +92,9 @@ class Device extends Model
     /**
      * Invoke the create device sharing token action.
      */
-    public function createSharingToken(): void
+    public function createSharingToken(): bool
     {
         $createToken = new CreateSharingTokenAction($this);
-        $createToken->execute();
+        return $createToken->execute();
     }
 }
