@@ -19,8 +19,6 @@ class DeviceModelResource extends JsonResource
             'name' => $this->name,
             'ram' => $this->ram,
             'storage' => $this->storage,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
             'brand' => new BrandResource($this->brand)
         ];
     }
