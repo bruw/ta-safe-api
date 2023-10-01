@@ -37,7 +37,7 @@ class CreateSharingTokenAction
                     return true;
                 }
 
-                $this->device->sharingToken->update([
+                $this->device->sharingToken()->update([
                     'token' => $this->generateToken(),
                     'expires_at' => now()->addHours(24)
                 ]);
