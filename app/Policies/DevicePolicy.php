@@ -16,7 +16,7 @@ class DevicePolicy
     }
 
     /**
-     * Determine whether the user can create a device sharing token..
+     * Determine whether the user can create a device sharing token.
      */
     public function createSharingToken(User $user, Device $device): bool
     {

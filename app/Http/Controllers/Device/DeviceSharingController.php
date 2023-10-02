@@ -29,7 +29,7 @@ class DeviceSharingController extends Controller
     }
 
     /**
-     * TODO
+     * View the registration of a device via the sharing token.
      * 
      * @param \App\Http\Requests\Device\ViewDeviceByTokenRequest $request
      * @return \App\Http\Resources\Device\DevicePublicResource
