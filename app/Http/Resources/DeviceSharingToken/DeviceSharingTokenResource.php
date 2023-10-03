@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Brand;
+namespace App\Http\Resources\DeviceSharingToken;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BrandResource extends JsonResource
+class DeviceSharingTokenResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +15,8 @@ class BrandResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' => $this->name
+            'token' => $this->token,
+            'expires_at' => $this->expires_at
         ];
     }
 }

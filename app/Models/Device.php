@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Actions\Device\CreateSharingTokenAction;
 use App\Enums\Device\DeviceValidationStatus;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\URL;
 
 class Device extends Model
 {
@@ -82,12 +82,19 @@ class Device extends Model
     }
 
     /**
-     * Generate a url for sharing device data.
+     * Get the sharing token associated with the device.
      */
-    public function generateSharingUrl()
+    public function sharingToken(): HasOne
     {
-        return URL::temporarySignedRoute('share.device', now()->addHour(), [
-            'device' => $this
-        ]);
+        return $this->hasOne(DeviceSharingToken::class);
+    }
+
+    /**
+     * Invoke the create device sharing token action.
+     */
+    public function createSharingToken(): bool
+    {
+        $createToken = new CreateSharingTokenAction($this);
+        return $createToken->execute();
     }
 }

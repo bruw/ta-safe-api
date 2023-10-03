@@ -37,9 +37,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::controller(DeviceSharingController::class)->group(function () {
-        Route::post('devices/{device}/share', 'generateSharingUrl');
+        Route::post('devices/{device}/share', 'createSharingToken');
+        Route::get('devices', 'viewDeviceByToken');
     });
 });
 
 require __DIR__ . '/auth.php';
-require __DIR__ . '/public.php';

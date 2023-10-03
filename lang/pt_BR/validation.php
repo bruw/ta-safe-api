@@ -160,6 +160,9 @@ return [
             'repeated_sequence' => 'O CPF não pode ser uma sequência de dígitos repetidos.',
             'invalid_check_digits' => 'O cpf é inválido.',
         ],
+        'token' => [
+            'exists' => 'O token informado não existe nos nossos registros.',
+        ],
         'device_registration' => [
             'unable_to_register_device' => 'Houve um problema ao tentar registrar o díspositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
@@ -173,6 +176,11 @@ return [
         ],
         'register_user' => [
             'unable_to_register_user' => 'Houve um problema ao criar o novo usuário. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+        ],
+        'device_sharing_token' => [
+            'register_not_validated' => 'Não é possível compartilhar o registro de dispositivos não validados.',
+            'unable_to_create_token' => 'Houve um problema ao gerar o token de compartilhamento do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ]
     ],
