@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Device;
 
-use App\Rules\AttributeCannotBeBoolean;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ViewDeviceByTokenRequest extends FormRequest
@@ -26,8 +25,7 @@ class ViewDeviceByTokenRequest extends FormRequest
             'token' => [
                 'required',
                 'digits:8',
-                'exists:device_sharing_tokens,token',
-                new AttributeCannotBeBoolean
+                'exists:device_sharing_tokens,token'
             ]
         ];
     }
