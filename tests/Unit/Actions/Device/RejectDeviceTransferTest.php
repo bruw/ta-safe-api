@@ -112,7 +112,7 @@ class RejectDeviceTransferTest extends TestCase
         $occuredException = false;
 
         $this->deviceTransfer->update([
-            'status' => DeviceTransferStatus::CANCEL
+            'status' => DeviceTransferStatus::CANCELED
         ]);
 
         try {
