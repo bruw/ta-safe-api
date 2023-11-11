@@ -15,13 +15,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AcceptDeviceTransferAction
 {
-    private readonly User $currentUser;
+    private readonly User $targetUser;
     private DeviceTransfer $deviceTransfer;
     private Device $device;
 
-    public function __construct(User $currentUser, DeviceTransfer $deviceTransfer)
+    public function __construct(User $targetUser, DeviceTransfer $deviceTransfer)
     {
-        $this->currentUser = $currentUser;
+        $this->targetUser = $targetUser;
         $this->deviceTransfer = $deviceTransfer;
         $this->device = $deviceTransfer->device;
     }
@@ -37,7 +37,7 @@ class AcceptDeviceTransferAction
                 ]);
 
                 $this->device->update([
-                    'user_id' => $this->currentUser->id
+                    'user_id' => $this->targetUser->id
                 ]);
 
                 return true;
