@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Actions\Device\AcceptDeviceTransferAction;
+use App\Actions\Device\CancelDeviceTransferAction;
 use App\Actions\Device\CreateDeviceTransferAction;
 use App\Actions\Device\RegisterDeviceAction;
+use App\Actions\Device\RejectDeviceTransferAction;
 use App\Actions\User\RegisterUserAction;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -11,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -127,5 +131,42 @@ class User extends Authenticatable
         );
 
         return $transferDevice->execute();
+    }
+
+    /**
+     * Invoke the action of accepting the transfer of the device.
+     */
+    public function acceptDeviceTransfer(DeviceTransfer $deviceTransfer): bool
+    {
+        $acceptTransfer = new AcceptDeviceTransferAction(
+            $this,
+            $deviceTransfer
+        );
+
+        return $acceptTransfer->execute();
+    }
+
+    /**
+     * Invoke the action to reject the device transfer.
+     */
+    public function rejectDeviceTransfer(DeviceTransfer $deviceTransfer): bool
+    {
+        $rejectTransfer = new RejectDeviceTransferAction(
+            $deviceTransfer
+        );
+
+        return $rejectTransfer->execute();
+    }
+
+    /**
+     * Invoke the action to cancel the device transfer.
+     */
+    public function cancelDeviceTransfer(DeviceTransfer $deviceTransfer): bool
+    {
+        $cancelTransfer = new CancelDeviceTransferAction(
+            $deviceTransfer
+        );
+
+        return $cancelTransfer->execute();
     }
 }

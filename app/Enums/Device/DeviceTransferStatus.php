@@ -6,6 +6,6 @@ enum DeviceTransferStatus: string
 {
     case PENDING = 'pending';
     case REJECTED = 'rejected';
-    case CANCEL = 'cancel';
+    case CANCELED = 'canceled';
     case ACCEPTED = 'accepted';
 }

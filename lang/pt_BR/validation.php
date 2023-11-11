@@ -101,6 +101,7 @@ return [
     'min_digits'           => 'O campo :attribute deve ter pelo menos :min dígitos',
     'not_in'               => 'O campo :attribute selecionado é inválido.',
     'multiple_of'          => 'O campo :attribute deve ser um múltiplo de :value.',
+    'not_found'            =>  'Recurso não encontrado.',
     'not_regex'            => 'O campo :attribute possui um formato inválido.',
     'numeric'              => 'O campo :attribute deve ser um número.',
     'password' => [
@@ -171,7 +172,14 @@ return [
             'not_yourself' => 'Não é possível criar uma transferência de dispositivo para si mesmo',
             'in_progress' => 'Já existe uma transferência em andamento ainda não finalizada para este dispositivo.',
             'register_not_validated' => 'Não é possível criar uma transferência para este dispositivo, pois o mesmo não foi validado.',
-            'unable_to_create_transfer' => 'Houve um problema ao criar a transferência do díspositivo. '
+            'transfer_closed' => 'Não é possível alterar uma proposta de transferência finalizada.',
+            'unable_to_create_transfer' => 'Houve um problema ao criar a transferência do dispositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+            'unable_to_accept_transfer' => 'Houve um problema ao aceitar a transferência do dispositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+            'unable_to_reject_transfer' => 'Houve um problema ao rejeitar a transferência do dispositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+            'unable_to_cancel_transfer' => 'Houve um problema ao cancelar a transferência do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
         'register_user' => [
@@ -182,7 +190,7 @@ return [
             'register_not_validated' => 'Não é possível compartilhar o registro de dispositivos não validados.',
             'unable_to_create_token' => 'Houve um problema ao gerar o token de compartilhamento do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
-        ]
+        ],
     ],
 
     /*

@@ -6,6 +6,8 @@ use App\Http\Controllers\Device\DeviceTransferController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
+require __DIR__ . '/auth.php';
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('user', 'currentUser');
         Route::put('user', 'update');
@@ -34,6 +36,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(DeviceTransferController::class)->group(function () {
         Route::post('devices/{device}', 'createDeviceTransfer');
+        Route::put('device-transfers/{deviceTransfer}/accept', 'acceptDeviceTransfer');
+        Route::put('device-transfers/{deviceTransfer}/reject', 'rejectDeviceTransfer');
+        Route::put('device-transfers/{deviceTransfer}/cancel', 'cancelDeviceTransfer');
     });
 
     Route::controller(DeviceSharingController::class)->group(function () {
@@ -41,5 +46,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('devices', 'viewDeviceByToken');
     });
 });
-
-require __DIR__ . '/auth.php';

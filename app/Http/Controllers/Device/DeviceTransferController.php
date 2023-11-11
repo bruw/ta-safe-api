@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Device;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Device\CreateDeviceTransferRequest;
+
 use App\Models\Device;
+use App\Models\DeviceTransfer;
 use App\Models\User;
+
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class DeviceTransferController extends Controller
@@ -30,5 +34,56 @@ class DeviceTransferController extends Controller
         $currentUser->createDeviceTransfer($targetUser, $device);
 
         return response()->noContent(Response::HTTP_CREATED);
+    }
+
+    /**
+     * Accept the device transfer.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\DeviceTransfer $deviceTransfer
+     * @return \Illuminate\Http\Response
+     */
+    public function acceptDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    {
+        $this->authorize('acceptDeviceTransfer', $deviceTransfer);
+
+        $currentUser = $request->user();
+        $currentUser->acceptDeviceTransfer($deviceTransfer);
+
+        return response()->noContent();
+    }
+
+    /**
+     * Reject the device transfer.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\DeviceTransfer $deviceTransfer
+     * @return \Illuminate\Http\Response
+     */
+    public function rejectDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    {
+        $this->authorize('rejectDeviceTransfer', $deviceTransfer);
+
+        $currentUser = $request->user();
+        $currentUser->rejectDeviceTransfer($deviceTransfer);
+
+        return response()->noContent();
+    }
+
+    /**
+     * Cancel the device transfer.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\DeviceTransfer $deviceTransfer
+     * @return \Illuminate\Http\Response
+     */
+    public function cancelDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    {
+        $this->authorize('cancelDeviceTransfer', $deviceTransfer);
+
+        $currentUser = $request->user();
+        $currentUser->cancelDeviceTransfer($deviceTransfer);
+
+        return response()->noContent();
     }
 }
