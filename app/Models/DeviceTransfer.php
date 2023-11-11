@@ -19,7 +19,8 @@ class DeviceTransfer extends Model
     protected $fillable = [
         'device_id',
         'source_user_id',
-        'target_user_id'
+        'target_user_id',
+        'status'
     ];
 
     /**

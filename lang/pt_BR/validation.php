@@ -171,8 +171,11 @@ return [
             'not_yourself' => 'Não é possível criar uma transferência de dispositivo para si mesmo',
             'in_progress' => 'Já existe uma transferência em andamento ainda não finalizada para este dispositivo.',
             'register_not_validated' => 'Não é possível criar uma transferência para este dispositivo, pois o mesmo não foi validado.',
-            'unable_to_create_transfer' => 'Houve um problema ao criar a transferência do díspositivo. '
+            'unable_to_create_transfer' => 'Houve um problema ao criar a transferência do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+            'unable_to_accept_transfer' => 'Houve um problema ao aceitar a transferência do dispositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+            'transfer_closed' => 'Não é possível alterar uma transferência finalizada.',
         ],
         'register_user' => [
             'unable_to_register_user' => 'Houve um problema ao criar o novo usuário. '
@@ -182,7 +185,7 @@ return [
             'register_not_validated' => 'Não é possível compartilhar o registro de dispositivos não validados.',
             'unable_to_create_token' => 'Houve um problema ao gerar o token de compartilhamento do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
-        ]
+        ],
     ],
 
     /*

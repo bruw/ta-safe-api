@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Actions\Device\AcceptDeviceTransferAction;
 use App\Actions\Device\CreateDeviceTransferAction;
 use App\Actions\Device\RegisterDeviceAction;
 use App\Actions\User\RegisterUserAction;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -127,5 +129,18 @@ class User extends Authenticatable
         );
 
         return $transferDevice->execute();
+    }
+
+    /**
+     * Invoke the action of accepting the transfer of the device.
+     */
+    public function acceptDeviceTransfer(DeviceTransfer $deviceTransfer): bool
+    {
+        $acceptTransfer = new AcceptDeviceTransferAction(
+            $this,
+            $deviceTransfer
+        );
+
+        return $acceptTransfer->execute();
     }
 }
