@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Actions\Device\AcceptDeviceTransferAction;
 use App\Actions\Device\CreateDeviceTransferAction;
 use App\Actions\Device\RegisterDeviceAction;
+use App\Actions\Device\RejectDeviceTransferAction;
 use App\Actions\User\RegisterUserAction;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -142,5 +143,17 @@ class User extends Authenticatable
         );
 
         return $acceptTransfer->execute();
+    }
+
+    /**
+     * Invoke the action to reject the device transfer.
+     */
+    public function rejectDeviceTransfer(DeviceTransfer $deviceTransfer): bool
+    {
+        $rejectTransfer = new RejectDeviceTransferAction(
+            $deviceTransfer
+        );
+
+        return $rejectTransfer->execute();
     }
 }

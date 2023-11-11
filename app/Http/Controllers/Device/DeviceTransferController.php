@@ -52,4 +52,21 @@ class DeviceTransferController extends Controller
 
         return response()->noContent();
     }
+
+    /**
+     * Reject a device transfer.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\DeviceTransfer $deviceTransfer
+     * @return \Illuminate\Http\Response
+     */
+    public function rejectDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    {
+        $this->authorize('rejectDeviceTransfer', $deviceTransfer);
+
+        $currentUser = $request->user();
+        $currentUser->rejectDeviceTransfer($deviceTransfer);
+
+        return response()->noContent();
+    }
 }

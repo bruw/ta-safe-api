@@ -171,11 +171,13 @@ return [
             'not_yourself' => 'Não é possível criar uma transferência de dispositivo para si mesmo',
             'in_progress' => 'Já existe uma transferência em andamento ainda não finalizada para este dispositivo.',
             'register_not_validated' => 'Não é possível criar uma transferência para este dispositivo, pois o mesmo não foi validado.',
+            'transfer_closed' => 'Não é possível alterar uma proposta de transferência finalizada.',
             'unable_to_create_transfer' => 'Houve um problema ao criar a transferência do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
             'unable_to_accept_transfer' => 'Houve um problema ao aceitar a transferência do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
-            'transfer_closed' => 'Não é possível alterar uma transferência finalizada.',
+            'unable_to_reject_transfer' => 'Houve um problema ao rejeitar a transferência do dispositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
         'register_user' => [
             'unable_to_register_user' => 'Houve um problema ao criar o novo usuário. '
