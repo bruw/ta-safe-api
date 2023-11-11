@@ -101,6 +101,7 @@ return [
     'min_digits'           => 'O campo :attribute deve ter pelo menos :min dígitos',
     'not_in'               => 'O campo :attribute selecionado é inválido.',
     'multiple_of'          => 'O campo :attribute deve ser um múltiplo de :value.',
+    'not_found'            =>  'Recurso não encontrado.',
     'not_regex'            => 'O campo :attribute possui um formato inválido.',
     'numeric'              => 'O campo :attribute deve ser um número.',
     'password' => [
@@ -177,6 +178,8 @@ return [
             'unable_to_accept_transfer' => 'Houve um problema ao aceitar a transferência do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
             'unable_to_reject_transfer' => 'Houve um problema ao rejeitar a transferência do dispositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+            'unable_to_cancel_transfer' => 'Houve um problema ao cancelar a transferência do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
         'register_user' => [

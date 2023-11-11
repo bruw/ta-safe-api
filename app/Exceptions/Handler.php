@@ -38,5 +38,13 @@ class Handler extends ExceptionHandler
                 ], Response::HTTP_FORBIDDEN);
             }
         });
+
+        $this->renderable(function (HttpException $e) {
+            if ($e->getStatusCode() === 404) {
+                return response()->json([
+                    'message' => trans('validation.not_found')
+                ], Response::HTTP_NOT_FOUND);
+            }
+        });
     }
 }
