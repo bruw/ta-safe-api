@@ -37,7 +37,7 @@ class DeviceTransferController extends Controller
     }
 
     /**
-     * Accept device transfer.
+     * Accept the device transfer.
      * 
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\DeviceTransfer $deviceTransfer
@@ -54,7 +54,7 @@ class DeviceTransferController extends Controller
     }
 
     /**
-     * Reject a device transfer.
+     * Reject the device transfer.
      * 
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\DeviceTransfer $deviceTransfer
@@ -66,6 +66,23 @@ class DeviceTransferController extends Controller
 
         $currentUser = $request->user();
         $currentUser->rejectDeviceTransfer($deviceTransfer);
+
+        return response()->noContent();
+    }
+
+    /**
+     * Cancel the device transfer.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\DeviceTransfer $deviceTransfer
+     * @return \Illuminate\Http\Response
+     */
+    public function cancelDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    {
+        $this->authorize('cancelDeviceTransfer', $deviceTransfer);
+
+        $currentUser = $request->user();
+        $currentUser->cancelDeviceTransfer($deviceTransfer);
 
         return response()->noContent();
     }

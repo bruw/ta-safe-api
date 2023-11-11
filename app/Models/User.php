@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Actions\Device\AcceptDeviceTransferAction;
+use App\Actions\Device\CancelDeviceTransferAction;
 use App\Actions\Device\CreateDeviceTransferAction;
 use App\Actions\Device\RegisterDeviceAction;
 use App\Actions\Device\RejectDeviceTransferAction;
@@ -155,5 +156,17 @@ class User extends Authenticatable
         );
 
         return $rejectTransfer->execute();
+    }
+
+    /**
+     * Invoke the action to cancel the device transfer.
+     */
+    public function cancelDeviceTransfer(DeviceTransfer $deviceTransfer): bool
+    {
+        $cancelTransfer = new CancelDeviceTransferAction(
+            $deviceTransfer
+        );
+
+        return $cancelTransfer->execute();
     }
 }

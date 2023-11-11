@@ -22,4 +22,12 @@ class DeviceTransferPolicy
     {
         return $user->id == $deviceTransfer->target_user_id;
     }
+
+    /**
+     * determines whether the user can cancel the device transfer.
+     */
+    public function cancelDeviceTransfer(User $user, DeviceTransfer $deviceTransfer): bool
+    {
+        return $user->id == $deviceTransfer->source_user_id;
+    }
 }
