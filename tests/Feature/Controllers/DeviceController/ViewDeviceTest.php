@@ -8,10 +8,8 @@ use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\Invoice;
 use App\Models\User;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
-
 use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -60,8 +58,7 @@ class ViewDeviceTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->where('id', $this->device->id)
+                fn (AssertableJson $json) => $json->where('id', $this->device->id)
                     ->where('color', $this->device->color)
                     ->where('imei_1', $this->device->imei_1)
                     ->where('imei_2', $this->device->imei_2)

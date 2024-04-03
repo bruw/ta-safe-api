@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Actions\Device\CreateSharingTokenAction;
 use App\Enums\Device\DeviceValidationStatus;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Lib\Strings\StringHelper;
 
 class Device extends Model
 {
@@ -21,7 +22,7 @@ class Device extends Model
      * @var array
      */
     protected $casts = [
-        'validation_status' => DeviceValidationStatus::class
+        'validation_status' => DeviceValidationStatus::class,
     ];
 
     /**
@@ -36,8 +37,18 @@ class Device extends Model
         'color',
         'imei_1',
         'imei_2',
-        'validation_status'
+        'validation_status',
     ];
+
+    /**
+     * Interact with the device's color.
+     */
+    protected function color(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => StringHelper::capitalize(trim($value)),
+        );
+    }
 
     /**
      * Get the user who owns the device.
@@ -74,10 +85,10 @@ class Device extends Model
     /**
      * Get the last transfer from the device.
      */
-    public function lastTransfer(): DeviceTransfer|null
+    public function lastTransfer(): ?DeviceTransfer
     {
         return DeviceTransfer::where([
-            'device_id' => $this->id
+            'device_id' => $this->id,
         ])->latest('id')->first();
     }
 
@@ -95,6 +106,7 @@ class Device extends Model
     public function createSharingToken(): bool
     {
         $createToken = new CreateSharingTokenAction($this);
+
         return $createToken->execute();
     }
 }
