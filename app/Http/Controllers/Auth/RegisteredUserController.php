@@ -3,19 +3,17 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Auth\RegisterUserRequest;
-use App\Http\Resources\User\UserResource;
+use App\Http\Resources\User\UserLoginResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class RegisteredUserController extends Controller
 {
     /**
      * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     * @param \App\Http\Requests\Auth\RegisterUserReques $request
-     * @return \Illuminate\Http\JsonResponse;
      */
     public function store(RegisterUserRequest $request): JsonResponse
     {
@@ -23,9 +21,11 @@ class RegisteredUserController extends Controller
 
         $newUser = User::registerUser($data);
 
-        return response()->json([
-            'user' => new UserResource($newUser['user']),
-            'token' => $newUser['token']
-        ]);
+        return response()->json(
+            FlashMessage::success(trans_choice('flash_messages.success.registered.m', 1, [
+                'model' => trans_choice('model.user', 1),
+            ]))->merge(['user' => new UserLoginResource($newUser)]),
+            Response::HTTP_CREATED
+        );
     }
 }
