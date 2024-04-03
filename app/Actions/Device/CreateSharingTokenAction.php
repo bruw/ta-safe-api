@@ -3,8 +3,7 @@
 namespace App\Actions\Device;
 
 use App\Enums\Device\DeviceValidationStatus;
-use App\Exceptions\GeneralJsonException;
-
+use App\Exceptions\HttpJsonResponseException;
 use App\Models\Device;
 use App\Models\DeviceSharingToken;
 
@@ -45,7 +44,7 @@ class CreateSharingTokenAction
                 return true;
             });
         } catch (Exception $e) {
-            throw new GeneralJsonException(
+            throw new HttpJsonResponseException(
                 trans('validation.custom.device_sharing_token.unable_to_create_token'),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -55,7 +54,7 @@ class CreateSharingTokenAction
     private function validateAttributesBeforeAction(): void
     {
         if ($this->device->validation_status !== DeviceValidationStatus::VALIDATED) {
-            throw new GeneralJsonException(
+            throw new HttpJsonResponseException(
                 trans('validation.custom.device_sharing_token.register_not_validated'),
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );

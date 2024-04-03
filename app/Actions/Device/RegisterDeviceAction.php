@@ -2,8 +2,7 @@
 
 namespace App\Actions\Device;
 
-use App\Exceptions\GeneralJsonException;
-
+use App\Exceptions\HttpJsonResponseException;
 use App\Models\Device;
 use App\Models\Invoice;
 use App\Models\User;
@@ -43,7 +42,7 @@ class RegisterDeviceAction
                 return true;
             });
         } catch (Exception $e) {
-            throw new GeneralJsonException(
+            throw new HttpJsonResponseException(
                 trans('validation.custom.device_registration.unable_to_register_device'),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );

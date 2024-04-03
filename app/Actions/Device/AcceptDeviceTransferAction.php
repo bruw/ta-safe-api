@@ -3,8 +3,7 @@
 namespace App\Actions\Device;
 
 use App\Enums\Device\DeviceTransferStatus;
-use App\Exceptions\GeneralJsonException;
-
+use App\Exceptions\HttpJsonResponseException;
 use App\Models\Device;
 use App\Models\DeviceTransfer;
 use App\Models\User;
@@ -43,7 +42,7 @@ class AcceptDeviceTransferAction
                 return true;
             });
         } catch (Exception $e) {
-            throw new GeneralJsonException(
+            throw new HttpJsonResponseException(
                 trans('validation.custom.device_transfer.unable_to_accept_transfer'),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -53,7 +52,7 @@ class AcceptDeviceTransferAction
     public function validateAttributesBeforeAction(): void
     {
         if ($this->deviceTransfer->status !== DeviceTransferStatus::PENDING) {
-            throw new GeneralJsonException(
+            throw new HttpJsonResponseException(
                 trans('validation.custom.device_transfer.transfer_closed'),
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );

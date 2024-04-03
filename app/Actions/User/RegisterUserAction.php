@@ -2,8 +2,7 @@
 
 namespace App\Actions\User;
 
-use App\Exceptions\GeneralJsonException;
-
+use App\Exceptions\HttpJsonResponseException;
 use App\Models\User;
 
 use Exception;
@@ -44,7 +43,7 @@ class RegisterUserAction
                 return $newUserData;
             });
         } catch (Exception $e) {
-            throw new GeneralJsonException(
+            throw new HttpJsonResponseException(
                 trans('validation.custom.register_user.unable_to_register_user'),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
