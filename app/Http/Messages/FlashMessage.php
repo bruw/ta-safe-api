@@ -12,7 +12,7 @@ class FlashMessage extends JsonResource
     public const WARNING = 'warning';
     public const ERROR = 'error';
 
-    public function __construct(private string $type, private string $msg) {}
+    public function __construct(private string $type, private string $msg){}
 
     public function merge($data = [])
     {
@@ -24,22 +24,22 @@ class FlashMessage extends JsonResource
         return ['message' => ['type' => $this->type, 'text' => $this->msg]];
     }
 
-    public static function success (string $msg): FlashMessage
+    public static function success(string $msg): FlashMessage
     {
         return new FlashMessage(type: self::SUCCESS, msg: $msg);
     }
 
-    public static function info (string $msg): FlashMessage
+    public static function info(string $msg): FlashMessage
     {
         return new FlashMessage(type: self::INFO, msg: $msg);
     }
 
-    public static function warning (string $msg): FlashMessage
+    public static function warning(string $msg): FlashMessage
     {
         return new FlashMessage(type: self::WARNING, msg: $msg);
     }
 
-    public static function error (string $msg): FlashMessage
+    public static function error(string $msg): FlashMessage
     {
         return new FlashMessage(type: self::ERROR, msg: $msg);
     }
