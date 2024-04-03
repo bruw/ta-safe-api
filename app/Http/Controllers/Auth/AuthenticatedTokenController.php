@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Resources\User\UserResource;
+use App\Http\Resources\User\UserLoginResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,26 +22,27 @@ class AuthenticatedTokenController extends Controller
             $request->authenticate();
 
             $user = $request->user();
-            $user->tokens()->delete();
 
-            $token = $user->createToken('api-token')->plainTextToken;
-
-            return response()->json([
-                'user' => new UserResource($user),
-                'token' => $token
-            ]);
+            return response()->json(
+                FlashMessage::success(trans('actions.auth.login'))
+                    ->merge(['user' => new UserLoginResource($user)]),
+                Response::HTTP_OK
+            );
         });
     }
 
     /**
      * Destroy all user authentication tokens.
      */
-    public function destroy(Request $request): Response
+    public function destroy(Request $request): JsonResponse
     {
         return DB::transaction(function () use ($request) {
             $request->user()->currentAccessToken()->delete();
 
-            return response()->noContent();
+            return response()->json(
+                FlashMessage::success(trans('actions.auth.logout')),
+                Response::HTTP_OK
+            );
         });
     }
 }
