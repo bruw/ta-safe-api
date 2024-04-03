@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\UserController;
 
+use App\Http\Messages\FlashMessage;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
@@ -63,20 +64,15 @@ class UserDevicesTest extends TestCase
     {
         $response = $this->getJson("/api/user/devices");
 
-        $response->assertStatus(Response::HTTP_UNAUTHORIZED)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->where('message', trans('auth.unauthenticated'))
-                    ->etc()
-            );
+        $response->assertUnauthorized()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('http_exceptions.unauthenticated'))
+        );
     }
 
     public function test_an_authenticated_user_must_be_authorized_to_view_your_devices(): void
     {
-        Sanctum::actingAs(
-            $this->user,
-            []
-        );
+        Sanctum::actingAs($this->user);
 
         $response = $this->getJson("/api/user/devices");
 
@@ -115,14 +111,11 @@ class UserDevicesTest extends TestCase
     {
         $user2 = User::factory()->create();
 
-        Sanctum::actingAs(
-            $user2,
-            []
-        );
+        Sanctum::actingAs($user2);
 
         $response = $this->getJson("/api/user/devices");
 
-        $response->assertStatus(Response::HTTP_OK);
+        $response->assertOk();
         $this->assertEmpty($response->getData());
     }
 }

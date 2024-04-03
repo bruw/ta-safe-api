@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\UserController;
 
+use App\Http\Messages\FlashMessage;
 use App\Models\User;
 use App\Traits\StringMasks;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -33,20 +34,15 @@ class SearchUserTest extends TestCase
             'search_term' => $this->targetUser->email
         ]);
 
-        $response->assertStatus(Response::HTTP_UNAUTHORIZED)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->where('message', trans('auth.unauthenticated'))
-                    ->etc()
-            );
+        $response->assertUnauthorized()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('http_exceptions.unauthenticated'))
+        );
     }
 
     public function test_an_authenticated_user_must_be_authorized_to_search_for_user_by_email(): void
     {
-        Sanctum::actingAs(
-            $this->user,
-            []
-        );
+        Sanctum::actingAs($this->user);
 
         $response = $this->getJson("/api/user/search"
             .  '?search_term=' . $this->targetUser->email);
@@ -69,10 +65,7 @@ class SearchUserTest extends TestCase
 
     public function test_an_authenticated_user_must_be_authorized_to_search_for_user_by_phone(): void
     {
-        Sanctum::actingAs(
-            $this->user,
-            []
-        );
+        Sanctum::actingAs($this->user);
 
         $response = $this->getJson("/api/user/search"
             .  '?search_term=' . $this->targetUser->phone);
@@ -95,10 +88,7 @@ class SearchUserTest extends TestCase
 
     public function test_should_return_an_error_if_the_search_term_is_null(): void
     {
-        Sanctum::actingAs(
-            $this->user,
-            []
-        );
+        Sanctum::actingAs($this->user);
 
         $response = $this->getJson("/api/user/search"
             .  '?search_term=');
@@ -116,10 +106,7 @@ class SearchUserTest extends TestCase
 
     public function test_should_return_an_error_if_the_search_term_exceeds_255_characters(): void
     {
-        Sanctum::actingAs(
-            $this->user,
-            []
-        );
+        Sanctum::actingAs($this->user);
 
         $response = $this->getJson("/api/user/search"
             .  '?search_term=' . Str::random(256));

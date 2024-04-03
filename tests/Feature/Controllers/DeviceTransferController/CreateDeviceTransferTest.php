@@ -3,7 +3,7 @@
 namespace Tests\Feature\Controllers\DeviceTransferController;
 
 use App\Enums\Device\DeviceValidationStatus;
-
+use App\Http\Messages\FlashMessage;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
@@ -50,47 +50,40 @@ class CreateDeviceTransferTest extends TestCase
             'target_user_id' => $this->targetUser->id,
         ]);
 
-        $response->assertStatus(Response::HTTP_UNAUTHORIZED)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->where('message', trans('auth.unauthenticated'))
-                    ->etc()
-            );
+        $response->assertUnauthorized()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('http_exceptions.unauthenticated'))
+        );
     }
 
     public function test_the_owner_of_the_device_must_be_authorized_to_create_transfers(): void
     {
-        Sanctum::actingAs(
-            $this->sourceUser,
-            []
-        );
+        Sanctum::actingAs($this->sourceUser);
 
         $response = $this->postJson("/api/devices/{$this->device->id}", [
             'target_user_id' => $this->targetUser->id,
         ]);
+
         $response->assertCreated();
     }
 
     public function test_a_user_should_not_be_authorized_to_create_transfers_from_devices_that_do_not_belong_to_them(): void
     {
-        Sanctum::actingAs(
-            $this->targetUser,
-            []
-        );
+        Sanctum::actingAs($this->targetUser);
 
         $response = $this->postJson("/api/devices/{$this->device->id}", [
             'target_user_id' => $this->targetUser->id,
         ]);
 
-        $response->assertForbidden();
+        $response->assertForbidden()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('http_exceptions.unauthorized'))
+        );
     }
 
     public function test_should_return_an_error_when_the_target_user_id_param_is_null(): void
     {
-        Sanctum::actingAs(
-            $this->sourceUser,
-            []
-        );
+        Sanctum::actingAs($this->sourceUser);
 
         $response = $this->postJson("/api/devices/{$this->device->id}", [
             'target_user_id' => null
@@ -109,10 +102,7 @@ class CreateDeviceTransferTest extends TestCase
 
     public function test_should_return_an_error_when_the_target_user_id_param_is_not_numeric(): void
     {
-        Sanctum::actingAs(
-            $this->sourceUser,
-            []
-        );
+        Sanctum::actingAs($this->sourceUser);
 
         $nonNumericId = Str::random(4);
 
@@ -133,10 +123,7 @@ class CreateDeviceTransferTest extends TestCase
 
     public function test_should_return_an_error_when_the_target_user_id_param_does_not_exist_in_the_database(): void
     {
-        Sanctum::actingAs(
-            $this->sourceUser,
-            []
-        );
+        Sanctum::actingAs($this->sourceUser);
 
         $lastUser = User::latest('id')->first();
         $nonExistentId =  $lastUser->id + 1;
@@ -158,10 +145,7 @@ class CreateDeviceTransferTest extends TestCase
 
     public function test_should_return_an_error_when_the_target_user_id_param_is_a_boolean_value(): void
     {
-        Sanctum::actingAs(
-            $this->sourceUser,
-            []
-        );
+        Sanctum::actingAs($this->sourceUser);
 
         $booleanValues = [true, false];
 

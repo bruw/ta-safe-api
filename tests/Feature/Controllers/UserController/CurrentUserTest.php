@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\UserController;
 
+use App\Http\Messages\FlashMessage;
 use App\Models\User;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,7 +17,11 @@ class CurrentUserTest extends TestCase
     public function test_an_unauthenticated_user_does_not_have_authorization(): void
     {
         $response = $this->getJson("/api/user");
-        $response->assertUnauthorized();
+       
+        $response->assertUnauthorized()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('http_exceptions.unauthenticated'))
+        );
     }
 
     public function test_an_authenticated_user_can_view_their_information(): void

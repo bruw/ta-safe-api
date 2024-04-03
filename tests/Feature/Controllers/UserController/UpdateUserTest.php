@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Controllers\UserController;
 
+use App\Http\Messages\FlashMessage;
 use App\Models\User;
 
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -35,7 +37,11 @@ class UpdateUserTest extends TestCase
     public function test_an_unauthenticated_user_is_not_authorized_to_update_profile(): void
     {
         $response = $this->putJson("/api/user");
-        $response->assertUnauthorized();
+        
+        $response->assertUnauthorized()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('http_exceptions.unauthenticated'))
+        );
     }
 
     public function test_a_user_can_update_their_editable_attributes(): void

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\DeviceController;
 
+use App\Http\Messages\FlashMessage;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
@@ -45,20 +46,15 @@ class ViewDeviceTest extends TestCase
     {
         $response = $this->getJson("/api/devices/{$this->device->id}");
 
-        $response->assertStatus(Response::HTTP_UNAUTHORIZED)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->where('message', trans('auth.unauthenticated'))
-                    ->etc()
-            );
+        $response->assertUnauthorized()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('http_exceptions.unauthenticated'))
+        );
     }
 
     public function test_the_owner_user_must_be_authorized_to_view_their_device(): void
     {
-        Sanctum::actingAs(
-            $this->owner,
-            []
-        );
+        Sanctum::actingAs($this->owner);
 
         $response = $this->getJson("/api/devices/{$this->device->id}");
 
@@ -92,18 +88,13 @@ class ViewDeviceTest extends TestCase
     {
         $user = User::factory()->create();
 
-        Sanctum::actingAs(
-            $user,
-            []
-        );
+        Sanctum::actingAs($user);
 
         $response = $this->getJson("/api/devices/{$this->device->id}");
 
-        $response->assertStatus(Response::HTTP_FORBIDDEN)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->where('message', trans('auth.unauthorized'))
-                    ->etc()
-            );
+        $response->assertForbidden()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('http_exceptions.unauthorized'))
+        );
     }
 }
