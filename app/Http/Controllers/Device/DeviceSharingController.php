@@ -3,46 +3,41 @@
 namespace App\Http\Controllers\Device;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Device\ViewDeviceByTokenRequest;
 use App\Http\Resources\Device\DevicePublicResource;
-
 use App\Models\Device;
-use App\Models\DeviceSharingToken;
-
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DeviceSharingController extends Controller
 {
     /**
      * Create token to share device registration.
-     * 
-     * @param \App\Models\Device $device
-     * @return \Illuminate\Http\Response
      */
-    public function createSharingToken(Device $device): Response
+    public function createSharingToken(Device $device): JsonResponse
     {
         $this->authorize('createSharingToken', $device);
-        $device->createSharingToken();
 
-        return response()->noContent(Response::HTTP_CREATED);
+        $sharingToken = $device->createSharingToken();
+
+        return response()->json(
+            FlashMessage::success(trans_choice('flash_messages.success.created.m', 1, [
+                'model' => trans_choice('model.sharing_token', 1),
+            ]))->merge([
+                'token' => $sharingToken->token,
+                'expires_at' => $sharingToken->expires_at,
+            ]),
+            Response::HTTP_CREATED
+        );
     }
 
     /**
      * View the registration of a device via the sharing token.
-     * 
-     * @param \App\Http\Requests\Device\ViewDeviceByTokenRequest $request
-     * @return \App\Http\Resources\Device\DevicePublicResource
      */
     public function viewDeviceByToken(ViewDeviceByTokenRequest $request): DevicePublicResource
     {
-        $data = $request->validated();
-
-        $deviceSharing = DeviceSharingToken::where([
-            'token' => $data['token']
-        ])->firstOrFail();
-
-        $device = $deviceSharing->device;
+        $device = $request->deviceSharingToken()->device;
 
         return new DevicePublicResource($device);
     }

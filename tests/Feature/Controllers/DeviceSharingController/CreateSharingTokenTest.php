@@ -9,12 +9,9 @@ use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\Invoice;
 use App\Models\User;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
-
 use Laravel\Sanctum\Sanctum;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class CreateSharingTokenTest extends TestCase
@@ -39,7 +36,7 @@ class CreateSharingTokenTest extends TestCase
             ->for($deviceModel)
             ->has(Invoice::factory())
             ->create([
-                'validation_status' => DeviceValidationStatus::VALIDATED
+                'validation_status' => DeviceValidationStatus::VALIDATED,
             ]);
 
         $this->device->refresh();
@@ -74,6 +71,14 @@ class CreateSharingTokenTest extends TestCase
         Sanctum::actingAs($this->owner);
 
         $response = $this->postJson("/api/devices/{$this->device->id}/share");
-        $response->assertCreated();
+
+        $response->assertCreated()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::SUCCESS)
+                ->where('message.text', trans_choice('flash_messages.success.created.m', 1, [
+                    'model' => trans_choice('model.sharing_token', 1),
+                ]))
+                ->has('token')
+                ->has('expires_at')
+        );
     }
 }
