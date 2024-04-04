@@ -14,14 +14,12 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-
 class CancelDeviceTransferTest extends TestCase
 {
     use RefreshDatabase;
 
     private User $sourceUser;
     private User $targetUser;
-
     private DeviceTransfer $deviceTransfer;
 
     protected function setUp(): void
@@ -39,7 +37,7 @@ class CancelDeviceTransferTest extends TestCase
             ->for($this->sourceUser)
             ->for($deviceModel)
             ->create([
-                'validation_status' => DeviceValidationStatus::VALIDATED
+                'validation_status' => DeviceValidationStatus::VALIDATED,
             ]);
 
         $this->sourceUser->createDeviceTransfer(
@@ -48,14 +46,14 @@ class CancelDeviceTransferTest extends TestCase
         );
 
         $this->deviceTransfer = DeviceTransfer::where([
-            'source_user_id' => $this->sourceUser->id
+            'source_user_id' => $this->sourceUser->id,
         ])->firstOrFail();
     }
 
     public function test_an_unauthenticated_user_must_not_be_allowed_to_cancel_a_transfer_proposal(): void
     {
         $response = $this->putJson("api/device-transfers/{$this->deviceTransfer->id}/cancel");
-        
+
         $response->assertUnauthorized()->assertJson(
             fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
                 ->where('message.text', trans('http_exceptions.unauthenticated'))
@@ -67,7 +65,7 @@ class CancelDeviceTransferTest extends TestCase
         Sanctum::actingAs($this->targetUser);
 
         $response = $this->putJson("api/device-transfers/{$this->deviceTransfer->id}/cancel");
-       
+
         $response->assertForbidden()->assertJson(
             fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
                 ->where('message.text', trans('http_exceptions.unauthorized'))
@@ -79,7 +77,7 @@ class CancelDeviceTransferTest extends TestCase
         Sanctum::actingAs(User::factory()->create());
 
         $response = $this->putJson("api/device-transfers/{$this->deviceTransfer->id}/cancel");
-        
+
         $response->assertForbidden()->assertJson(
             fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
                 ->where('message.text', trans('http_exceptions.unauthorized'))
@@ -91,6 +89,12 @@ class CancelDeviceTransferTest extends TestCase
         Sanctum::actingAs($this->sourceUser);
 
         $response = $this->putJson("api/device-transfers/{$this->deviceTransfer->id}/cancel");
-        $response->assertNoContent();
+
+        $response->assertOk()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::SUCCESS)
+                ->where('message.text', trans_choice('flash_messages.success.canceled.f', 1, [
+                    'model' => trans_choice('model.device_transfer', 1),
+                ]))
+        );
     }
 }

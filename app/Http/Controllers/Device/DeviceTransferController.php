@@ -69,13 +69,18 @@ class DeviceTransferController extends Controller
     /**
      * Cancel the device transfer.
      */
-    public function cancelDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    public function cancelDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
     {
         $this->authorize('cancelDeviceTransfer', $deviceTransfer);
 
         $currentUser = $request->user();
         $currentUser->cancelDeviceTransfer($deviceTransfer);
 
-        return response()->noContent();
+        return response()->json(
+            FlashMessage::success(trans_choice('flash_messages.success.canceled.f', 1, [
+                'model' => trans('model.device_transfer'),
+            ])),
+            Response::HTTP_OK
+        );
     }
 }
