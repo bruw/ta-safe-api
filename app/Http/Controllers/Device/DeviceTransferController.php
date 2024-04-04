@@ -33,14 +33,19 @@ class DeviceTransferController extends Controller
     /**
      * Accept the device transfer.
      */
-    public function acceptDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    public function acceptDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
     {
         $this->authorize('acceptDeviceTransfer', $deviceTransfer);
 
         $currentUser = $request->user();
         $currentUser->acceptDeviceTransfer($deviceTransfer);
 
-        return response()->noContent();
+        return response()->json(
+            FlashMessage::success(trans_choice('flash_messages.success.accepted.f', 1, [
+                'model' => trans('model.device_transfer'),
+            ])),
+            Response::HTTP_OK
+        );
     }
 
     /**

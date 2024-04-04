@@ -20,7 +20,6 @@ class AcceptDeviceTransferTest extends TestCase
 
     private User $sourceUser;
     private User $targetUser;
-
     private DeviceTransfer $deviceTransfer;
 
     protected function setUp(): void
@@ -38,7 +37,7 @@ class AcceptDeviceTransferTest extends TestCase
             ->for($this->sourceUser)
             ->for($deviceModel)
             ->create([
-                'validation_status' => DeviceValidationStatus::VALIDATED
+                'validation_status' => DeviceValidationStatus::VALIDATED,
             ]);
 
         $this->sourceUser->createDeviceTransfer(
@@ -47,7 +46,7 @@ class AcceptDeviceTransferTest extends TestCase
         );
 
         $this->deviceTransfer = DeviceTransfer::where([
-            'source_user_id' => $this->sourceUser->id
+            'source_user_id' => $this->sourceUser->id,
         ])->firstOrFail();
     }
 
@@ -78,7 +77,7 @@ class AcceptDeviceTransferTest extends TestCase
         $occuredException = false;
 
         $this->deviceTransfer->update([
-            'status' => DeviceTransferStatus::ACCEPTED
+            'status' => DeviceTransferStatus::ACCEPTED,
         ]);
 
         try {
@@ -112,7 +111,7 @@ class AcceptDeviceTransferTest extends TestCase
         $occuredException = false;
 
         $this->deviceTransfer->update([
-            'status' => DeviceTransferStatus::CANCELED
+            'status' => DeviceTransferStatus::CANCELED,
         ]);
 
         try {
@@ -146,7 +145,7 @@ class AcceptDeviceTransferTest extends TestCase
         $occuredException = false;
 
         $this->deviceTransfer->update([
-            'status' => DeviceTransferStatus::REJECTED
+            'status' => DeviceTransferStatus::REJECTED,
         ]);
 
         try {
