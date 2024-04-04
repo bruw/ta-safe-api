@@ -63,7 +63,7 @@ class CreateDeviceTransferTest extends TestCase
 
         $response->assertCreated()->assertJson(
             fn (AssertableJson $json) => $json->where('message.type', FlashMessage::SUCCESS)
-                ->where('message.text', trans_choice('flash_messages.success.created.m', 1, [
+                ->where('message.text', trans_choice('flash_messages.success.created.f', 1, [
                     'model' => trans_choice('model.device_transfer', 1),
                 ]))
         );

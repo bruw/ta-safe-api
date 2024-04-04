@@ -23,7 +23,7 @@ class DeviceTransferController extends Controller
         $currentUser->createDeviceTransfer($request->targetUser(), $device);
 
         return response()->json(
-            FlashMessage::success(trans_choice('flash_messages.success.created.m', 1, [
+            FlashMessage::success(trans_choice('flash_messages.success.created.f', 1, [
                 'model' => trans_choice('model.device_transfer', 1),
             ])),
             Response::HTTP_CREATED
@@ -51,14 +51,19 @@ class DeviceTransferController extends Controller
     /**
      * Reject the device transfer.
      */
-    public function rejectDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    public function rejectDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
     {
         $this->authorize('rejectDeviceTransfer', $deviceTransfer);
 
         $currentUser = $request->user();
         $currentUser->rejectDeviceTransfer($deviceTransfer);
 
-        return response()->noContent();
+        return response()->json(
+            FlashMessage::success(trans_choice('flash_messages.success.rejected.f', 1, [
+                'model' => trans('model.device_transfer'),
+            ])),
+            Response::HTTP_OK
+        );
     }
 
     /**

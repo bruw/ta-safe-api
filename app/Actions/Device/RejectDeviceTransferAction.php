@@ -5,19 +5,15 @@ namespace App\Actions\Device;
 use App\Enums\Device\DeviceTransferStatus;
 use App\Exceptions\HttpJsonResponseException;
 use App\Models\DeviceTransfer;
-
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class RejectDeviceTransferAction
 {
-    private DeviceTransfer $deviceTransfer;
-
-    public function __construct(DeviceTransfer $deviceTransfer)
-    {
-        $this->deviceTransfer = $deviceTransfer;
-    }
+    public function __construct(
+        private DeviceTransfer $deviceTransfer
+    ) {}
 
     public function execute(): bool
     {
@@ -26,7 +22,7 @@ class RejectDeviceTransferAction
         try {
             return DB::transaction(function () {
                 $this->deviceTransfer->update([
-                    'status' => DeviceTransferStatus::REJECTED
+                    'status' => DeviceTransferStatus::REJECTED,
                 ]);
 
                 return true;
