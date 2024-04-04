@@ -3,45 +3,35 @@
 namespace App\Http\Controllers\Device;
 
 use App\Http\Controllers\Controller;
+use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Device\CreateDeviceTransferRequest;
-
 use App\Models\Device;
 use App\Models\DeviceTransfer;
-use App\Models\User;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DeviceTransferController extends Controller
 {
     /**
      * Create device transfer.
-     * 
-     * @param \App\Http\Requests\Device\CreateDeviceTransferRequest $request
-     * @param \App\Models\Device $device
-     * @return \Illuminate\Http\Response
      */
-    public function createDeviceTransfer(CreateDeviceTransferRequest $request, Device $device): Response
+    public function createDeviceTransfer(CreateDeviceTransferRequest $request, Device $device): JsonResponse
     {
-        $data = $request->validated();
-
         $currentUser = $request->user();
 
-        $targetUser = User::where([
-            'id' => $data['target_user_id']
-        ])->firstOrFail();
+        $currentUser->createDeviceTransfer($request->targetUser(), $device);
 
-        $currentUser->createDeviceTransfer($targetUser, $device);
-
-        return response()->noContent(Response::HTTP_CREATED);
+        return response()->json(
+            FlashMessage::success(trans_choice('flash_messages.success.created.m', 1, [
+                'model' => trans_choice('model.device_transfer', 1),
+            ])),
+            Response::HTTP_CREATED
+        );
     }
 
     /**
      * Accept the device transfer.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\DeviceTransfer $deviceTransfer
-     * @return \Illuminate\Http\Response
      */
     public function acceptDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
     {
@@ -55,10 +45,6 @@ class DeviceTransferController extends Controller
 
     /**
      * Reject the device transfer.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\DeviceTransfer $deviceTransfer
-     * @return \Illuminate\Http\Response
      */
     public function rejectDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
     {
@@ -72,10 +58,6 @@ class DeviceTransferController extends Controller
 
     /**
      * Cancel the device transfer.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\DeviceTransfer $deviceTransfer
-     * @return \Illuminate\Http\Response
      */
     public function cancelDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
     {

@@ -8,23 +8,16 @@ use App\Exceptions\HttpJsonResponseException;
 use App\Models\Device;
 use App\Models\DeviceTransfer;
 use App\Models\User;
-
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateDeviceTransferAction
 {
-    private readonly User $currentUser;
-    private readonly User $targetUser;
-    private readonly Device $device;
-
-    public function __construct(User $currentUser, User $targetUser, Device $device)
-    {
-        $this->currentUser = $currentUser;
-        $this->targetUser = $targetUser;
-        $this->device = $device;
-    }
+    public function __construct(
+        private User $currentUser,
+        private User $targetUser,
+        private Device $device) {}
 
     public function execute(): bool
     {
@@ -35,7 +28,7 @@ class CreateDeviceTransferAction
                 DeviceTransfer::create([
                     'device_id' => $this->device->id,
                     'source_user_id' => $this->currentUser->id,
-                    'target_user_id' => $this->targetUser->id
+                    'target_user_id' => $this->targetUser->id,
                 ]);
 
                 return true;
