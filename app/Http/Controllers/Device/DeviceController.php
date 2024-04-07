@@ -7,7 +7,7 @@ use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Device\RegisterDeviceRequest;
 use App\Http\Resources\Device\DeviceResource;
 use App\Models\Device;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeviceController extends Controller
@@ -33,7 +33,7 @@ class DeviceController extends Controller
     /**
      * View device data.
      */
-    public function viewDevice(Request $request, Device $device): DeviceResource
+    public function viewDevice(Device $device): JsonResource
     {
         $this->authorize('view', $device);
 

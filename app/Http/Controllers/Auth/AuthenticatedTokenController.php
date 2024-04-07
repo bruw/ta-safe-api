@@ -6,17 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\User\UserLoginResource;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticatedTokenController extends Controller
 {
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): JsonResponse
+    public function store(LoginRequest $request): Response
     {
         return DB::transaction(function () use ($request) {
             $request->authenticate();
@@ -34,7 +33,7 @@ class AuthenticatedTokenController extends Controller
     /**
      * Destroy all user authentication tokens.
      */
-    public function destroy(Request $request): JsonResponse
+    public function destroy(Request $request): Response
     {
         return DB::transaction(function () use ($request) {
             $request->user()->currentAccessToken()->delete();

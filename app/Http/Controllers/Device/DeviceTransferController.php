@@ -8,15 +8,14 @@ use App\Http\Requests\Device\CreateDeviceTransferRequest;
 use App\Models\Device;
 use App\Models\DeviceTransfer;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class DeviceTransferController extends Controller
 {
     /**
      * Create device transfer.
      */
-    public function createDeviceTransfer(CreateDeviceTransferRequest $request, Device $device): JsonResponse
+    public function createDeviceTransfer(CreateDeviceTransferRequest $request, Device $device): Response
     {
         $currentUser = $request->user();
 
@@ -33,7 +32,7 @@ class DeviceTransferController extends Controller
     /**
      * Accept the device transfer.
      */
-    public function acceptDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
+    public function acceptDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
     {
         $this->authorize('acceptDeviceTransfer', $deviceTransfer);
 
@@ -51,7 +50,7 @@ class DeviceTransferController extends Controller
     /**
      * Reject the device transfer.
      */
-    public function rejectDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
+    public function rejectDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
     {
         $this->authorize('rejectDeviceTransfer', $deviceTransfer);
 
@@ -69,7 +68,7 @@ class DeviceTransferController extends Controller
     /**
      * Cancel the device transfer.
      */
-    public function cancelDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
+    public function cancelDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
     {
         $this->authorize('cancelDeviceTransfer', $deviceTransfer);
 

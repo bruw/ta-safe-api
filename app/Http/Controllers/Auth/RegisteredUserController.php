@@ -7,7 +7,6 @@ use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Auth\RegisterUserRequest;
 use App\Http\Resources\User\UserLoginResource;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class RegisteredUserController extends Controller
@@ -15,7 +14,7 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      */
-    public function store(RegisterUserRequest $request): JsonResponse
+    public function store(RegisterUserRequest $request): Response
     {
         $data = $request->validated();
 
