@@ -23,7 +23,7 @@ class DeviceSummaryResource extends JsonResource
             'validation_status' => $this->validation_status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'device_model' => new DeviceModelResource($this->deviceModel)
+            'device_model' => new DeviceModelResource($this->deviceModel),
         ];
     }
 }

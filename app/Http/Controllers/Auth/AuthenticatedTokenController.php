@@ -3,32 +3,30 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Resources\User\UserResource;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\User\UserLoginResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticatedTokenController extends Controller
 {
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): JsonResponse
+    public function store(LoginRequest $request): Response
     {
         return DB::transaction(function () use ($request) {
             $request->authenticate();
 
             $user = $request->user();
-            $user->tokens()->delete();
 
-            $token = $user->createToken('api-token')->plainTextToken;
-
-            return response()->json([
-                'user' => new UserResource($user),
-                'token' => $token
-            ]);
+            return response()->json(
+                FlashMessage::success(trans('actions.auth.login'))
+                    ->merge(['user' => new UserLoginResource($user)]),
+                Response::HTTP_OK
+            );
         });
     }
 
@@ -40,7 +38,10 @@ class AuthenticatedTokenController extends Controller
         return DB::transaction(function () use ($request) {
             $request->user()->currentAccessToken()->delete();
 
-            return response()->noContent();
+            return response()->json(
+                FlashMessage::success(trans('actions.auth.logout')),
+                Response::HTTP_OK
+            );
         });
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Http\Requests\BaseFormRequest;
 use App\Rules\CpfRule;
-
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
 
-class RegisterUserRequest extends FormRequest
+class RegisterUserRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,13 +31,13 @@ class RegisterUserRequest extends FormRequest
                 'required',
                 'unique:users,cpf',
                 'regex:/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/',
-                new CpfRule()
+                new CpfRule(),
             ],
             'phone' => [
                 'required',
                 'unique:users,phone',
-                'regex:/^[(]\d{2}[)]\s[9]\d{4}-\d{4}$/'
-            ]
+                'regex:/^[(]\d{2}[)]\s\d{5}-\d{4}$/',
+            ],
         ];
     }
 }

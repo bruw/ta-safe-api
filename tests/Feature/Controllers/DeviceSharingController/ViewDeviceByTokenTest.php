@@ -3,17 +3,15 @@
 namespace Tests\Feature\Controllers\DeviceSharingController;
 
 use App\Enums\Device\DeviceValidationStatus;
-
+use App\Http\Messages\FlashMessage;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\Invoice;
 use App\Models\User;
-
 use App\Traits\StringMasks;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
-
 use Laravel\Sanctum\Sanctum;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -43,7 +41,7 @@ class ViewDeviceByTokenTest extends TestCase
             ->for($deviceModel)
             ->has(Invoice::factory())
             ->create([
-                'validation_status' => DeviceValidationStatus::VALIDATED
+                'validation_status' => DeviceValidationStatus::VALIDATED,
             ]);
 
         $this->device->createSharingToken();
@@ -53,24 +51,19 @@ class ViewDeviceByTokenTest extends TestCase
 
     public function test_an_unauthenticated_user_must_not_be_authorized_to_view_a_device(): void
     {
-        $response = $this->getJson("/api/devices", [
-            'token' => $this->device->sharingToken->token
+        $response = $this->getJson('/api/devices', [
+            'token' => $this->device->sharingToken->token,
         ]);
 
-        $response->assertStatus(Response::HTTP_UNAUTHORIZED)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->where('message', trans('auth.unauthenticated'))
-                    ->etc()
-            );
+        $response->assertUnauthorized()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('http_exceptions.unauthenticated'))
+        );
     }
 
     public function test_an_authenticated_user_with_a_valid_token_must_be_authorized_to_view_a_device(): void
     {
-        Sanctum::actingAs(
-            $this->user,
-            []
-        );
+        Sanctum::actingAs($this->user);
 
         $response = $this->getJson(
             "/api/devices?token={$this->device->sharingToken->token}"
@@ -78,8 +71,7 @@ class ViewDeviceByTokenTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->where('color', $this->device->color)
+                fn (AssertableJson $json) => $json->where('color', $this->device->color)
                     ->where('imei_1', self::addAsteriskMaskForImei($this->device->imei_1))
                     ->where('imei_2', self::addAsteriskMaskForImei($this->device->imei_2))
                     ->where('validation_status', $this->device->validation_status->value)
@@ -100,69 +92,53 @@ class ViewDeviceByTokenTest extends TestCase
 
     public function test_should_return_an_error_when_the_token_param_is_null(): void
     {
-        Sanctum::actingAs(
-            $this->user,
-            []
-        );
+        Sanctum::actingAs($this->user);
 
-        $response = $this->getJson("/api/devices", [
-            'token' => null
+        $response = $this->getJson('/api/devices', [
+            'token' => null,
         ]);
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->has('errors', 1)
-                    ->where('errors.token.0', trans('validation.required', [
-                        'attribute' => 'token'
-                    ]))
-                    ->etc()
-            );
+        $response->assertUnprocessable()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('flash_messages.errors'))
+                ->where('errors.token.0', trans('validation.required', [
+                    'attribute' => 'token',
+                ]))
+        );
     }
-
 
     public function test_should_return_an_error_when_the_token_is_not_8_digits(): void
     {
-        Sanctum::actingAs(
-            $this->user,
-            []
-        );
+        Sanctum::actingAs($this->user);
 
-        $invalidTokenLength = "123456789";
+        $invalidTokenLength = '123456789';
 
         $response = $this->getJson("/api/devices?token={$invalidTokenLength}");
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->has('errors', 1)
-                    ->where('errors.token.0', trans('validation.digits', [
-                        'digits' => 8,
-                        'attribute' => 'token'
-                    ]))
-                    ->etc()
-            );
+        $response->assertUnprocessable()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('flash_messages.errors'))
+                ->where('errors.token.0', trans('validation.digits', [
+                    'digits' => 8,
+                    'attribute' => 'token',
+                ]))
+        );
     }
 
     public function test_should_return_an_erro_when_the_token_not_exists(): void
     {
-        Sanctum::actingAs(
-            $this->user,
-            []
-        );
+        Sanctum::actingAs($this->user);
 
-        $invalidToken = "00000000";
+        $invalidToken = '00000000';
 
         $response = $this->getJson("/api/devices?token={$invalidToken}");
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->has('errors', 1)
-                    ->where('errors.token.0', trans('validation.custom.token.exists', [
-                        'attribute' => 'token'
-                    ]))
-                    ->etc()
-            );
+        $response->assertUnprocessable()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('flash_messages.errors'))
+                ->where('errors.token.0', trans('validation.custom.token.exists', [
+                    'attribute' => 'token',
+                ]))
+        );
     }
 }

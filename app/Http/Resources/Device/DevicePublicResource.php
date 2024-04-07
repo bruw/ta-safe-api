@@ -27,7 +27,7 @@ class DevicePublicResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'user' => new UserPublicResource($this->user),
-            'device_model' => new DeviceModelResource($this->deviceModel)
+            'device_model' => new DeviceModelResource($this->deviceModel),
         ];
     }
 }

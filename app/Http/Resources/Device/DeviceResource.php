@@ -27,7 +27,7 @@ class DeviceResource extends JsonResource
             'updated_at' => $this->updated_at,
             'sharing_token' => new DeviceSharingTokenResource($this->sharingToken),
             'user' => new UserResource($this->user),
-            'device_model' => new DeviceModelResource($this->deviceModel)
+            'device_model' => new DeviceModelResource($this->deviceModel),
         ];
     }
 }

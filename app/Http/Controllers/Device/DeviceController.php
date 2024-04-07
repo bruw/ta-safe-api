@@ -3,19 +3,17 @@
 namespace App\Http\Controllers\Device;
 
 use App\Http\Controllers\Controller;
+use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Device\RegisterDeviceRequest;
 use App\Http\Resources\Device\DeviceResource;
 use App\Models\Device;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeviceController extends Controller
 {
     /**
      * Register new Device
-     * 
-     * @param \App\Http\Requests\Device\RegisterDeviceRequest $request
-     * @return \Illuminate\Http\Response
      */
     public function registerDevice(RegisterDeviceRequest $request): Response
     {
@@ -24,16 +22,18 @@ class DeviceController extends Controller
 
         $currentUser->registerDevice($data);
 
-        return response()->noContent(Response::HTTP_CREATED);
+        return response()->json(
+            FlashMessage::success(trans_choice('flash_messages.success.registered.m', 1, [
+                'model' => trans_choice('model.device', 1),
+            ])),
+            Response::HTTP_CREATED
+        );
     }
 
     /**
      * View device data.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @return \App\Http\Resources\Device\DeviceResource
      */
-    public function viewDevice(Request $request, Device $device): DeviceResource
+    public function viewDevice(Device $device): JsonResource
     {
         $this->authorize('view', $device);
 

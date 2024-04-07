@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Device;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseFormRequest;
+use App\Models\DeviceSharingToken;
 
-class ViewDeviceByTokenRequest extends FormRequest
+class ViewDeviceByTokenRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -12,6 +13,16 @@ class ViewDeviceByTokenRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    /**
+     * Validates the token field and returns an instance of DeviceSharingToken.
+     */
+    public function deviceSharingToken(): DeviceSharingToken
+    {
+        return DeviceSharingToken::where([
+            'token' => $this->token,
+        ])->first();
     }
 
     /**
@@ -25,8 +36,8 @@ class ViewDeviceByTokenRequest extends FormRequest
             'token' => [
                 'required',
                 'digits:8',
-                'exists:device_sharing_tokens,token'
-            ]
+                'exists:device_sharing_tokens,token',
+            ],
         ];
     }
 
@@ -38,7 +49,7 @@ class ViewDeviceByTokenRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'token.exists' => trans('validation.custom.token.exists')
+            'token.exists' => trans('validation.custom.token.exists'),
         ];
     }
 }

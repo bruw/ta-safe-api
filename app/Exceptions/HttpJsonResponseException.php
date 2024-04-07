@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
-class GeneralJsonException extends Exception
+class HttpJsonResponseException extends Exception
 {
     public function render(): JsonResponse
     {

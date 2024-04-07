@@ -4,12 +4,10 @@ namespace Tests\Unit\Actions\Device;
 
 use App\Enums\Device\DeviceTransferStatus;
 use App\Enums\Device\DeviceValidationStatus;
-
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\User;
-
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +36,7 @@ class CreateDeviceTransferTest extends TestCase
             ->for($this->sourceUser)
             ->for($deviceModel)
             ->create([
-                'validation_status' => DeviceValidationStatus::VALIDATED
+                'validation_status' => DeviceValidationStatus::VALIDATED,
             ]);
     }
 
@@ -150,12 +148,12 @@ class CreateDeviceTransferTest extends TestCase
     {
         $invalidsStatus = [
             DeviceValidationStatus::PENDING,
-            DeviceValidationStatus::REJECTED
+            DeviceValidationStatus::REJECTED,
         ];
 
         foreach ($invalidsStatus as $status) {
             $this->device->update([
-                'validation_status' => $status
+                'validation_status' => $status,
             ]);
 
             $exceptionOcurred = false;

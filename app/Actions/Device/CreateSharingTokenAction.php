@@ -3,49 +3,40 @@
 namespace App\Actions\Device;
 
 use App\Enums\Device\DeviceValidationStatus;
-use App\Exceptions\GeneralJsonException;
-
+use App\Exceptions\HttpJsonResponseException;
 use App\Models\Device;
 use App\Models\DeviceSharingToken;
-
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateSharingTokenAction
 {
-    private readonly Device $device;
+    public function __construct(private Device $device) {}
 
-    public function __construct(Device $device)
-    {
-        $this->device = $device;
-    }
-
-    public function execute(): bool
+    public function execute(): DeviceSharingToken
     {
         $this->validateAttributesBeforeAction();
 
         try {
             return DB::transaction(function () {
-                if (!$this->device->sharingToken) {
-                    DeviceSharingToken::create([
-                        'device_id' => $this->device->id,
-                        'token' => $this->generateToken(),
-                        'expires_at' => now()->addHours(24)
-                    ]);
+                $sharingToken = $this->device->sharingToken()->firstOrNew();
 
-                    return true;
+                if (! $sharingToken->exists) {
+                    $sharingToken->token = $this->generateToken();
+                    $sharingToken->expires_at = now()->addHours(24);
+                    $sharingToken->save();
+                } else {
+                    $sharingToken->update([
+                        'token' => $this->generateToken(),
+                        'expires_at' => now()->addHours(24),
+                    ]);
                 }
 
-                $this->device->sharingToken()->update([
-                    'token' => $this->generateToken(),
-                    'expires_at' => now()->addHours(24)
-                ]);
-
-                return true;
+                return $sharingToken;
             });
         } catch (Exception $e) {
-            throw new GeneralJsonException(
+            throw new HttpJsonResponseException(
                 trans('validation.custom.device_sharing_token.unable_to_create_token'),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -55,7 +46,7 @@ class CreateSharingTokenAction
     private function validateAttributesBeforeAction(): void
     {
         if ($this->device->validation_status !== DeviceValidationStatus::VALIDATED) {
-            throw new GeneralJsonException(
+            throw new HttpJsonResponseException(
                 trans('validation.custom.device_sharing_token.register_not_validated'),
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
@@ -68,11 +59,9 @@ class CreateSharingTokenAction
             $randomNumber = mt_rand(1, 99999999);
             $token = str_pad($randomNumber, 8, '0', STR_PAD_LEFT);
 
-            $tokenExists = DeviceSharingToken::where([
-                'token' => $token
-            ])->first();
+            $tokenExists = DeviceSharingToken::where('token', $token)->exists();
 
-            if (!$tokenExists) {
+            if (! $tokenExists) {
                 return $token;
             }
         } while ($tokenExists);

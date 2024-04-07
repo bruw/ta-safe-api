@@ -8,14 +8,14 @@ use App\Actions\Device\CreateDeviceTransferAction;
 use App\Actions\Device\RegisterDeviceAction;
 use App\Actions\Device\RejectDeviceTransferAction;
 use App\Actions\User\RegisterUserAction;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
 use Laravel\Sanctum\HasApiTokens;
+use Lib\Strings\StringHelper;
 
 class User extends Authenticatable
 {
@@ -31,7 +31,7 @@ class User extends Authenticatable
         'email',
         'password',
         'cpf',
-        'phone'
+        'phone',
     ];
 
     /**
@@ -55,6 +55,26 @@ class User extends Authenticatable
     ];
 
     /**
+     * Interact with the user's name.
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => StringHelper::capitalize(trim($value)),
+        );
+    }
+
+    /**
+     * Interact with the user's email.
+     */
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => trim($value),
+        );
+    }
+
+    /**
      * Get the user devices.
      */
     public function devices(): HasMany
@@ -68,9 +88,9 @@ class User extends Authenticatable
     public function userDevicesTransfers(): Collection
     {
         return DeviceTransfer::where([
-            'source_user_id' => $this->id
+            'source_user_id' => $this->id,
         ])->orWhere([
-            'target_user_id' => $this->id
+            'target_user_id' => $this->id,
         ])->orderByDesc('id')->get();
     }
 
@@ -80,7 +100,7 @@ class User extends Authenticatable
     public function devicesOrderedByIdDesc()
     {
         return Device::where([
-            'user_id' => $this->id
+            'user_id' => $this->id,
         ])->orderByDesc('id')->get();
     }
 
@@ -99,7 +119,7 @@ class User extends Authenticatable
     /**
      * Invoke the user registration action.
      */
-    public static function registerUser(array $data): array
+    public static function registerUser(array $data): User
     {
         $registerUser = new RegisterUserAction($data);
 

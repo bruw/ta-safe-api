@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Device;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseFormRequest;
 
-class RegisterDeviceRequest extends FormRequest
+class RegisterDeviceRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,30 +25,30 @@ class RegisterDeviceRequest extends FormRequest
             'device_model_id' => [
                 'required',
                 'numeric',
-                'exists:device_models,id'
+                'exists:device_models,id',
             ],
             'color' => [
                 'required',
-                'max:255'
+                'max:255',
             ],
             'access_key' => [
                 'required',
                 'digits:44',
-                'unique:invoices,access_key'
+                'unique:invoices,access_key',
             ],
             'imei_1' => [
                 'required',
                 'digits:15',
                 'different:imei_2',
                 'unique:devices,imei_1',
-                'unique:devices,imei_2'
+                'unique:devices,imei_2',
             ],
             'imei_2' => [
                 'required',
                 'digits:15',
                 'unique:devices,imei_1',
-                'unique:devices,imei_2'
-            ]
+                'unique:devices,imei_2',
+            ],
         ];
     }
 }

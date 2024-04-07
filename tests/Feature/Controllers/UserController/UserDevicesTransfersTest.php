@@ -3,7 +3,7 @@
 namespace Tests\Feature\Controllers\UserController;
 
 use App\Enums\Device\DeviceValidationStatus;
-
+use App\Http\Messages\FlashMessage;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
@@ -88,20 +88,15 @@ class UserDevicesTransfersTest extends TestCase
     {
         $response = $this->getJson("/api/user/devices-transfers");
 
-        $response->assertStatus(Response::HTTP_UNAUTHORIZED)
-            ->assertJson(
-                fn (AssertableJson $json) =>
-                $json->where('message', trans('auth.unauthenticated'))
-                    ->etc()
-            );
+        $response->assertUnauthorized()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('http_exceptions.unauthenticated'))
+        );
     }
 
     public function test_an_authenticated_user_must_be_allowed_to_view_the_transfers_linked_to_their_account(): void
     {
-        Sanctum::actingAs(
-            $this->user1,
-            []
-        );
+        Sanctum::actingAs($this->user1);
 
         $response = $this->getJson("/api/user/devices-transfers");
 
@@ -149,15 +144,11 @@ class UserDevicesTransfersTest extends TestCase
     public function test_a_user_with_no_device_transfer_records_should_receive_an_empty_collection(): void
     {
         $user3 = User::factory()->create();
-
-        Sanctum::actingAs(
-            $user3,
-            []
-        );
+        Sanctum::actingAs($user3);
 
         $response = $this->getJson("/api/user/devices-transfers");
 
-        $response->assertStatus(Response::HTTP_OK);
+        $response->assertOk();
         $this->assertEmpty($response->getData());
     }
 }

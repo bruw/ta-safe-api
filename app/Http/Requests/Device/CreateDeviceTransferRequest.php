@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Device;
 
+use App\Http\Requests\BaseFormRequest;
+use App\Models\User;
 use App\Rules\AttributeCannotBeBoolean;
-use Illuminate\Foundation\Http\FormRequest;
 
-class CreateDeviceTransferRequest extends FormRequest
+class CreateDeviceTransferRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,6 +14,14 @@ class CreateDeviceTransferRequest extends FormRequest
     public function authorize(): bool
     {
         return $this->user()->can('createDeviceTransfer', $this->device);
+    }
+
+    /**
+     * Validates the target_user field and returns an instance of User.
+     */
+    public function targetUser(): User
+    {
+        return User::find($this->target_user_id);
     }
 
     /**
@@ -27,8 +36,8 @@ class CreateDeviceTransferRequest extends FormRequest
                 'required',
                 'numeric',
                 'exists:users,id',
-                new AttributeCannotBeBoolean
-            ]
+                new AttributeCannotBeBoolean,
+            ],
         ];
     }
 }

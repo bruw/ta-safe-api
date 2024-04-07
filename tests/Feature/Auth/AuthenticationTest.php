@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Http\Messages\FlashMessage;
 use App\Models\User;
 
 use Carbon\Carbon;
@@ -47,7 +48,7 @@ class AuthenticationTest extends TestCase
                     fn ($updatedAt) =>
                     Carbon::createFromDate($updatedAt)->equalTo($this->user->updated_at)
                 )
-                ->has('token')
+                ->has('user.token')
                 ->missing('user.password')
                 ->etc()
         );
@@ -60,7 +61,12 @@ class AuthenticationTest extends TestCase
             'password' => 'wrong-password',
         ]);
 
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('email');
+        $this->assertGuest();
+
+        $response->assertUnprocessable()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('actions.auth.login_failed'))
+                ->etc()
+        );
     }
 }

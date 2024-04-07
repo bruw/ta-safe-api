@@ -3,14 +3,12 @@
 namespace Tests\Unit\Actions\Device;
 
 use App\Enums\Device\DeviceValidationStatus;
-
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\DeviceSharingToken;
 use App\Models\Invoice;
 use App\Models\User;
-
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,23 +36,23 @@ class CreateSharingTokenTest extends TestCase
             ->for($deviceModel)
             ->has(Invoice::factory())
             ->create([
-                'validation_status' => DeviceValidationStatus::VALIDATED
+                'validation_status' => DeviceValidationStatus::VALIDATED,
             ]);
     }
 
-    public function test_should_return_true_if_the_share_token_is_successfully_created(): void
+    public function test_should_return_a_device_sharing_token_when_the_action_is_successful(): void
     {
-        $this->assertTrue(
-            $this->device->createSharingToken()
-        );
+        $sharingToken = $this->device->createSharingToken();
+
+        $this->assertInstanceOf(DeviceSharingToken::class, $sharingToken);
+
+        $this->assertNotNull($sharingToken->token);
+        $this->assertNotNull($sharingToken->expires_at);
     }
 
     public function test_should_return_true_if_the_token_is_valid_for_24_hours(): void
     {
-        $this->assertTrue(
-            $this->device->createSharingToken()
-        );
-
+        $this->device->createSharingToken();
         $this->device->refresh();
 
         $tokenValidity = now()->diffInRealHours(
@@ -94,7 +92,7 @@ class CreateSharingTokenTest extends TestCase
     public function test_should_throw_an_exception_if_the_device_record_has_not_yet_been_validated(): void
     {
         $this->device->update([
-            'validation_status' => DeviceValidationStatus::PENDING
+            'validation_status' => DeviceValidationStatus::PENDING,
         ]);
 
         $exceptionOcurred = false;
