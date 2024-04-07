@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\User;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateUserRequest extends FormRequest
+class UpdateUserRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class UpdateUserRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
             'email' => [
                 'required',
@@ -34,14 +34,14 @@ class UpdateUserRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique('users')
-                    ->ignore($this->user()->id)
+                    ->ignore($this->user()->id),
             ],
             'phone' => [
                 'required',
-                'regex:/^[(]\d{2}[)]\s[9]\d{4}-\d{4}$/',
+                'regex:/^[(]\d{2}[)]\s\d{5}-\d{4}$/',
                 Rule::unique('users')
-                    ->ignore($this->user()->id)
-            ]
+                    ->ignore($this->user()->id),
+            ],
         ];
     }
 }

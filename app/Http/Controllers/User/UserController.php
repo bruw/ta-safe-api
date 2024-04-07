@@ -3,40 +3,33 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-
+use App\Http\Messages\FlashMessage;
 use App\Http\Requests\User\SearchUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
-
 use App\Http\Resources\Device\DeviceResource;
 use App\Http\Resources\DeviceTransfer\DeviceTransferResource;
 use App\Http\Resources\User\UserPublicResource;
 use App\Http\Resources\User\UserResource;
-
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
     /**
      * Show current user.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @return \App\Http\Resources\UserResource
      */
     public function currentUser(Request $request): UserResource
     {
         $currentUser = $request->user();
+
         return new UserResource($currentUser);
     }
 
     /**
-     * Update user.
-     * 
-     * @param \App\Http\Requests\User\UpdateUserRequest $request
-     * @return \Illuminate\Http\Response
+     * Update user profile.
      */
     public function update(UpdateUserRequest $request): Response
     {
@@ -46,15 +39,17 @@ class UserController extends Controller
 
             $user->update($data);
 
-            return response()->noContent();
+            return response()->json(
+                FlashMessage::success(trans_choice('flash_messages.success.updated.m', 1, [
+                    'model' => trans_choice('model.profile', 1),
+                ])),
+                Response::HTTP_OK
+            );
         });
     }
 
     /**
      * Get the user's devices.
-     * 
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
     public function userDevices(Request $request): JsonResource
     {
@@ -66,9 +61,6 @@ class UserController extends Controller
 
     /**
      * Get user devices transfers.
-     * 
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
     public function userDevicesTransfers(Request $request): JsonResource
     {
@@ -80,9 +72,6 @@ class UserController extends Controller
 
     /**
      * Search for users by term.
-     * 
-     * @param \App\Http\Requests\User\SearchUserRequest $request
-     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
     public function search(SearchUserRequest $request): JsonResource
     {

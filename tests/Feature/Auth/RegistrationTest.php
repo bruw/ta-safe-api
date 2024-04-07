@@ -156,6 +156,33 @@ class RegistrationTest extends TestCase
         );
     }
 
+    public function test_should_return_an_error_when_the_email_param_is_not_a_valid_email_format(): void
+    {
+        $invalidEmails = [
+            'example.email.com', 'example@.com', 'example@@example.com',
+        ];
+
+        foreach ($invalidEmails as $email) {
+            $response = $this->postJson('/api/register', [
+                'name' => $this->user->name,
+                'email' => $email,
+                'password' => $this->user->password,
+                'password_confirmation' => $this->user->password,
+                'cpf' => $this->user->cpf,
+                'phone' => $this->user->phone,
+            ]);
+
+            $response->assertUnprocessable()->assertJson(
+                fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                    ->where('message.text', trans('flash_messages.errors'))
+                    ->where('errors.email.0', trans('validation.email', [
+                        'attribute' => 'email',
+                    ]))
+                    ->etc()
+            );
+        }
+    }
+
     public function test_should_return_an_error_when_the_password_param_is_null(): void
     {
         $response = $this->postJson('/api/register', [
