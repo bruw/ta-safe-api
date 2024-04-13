@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\Brand\BrandController;
 use App\Http\Controllers\Device\DeviceController;
 use App\Http\Controllers\Device\DeviceSharingController;
 use App\Http\Controllers\Device\DeviceTransferController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +45,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(DeviceSharingController::class)->group(function () {
         Route::post('devices/{device}/share', 'createSharingToken');
         Route::get('devices', 'viewDeviceByToken');
+    });
+
+    Route::controller(BrandController::class)->group(function () {
+        Route::get('brands', 'brands');
     });
 });
