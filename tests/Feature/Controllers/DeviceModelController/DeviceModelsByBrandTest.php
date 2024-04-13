@@ -53,7 +53,8 @@ class DeviceModelsByBrandTest extends TestCase
             fn (AssertableJson $json) => $json->has(
                 DeviceModel::all()->count()
             )->first(
-                fn (AssertableJson $json) => $json->where('name', $deviceModel->name)
+                fn (AssertableJson $json) => $json->where('id', $deviceModel->id)
+                    ->where('name', $deviceModel->name)
                     ->where('ram', $deviceModel->ram)
                     ->where('storage', $deviceModel->storage)
                     ->where('brand.name', $deviceModel->brand->name)

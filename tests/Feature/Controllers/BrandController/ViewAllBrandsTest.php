@@ -37,11 +37,14 @@ class ViewAllBrandsTest extends TestCase
 
         $response = $this->getJson('api/brands');
 
+        $brand = Brand::first();
+
         $response->assertOk()->assertJson(
             fn (AssertableJson $json) => $json->has(
                 Brand::all()->count()
             )->first(
-                fn (AssertableJson $json) => $json->where('name', Brand::first()->name)
+                fn (AssertableJson $json) => $json->where('id', $brand->id)
+                    ->where('name', $brand->name)
             )
         );
     }

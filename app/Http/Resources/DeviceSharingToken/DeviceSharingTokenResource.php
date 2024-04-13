@@ -15,6 +15,7 @@ class DeviceSharingTokenResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'token' => $this->token,
             'expires_at' => $this->expires_at
         ];

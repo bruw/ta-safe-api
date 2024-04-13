@@ -20,6 +20,7 @@ class DevicePublicResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'color' => $this->color,
             'imei_1' => self::addAsteriskMaskForImei($this->imei_1),
             'imei_2' => self::addAsteriskMaskForImei($this->imei_2),
