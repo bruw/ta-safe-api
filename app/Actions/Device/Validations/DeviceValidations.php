@@ -12,7 +12,7 @@ trait DeviceValidations
     {
         if ($this->device->validation_status !== DeviceValidationStatus::PENDING) {
             throw new HttpJsonResponseException(
-                trans('validation.custom.device_invoice.update_closed'),
+                trans('validation.custom.device_status.must_be_pending'),
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
