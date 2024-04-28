@@ -22,10 +22,11 @@ class DeviceResource extends JsonResource
             'color' => $this->color,
             'imei_1' => $this->imei_1,
             'imei_2' => $this->imei_2,
+            'access_key' => $this->invoice->access_key,
             'validation_status' => $this->validation_status,
+            'sharing_token' => new DeviceSharingTokenResource($this->sharingToken),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'sharing_token' => new DeviceSharingTokenResource($this->sharingToken),
             'user' => new UserResource($this->user),
             'device_model' => new DeviceModelResource($this->deviceModel),
         ];
