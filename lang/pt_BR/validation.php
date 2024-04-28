@@ -191,6 +191,13 @@ return [
             'unable_to_create_token' => 'Houve um problema ao gerar o token de compartilhamento do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
+        'device_invoice' => [
+            'update_closed' => 'Só é possível modificar notas fiscais que possuem validação pendente.',
+        ],
+        'device_validation' => [
+            'unable_to_validate' => 'Houve um problema ao validar o dispositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+        ],
     ],
 
     /*
