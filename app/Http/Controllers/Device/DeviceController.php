@@ -48,7 +48,7 @@ class DeviceController extends Controller
     {
         $data = $request->validated();
 
-        $device->registrationValidation(
+        $device->validateRegistration(
             cpf: $data['cpf'],
             name: $data['name'],
             products: $data['products']

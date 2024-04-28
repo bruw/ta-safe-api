@@ -9,7 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-class DeviceRegistrationValidationAction
+class ValidateDeviceRegistrationAction
 {
     use DeviceValidations;
 
