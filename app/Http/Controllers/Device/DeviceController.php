@@ -54,9 +54,8 @@ class DeviceController extends Controller
             products: $data['products']
         );
 
-        //TODO FLASH MESSAGE
         return response()->json(
-            FlashMessage::success('Validação realiza com sucesso!'),
+            FlashMessage::success(trans('actions.device_validation.start')),
             Response::HTTP_CREATED
         );
     }
