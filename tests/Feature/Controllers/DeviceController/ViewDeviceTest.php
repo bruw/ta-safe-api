@@ -62,6 +62,7 @@ class ViewDeviceTest extends TestCase
                     ->where('color', $this->device->color)
                     ->where('imei_1', $this->device->imei_1)
                     ->where('imei_2', $this->device->imei_2)
+                    ->where('access_key', $this->device->invoice->access_key)
                     ->where('validation_status', $this->device->validation_status->value)
                     ->where('sharing_token', null)
                     ->has('created_at')
@@ -77,7 +78,6 @@ class ViewDeviceTest extends TestCase
                     ->where('device_model.ram', $this->device->deviceModel->ram)
                     ->where('device_model.storage', $this->device->deviceModel->storage)
                     ->where('device_model.brand.name', $this->device->deviceModel->brand->name)
-                    ->etc()
             );
     }
 
