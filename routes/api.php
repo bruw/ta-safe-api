@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(DeviceController::class)->group(function () {
         Route::post('devices', 'registerDevice');
         Route::get('devices/{device}', 'viewDevice');
-        Route::post('devices/{device}/validation', 'registrationValidation');
+        Route::post('devices/{device}/validate', 'validateRegistration');
     });
 
     Route::controller(DeviceTransferController::class)->group(function () {

@@ -4,16 +4,14 @@ namespace App\Http\Requests\Device;
 
 use App\Http\Requests\BaseFormRequest;
 
-class DeviceRegistrationValidationRequest extends BaseFormRequest
+class ValidateDeviceRegistrationRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-
-        // verificar se é o proprietário
-        return true;
+        return $this->user()->can('validateDeviceRegistration', $this->device);
     }
 
     /**

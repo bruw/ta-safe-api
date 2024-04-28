@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Device;
 
 use App\Http\Controllers\Controller;
 use App\Http\Messages\FlashMessage;
-use App\Http\Requests\Device\DeviceRegistrationValidationRequest;
 use App\Http\Requests\Device\RegisterDeviceRequest;
+use App\Http\Requests\Device\ValidateDeviceRegistrationRequest;
 use App\Http\Resources\Device\DeviceResource;
 use App\Models\Device;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -42,9 +42,9 @@ class DeviceController extends Controller
     }
 
     /**
-     * TODO DESCRIPTION
+     * Validating the registration of a device.
      */
-    public function registrationValidation(DeviceRegistrationValidationRequest $request, Device $device)
+    public function validateRegistration(ValidateDeviceRegistrationRequest $request, Device $device)
     {
         $data = $request->validated();
 
@@ -56,7 +56,7 @@ class DeviceController extends Controller
 
         //TODO FLASH MESSAGE
         return response()->json(
-            FlashMessage::success("Validação realiza com sucesso!"),
+            FlashMessage::success('Validação realiza com sucesso!'),
             Response::HTTP_CREATED
         );
     }
