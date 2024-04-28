@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Device;
 
 use App\Http\Controllers\Controller;
 use App\Http\Messages\FlashMessage;
+use App\Http\Requests\Device\DeviceRegistrationValidationRequest;
 use App\Http\Requests\Device\RegisterDeviceRequest;
 use App\Http\Resources\Device\DeviceResource;
 use App\Models\Device;
@@ -38,5 +39,25 @@ class DeviceController extends Controller
         $this->authorize('view', $device);
 
         return new DeviceResource($device);
+    }
+
+    /**
+     * TODO DESCRIPTION
+     */
+    public function registrationValidation(DeviceRegistrationValidationRequest $request, Device $device)
+    {
+        $data = $request->validated();
+
+        $device->registrationValidation(
+            cpf: $data['cpf'],
+            name: $data['name'],
+            products: $data['products']
+        );
+
+        //TODO FLASH MESSAGE
+        return response()->json(
+            FlashMessage::success("Validação realiza com sucesso!"),
+            Response::HTTP_CREATED
+        );
     }
 }

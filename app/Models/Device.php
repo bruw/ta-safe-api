@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Actions\Device\CreateSharingTokenAction;
+use App\Actions\Device\DeviceRegistrationValidationAction;
 use App\Enums\Device\DeviceValidationStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -108,5 +109,20 @@ class Device extends Model
         $createToken = new CreateSharingTokenAction($this);
 
         return $createToken->execute();
+    }
+
+    /**
+     * TODO DESCRIPTION
+     */
+    public function registrationValidation(string $cpf, string $name, string $products): bool
+    {
+        $action = new DeviceRegistrationValidationAction(
+            $this,
+            $cpf,
+            $name,
+            $products
+        );
+
+        return $action->execute();
     }
 }
