@@ -7,6 +7,6 @@ return [
         'logout' => 'Usuário desconectado com sucesso.',
     ],
     'device_validation' => [
-        'start' => 'Validação iniciada com sucesso. Aguarde o processamento.',
+        'start' => 'Informações enviadas com sucesso! Seu registro esta em análise.',
     ],
 ];
