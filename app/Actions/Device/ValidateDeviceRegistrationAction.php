@@ -3,6 +3,7 @@
 namespace App\Actions\Device;
 
 use App\Actions\Device\Validations\DeviceValidations;
+use App\Enums\Device\DeviceValidationStatus;
 use App\Exceptions\HttpJsonResponseException;
 use App\Models\Device;
 use Exception;
@@ -30,6 +31,10 @@ class ValidateDeviceRegistrationAction
         try {
             return DB::transaction(function () {
                 $this->updateDeviceInvoice();
+
+                $this->device->update([
+                    'validation_status' => DeviceValidationStatus::IN_ANALYSIS,
+                ]);
 
                 return true;
             });
