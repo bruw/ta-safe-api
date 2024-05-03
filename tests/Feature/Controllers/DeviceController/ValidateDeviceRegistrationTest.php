@@ -191,7 +191,7 @@ class ValidateDeviceRegistrationTest extends TestCase
         );
     }
 
-    public function test_should_return_an_error_when_the_params_are_longer_than_255_characters(): void
+    public function test_should_return_an_error_when_the_cpf_and_name_params_are_longer_than_255_characters(): void
     {
         Sanctum::actingAs($this->owner);
 
@@ -200,7 +200,7 @@ class ValidateDeviceRegistrationTest extends TestCase
         $response = $this->postJson($route, [
             'cpf' => Str::random(256),
             'name' => Str::random(256),
-            'products' => Str::random(256),
+            'products' => fake()->text(),
         ]);
 
         $response->assertUnprocessable()->assertJson(
@@ -214,9 +214,27 @@ class ValidateDeviceRegistrationTest extends TestCase
                     'attribute' => trans('validation.attributes.name'),
                     'max' => 255,
                 ]))
+        );
+    }
+
+    public function test_should_return_an_error_when_the_products_param_are_longer_than_16000_characters(): void
+    {
+        Sanctum::actingAs($this->owner);
+
+        $route = $this->validateDeviceRoute($this->deviceNotValidated->id);
+
+        $response = $this->postJson($route, [
+            'cpf' => $this->owner->cpf,
+            'name' => $this->owner->name,
+            'products' => Str::random(16001),
+        ]);
+
+        $response->assertUnprocessable()->assertJson(
+            fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                ->where('message.text', trans('flash_messages.errors'))
                 ->where('errors.products.0', trans('validation.max.string', [
                     'attribute' => trans('validation.attributes.products'),
-                    'max' => 255,
+                    'max' => 16000,
                 ]))
         );
     }

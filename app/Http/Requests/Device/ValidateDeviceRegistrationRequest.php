@@ -24,7 +24,7 @@ class ValidateDeviceRegistrationRequest extends BaseFormRequest
         return [
             'cpf' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
-            'products' => ['required', 'string', 'max:255'],
+            'products' => ['required', 'string', 'max:16000'],
         ];
     }
 }
