@@ -264,8 +264,8 @@ return [
         'imei_2' => 'IMEI 2',
         'search_term' => 'termo de pesquisa',
         'target_user_id' => 'identificador do usuário de destino',
-        'consumer_data' => 'dados do consumidor',
-        'product_data' => 'dados do produto',
+        'products' => 'produtos',
+        'cpf' => 'cpf',
     ],
 
 ];

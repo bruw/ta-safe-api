@@ -22,9 +22,9 @@ class ValidateDeviceRegistrationRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'cpf' => ['required', 'string'],
-            'name' => ['required', 'string'],
-            'products' => ['required', 'string']
+            'cpf' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'products' => ['required', 'string', 'max:255'],
         ];
     }
 }
