@@ -18,15 +18,6 @@ class Device extends Model
     use HasFactory;
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'validation_status' => DeviceValidationStatus::class,
-    ];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -39,6 +30,22 @@ class Device extends Model
         'imei_1',
         'imei_2',
         'validation_status',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'validation_status' => DeviceValidationStatus::class,
+    ];
+
+    /**
+     * The model's default values for attributes.
+     */
+    protected $attributes = [
+        'validation_status' => DeviceValidationStatus::PENDING,
     ];
 
     /**
