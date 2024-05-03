@@ -83,6 +83,14 @@ class Device extends Model
     }
 
     /**
+     * Get the attribute validation logs associated with the device.
+     */
+    public function attributeValidationLogs(): HasMany
+    {
+        return $this->hasMany(DeviceAttributeValidationLog::class);
+    }
+
+    /**
      * Get device registration transfers.
      */
     public function transfers(): HasMany
