@@ -58,7 +58,7 @@ class DeviceController extends Controller
             FlashMessage::success(trans('actions.device_validation.start'))->merge([
                 'device' => new DeviceResource($device),
             ]),
-            Response::HTTP_CREATED
+            Response::HTTP_OK
         );
     }
 }
