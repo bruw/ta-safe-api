@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('device_id')->constrained();
+            $table->string('attribute_context');
             $table->string('attribute_name');
-            $table->string('context');
+            $table->string('attribute_value');
             $table->text('provided_value');
             $table->unsignedDecimal('similarity_ratio', total: 5, places: 2);
             $table->unsignedDecimal('min_similarity_ratio', total: 5, places: 2);

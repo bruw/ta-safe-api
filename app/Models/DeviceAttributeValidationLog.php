@@ -15,8 +15,9 @@ class DeviceAttributeValidationLog extends Model
     protected $fillable = [
         'user_id',
         'device_id',
+        'attribute_context',
         'attribute_name',
-        'context',
+        'attribute_value',
         'provided_value',
         'similarity_ratio',
         'min_similarity_ratio',
