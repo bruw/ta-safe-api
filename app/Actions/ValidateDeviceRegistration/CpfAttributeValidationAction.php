@@ -13,12 +13,13 @@ class CpfAttributeValidationAction
 {
     use StringNormalizer;
 
-    private const MIN_CPF_RATIO = DeviceAttributeValidationRatio::MIN_CPF_RATIO;
-
     private Fuzz $fuzz;
     private string $deviceUserCpf;
     private string $invoiceConsumerCpf;
     private DeviceAttributeValidationLog $result;
+
+    private const MIN_CPF_SIMILARITY =
+        DeviceAttributeValidationRatio::MIN_CPF_SIMILARITY;
 
     public function __construct(
         private Device $device,
@@ -73,7 +74,7 @@ class CpfAttributeValidationAction
      */
     private function persistResult($similarityRatio): void
     {
-        $validated = $similarityRatio == self::MIN_CPF_RATIO;
+        $validated = $similarityRatio == self::MIN_CPF_SIMILARITY;
 
         $this->result = DeviceAttributeValidationLog::create([
             'user_id' => $this->device->user->id,
@@ -83,7 +84,7 @@ class CpfAttributeValidationAction
             'attribute_value' => $this->deviceUserCpf,
             'provided_value' => $this->invoiceConsumerCpf,
             'similarity_ratio' => $similarityRatio,
-            'min_similarity_ratio' => self::MIN_CPF_RATIO,
+            'min_similarity_ratio' => self::MIN_CPF_SIMILARITY,
             'validated' => $validated,
         ]);
     }

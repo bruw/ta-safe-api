@@ -4,5 +4,8 @@ namespace App\Constants;
 
 class DeviceAttributeValidationRatio
 {
-    public const MIN_CPF_RATIO = 100;
+    /**
+     * CPF must be identical to be considered valid.
+     */
+    public const MIN_CPF_SIMILARITY = 100;
 }
