@@ -2,8 +2,39 @@
 
 namespace App\Traits;
 
+use Normalizer;
+
 trait StringNormalizer
 {
+    /**
+     * Remove everything that is not a digit from the given string.
+     */
+    protected function extractOnlyDigits(?string $value): string
+    {
+        if (is_null($value)) {
+            return '';
+        }
+
+        $onlyDigits = preg_replace('/[^\d\s]/', '', $value);
+
+        return $this->removeExtraWhiteSpaces($onlyDigits);
+    }
+
+    /**
+     * Removes everything that is not a letter in the given string.
+     */
+    protected function extractOnlyLetters(?string $value): string
+    {
+        if (is_null($value)) {
+            return '';
+        }
+
+        $unaccented = $this->removeAccents($value);
+        $onlyLetters = strtolower(preg_replace('/[^A-Za-z\s]/', '', $unaccented));
+
+        return $this->removeExtraWhiteSpaces($onlyLetters);
+    }
+
     /**
      * Remove extra white spaces from the given string.
      */
@@ -17,16 +48,12 @@ trait StringNormalizer
     }
 
     /**
-     * Remove everything that is not a digit from the given string.
+     * Removes accents from a string using the decomposition technique.
      */
-    protected function extractOnlyDigits(?string $value): string
+    protected function removeAccents(?string $value): string
     {
-        if (is_null($value)) {
-            return '';
-        }
+        $decomposedValue = Normalizer::normalize($value, Normalizer::FORM_D);
 
-        $extracted = preg_replace('/[^\d\s]/', '', $value);
-
-        return $this->removeExtraWhiteSpaces($extracted);
+        return preg_replace('/\p{Mn}/u', '', $decomposedValue);
     }
 }
