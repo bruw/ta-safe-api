@@ -45,4 +45,11 @@ class RemoveExtraWhiteSpacesTest extends TestCase
             $expectedResult
         );
     }
+
+    public function test_should_return_an_empty_string_when_the_param_is_a_null_value(): void
+    {
+        $this->assertEmpty(
+            $this->removeExtraWhiteSpaces(null),
+        );
+    }
 }
