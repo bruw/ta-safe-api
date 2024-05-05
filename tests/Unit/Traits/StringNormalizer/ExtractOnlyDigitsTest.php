@@ -34,10 +34,10 @@ class ExtractOnlyDigitsTest extends TestCase
         );
     }
 
-    public function test_should_return_the_digits_of_the_input_string_respecting_the_spacing(): void
+    public function test_should_return_the_digits_of_the_input_string_removing_the_extra_whitespaces(): void
     {
         $inputString = '1 abc0 DEFghi 11';
-        $expectedResult = '1 0  11';
+        $expectedResult = '1 0 11';
 
         $this->assertEquals(
             $this->extractOnlyDigits($inputString),
@@ -56,10 +56,10 @@ class ExtractOnlyDigitsTest extends TestCase
         );
     }
 
-    public function test_should_return_only_the_digits_of_the_input_string_respecting_spacing_and_ignoring_special_characters(): void
+    public function test_should_return_only_the_digits_of_the_input_string_removing_extra_whitespaces_and_igoring_special_characters(): void
     {
         $inputString = '1@ abc! DE00. -/x 1';
-        $expectedResult = '1  00  1';
+        $expectedResult = '1 00 1';
 
         $this->assertEquals(
             $this->extractOnlyDigits($inputString),

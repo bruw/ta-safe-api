@@ -54,9 +54,7 @@ class CpfAttributeValidationAction
      */
     private function normalizeCpf(string $cpf): string
     {
-        return $this->removeExtraWhiteSpaces(
-            $this->extractOnlyDigits($cpf)
-        );
+        return $this->extractOnlyDigits($cpf);
     }
 
     /**
