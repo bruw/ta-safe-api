@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Actions\ValidateDeviceRegistration;
 
-use App\Actions\ValidateDeviceRegistration\CpfAttributeValidationAction;
+use App\Actions\DeviceOwnerInvoiceValidation\CpfAttributeValidationAction;
 use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\Invoice;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\ValidateDeviceRegistration;
+namespace App\Actions\DeviceOwnerInvoiceValidation;
 
 use App\Constants\DeviceAttributeValidationRatio;
 use App\Models\Device;

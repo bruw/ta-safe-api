@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Actions\ValidateDeviceRegistration;
 
-use App\Actions\ValidateDeviceRegistration\DeviceOwnerInvoiceValidationAction;
+use App\Actions\DeviceOwnerInvoiceValidation\DeviceOwnerInvoiceValidationAction;
 use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\Invoice;
