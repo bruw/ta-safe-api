@@ -16,7 +16,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class NameAttributeValidationTest extends TestCase
+class DeviceOwnerNameValidationTest extends TestCase
 {
     use RefreshDatabase;
     use StringNormalizer;
