@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Actions\ValidateDeviceRegistration;
 
-use App\Actions\DeviceOwnerInvoiceValidation\DeviceOwnerInvoiceValidationAction;
+use App\Actions\DeviceOwnerInvoiceValidation\DeviceOwnerNameValidationAction;
 use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\Invoice;
@@ -67,7 +67,7 @@ class NameAttributeValidationTest extends TestCase
 
     public function test_must_validate_identical_names(): void
     {
-        $nameSimilarityValidator = new DeviceOwnerInvoiceValidationAction($this->device);
+        $nameSimilarityValidator = new DeviceOwnerNameValidationAction($this->device);
         $result = $nameSimilarityValidator->execute();
 
         $this->assertTrue($result->validated);
@@ -76,7 +76,7 @@ class NameAttributeValidationTest extends TestCase
 
     public function test_should_generate_a_record_in_the_database_for_successful_validations(): void
     {
-        $nameSimilarityValidator = new DeviceOwnerInvoiceValidationAction($this->device);
+        $nameSimilarityValidator = new DeviceOwnerNameValidationAction($this->device);
         $nameSimilarityValidator->execute();
 
         $name = $this->extractOnlyLetters($this->user->name);
@@ -104,7 +104,7 @@ class NameAttributeValidationTest extends TestCase
             'consumer_name' => 'João P. Silva',
         ]);
 
-        $nameSimilarityValidator = new DeviceOwnerInvoiceValidationAction($this->device);
+        $nameSimilarityValidator = new DeviceOwnerNameValidationAction($this->device);
         $result = $nameSimilarityValidator->execute();
 
         $this->assertTrue($result->validated);
@@ -122,7 +122,7 @@ class NameAttributeValidationTest extends TestCase
             'consumer_name' => 'João J. Silva',
         ]);
 
-        $nameSimilarityValidator = new DeviceOwnerInvoiceValidationAction($this->device);
+        $nameSimilarityValidator = new DeviceOwnerNameValidationAction($this->device);
         $result = $nameSimilarityValidator->execute();
 
         $this->assertFalse($result->validated);
@@ -140,7 +140,7 @@ class NameAttributeValidationTest extends TestCase
             'consumer_name' => 'Luisa L. GoncalVÉS santos.',
         ]);
 
-        $nameSimilarityValidator = new DeviceOwnerInvoiceValidationAction($this->device);
+        $nameSimilarityValidator = new DeviceOwnerNameValidationAction($this->device);
         $result = $nameSimilarityValidator->execute();
 
         $this->assertTrue($result->validated);
@@ -158,7 +158,7 @@ class NameAttributeValidationTest extends TestCase
             'consumer_name' => '',
         ]);
 
-        $nameSimilarityValidator = new DeviceOwnerInvoiceValidationAction($this->device);
+        $nameSimilarityValidator = new DeviceOwnerNameValidationAction($this->device);
         $result = $nameSimilarityValidator->execute();
 
         $this->assertFalse($result->validated);

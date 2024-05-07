@@ -9,27 +9,27 @@ use App\Traits\StringNormalizer;
 use Exception;
 use FuzzyWuzzy\Fuzz;
 
-class DeviceOwnerInvoiceValidationAction
+class DeviceOwnerCpfValidationAction
 {
     use StringNormalizer;
 
     private Fuzz $fuzz;
-    private string $deviceOwnerName;
-    private string $invoiceConsumerName;
+    private string $deviceOwnerCpf;
+    private string $invoiceConsumerCpf;
     private DeviceAttributeValidationLog $result;
-    private const MIN_NAME_SIMILARITY = DeviceAttributeValidationRatio::MIN_NAME_SIMILARITY;
+    private const MIN_CPF_SIMILARITY = DeviceAttributeValidationRatio::MIN_CPF_SIMILARITY;
 
     public function __construct(
         private Device $device,
     ) {
         $this->fuzz = new Fuzz();
 
-        $this->deviceOwnerName = $this->normalizeName(
-            $this->device->user->name
+        $this->deviceOwnerCpf = $this->normalizeCpf(
+            $this->device->user->cpf
         );
 
-        $this->invoiceConsumerName = $this->normalizeName(
-            $this->device->invoice->consumer_name
+        $this->invoiceConsumerCpf = $this->normalizeCpf(
+            $this->device->invoice->consumer_cpf
         );
     }
 
@@ -49,21 +49,21 @@ class DeviceOwnerInvoiceValidationAction
     }
 
     /**
-     * Normalizes the attribute name by removing accents, digits and special characters.
+     * Normalize cpf by removing non-digit content and extra whitespace.
      */
-    private function normalizeName(string $name): string
+    private function normalizeCpf(string $cpf): string
     {
-        return $this->extractOnlyLetters($name);
+        return $this->extractOnlyDigits($cpf);
     }
 
     /**
-     * Calculates the ratio of similarity between names.
+     * Returns the ratio score between userCpf and consumerCpf.
      */
     private function calculateRatio(): int
     {
-        return $this->fuzz->ratio(
-            $this->deviceOwnerName,
-            $this->invoiceConsumerName
+        return $this->fuzz->tokenSetRatio(
+            $this->deviceOwnerCpf,
+            $this->invoiceConsumerCpf,
         );
     }
 
@@ -72,17 +72,17 @@ class DeviceOwnerInvoiceValidationAction
      */
     private function persistResult($similarityRatio): void
     {
-        $validated = $similarityRatio >= self::MIN_NAME_SIMILARITY;
+        $validated = $similarityRatio == self::MIN_CPF_SIMILARITY;
 
         $this->result = DeviceAttributeValidationLog::create([
             'user_id' => $this->device->user->id,
             'device_id' => $this->device->id,
             'attribute_context' => get_class($this->device->user),
-            'attribute_name' => 'name',
-            'attribute_value' => $this->deviceOwnerName,
-            'provided_value' => $this->invoiceConsumerName,
+            'attribute_name' => 'cpf',
+            'attribute_value' => $this->deviceOwnerCpf,
+            'provided_value' => $this->invoiceConsumerCpf,
             'similarity_ratio' => $similarityRatio,
-            'min_similarity_ratio' => self::MIN_NAME_SIMILARITY,
+            'min_similarity_ratio' => self::MIN_CPF_SIMILARITY,
             'validated' => $validated,
         ]);
     }

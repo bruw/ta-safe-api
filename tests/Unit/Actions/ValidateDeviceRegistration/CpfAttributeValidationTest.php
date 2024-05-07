@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Actions\ValidateDeviceRegistration;
 
-use App\Actions\DeviceOwnerInvoiceValidation\CpfAttributeValidationAction;
+use App\Actions\DeviceOwnerInvoiceValidation\DeviceOwnerCpfValidationAction;
 use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\Invoice;
@@ -67,7 +67,7 @@ class CpfAttributeValidationTest extends TestCase
 
     public function test_the_action_must_be_able_to_validate_the_cpf_of_device_record_when_the_user_cpf_is_identical_to_the_invoice_cpf(): void
     {
-        $cpfValidator = new CpfAttributeValidationAction($this->device);
+        $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
         $result = $cpfValidator->execute();
 
         $this->assertTrue($result->validated);
@@ -76,7 +76,7 @@ class CpfAttributeValidationTest extends TestCase
 
     public function test_should_generate_a_new_record_in_the_database_with_the_validation_log_when_the_action_is_successful(): void
     {
-        $cpfValidator = new CpfAttributeValidationAction($this->device);
+        $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
         $cpfValidator->execute();
 
         $cpf = $this->extractOnlyDigits($this->user->cpf);
@@ -102,7 +102,7 @@ class CpfAttributeValidationTest extends TestCase
 
         $this->invoice->refresh();
 
-        $cpfValidator = new CpfAttributeValidationAction($this->device);
+        $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
         $result = $cpfValidator->execute();
 
         $this->assertTrue($result->validated);
@@ -116,7 +116,7 @@ class CpfAttributeValidationTest extends TestCase
 
         $this->invoice->refresh();
 
-        $cpfValidator = new CpfAttributeValidationAction($this->device);
+        $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
         $result = $cpfValidator->execute();
 
         $this->assertFalse($result->validated);
@@ -130,7 +130,7 @@ class CpfAttributeValidationTest extends TestCase
 
         $this->invoice->refresh();
 
-        $cpfValidator = new CpfAttributeValidationAction($this->device);
+        $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
         $result = $cpfValidator->execute();
 
         $this->assertFalse($result->validated);
@@ -144,7 +144,7 @@ class CpfAttributeValidationTest extends TestCase
 
         $this->invoice->refresh();
 
-        $cpfValidator = new CpfAttributeValidationAction($this->device);
+        $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
         $result = $cpfValidator->execute();
 
         $this->assertFalse($result->validated);
