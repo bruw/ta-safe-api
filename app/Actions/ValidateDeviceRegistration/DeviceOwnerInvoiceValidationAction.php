@@ -9,23 +9,22 @@ use App\Traits\StringNormalizer;
 use Exception;
 use FuzzyWuzzy\Fuzz;
 
-class NameAttributeValidationAction
+class DeviceOwnerInvoiceValidationAction
 {
     use StringNormalizer;
 
     private Fuzz $fuzz;
-    private string $deviceUserName;
+    private string $deviceOwnerName;
     private string $invoiceConsumerName;
     private DeviceAttributeValidationLog $result;
-    private const MIN_NAME_SIMILARITY =
-        DeviceAttributeValidationRatio::MIN_NAME_SIMILARITY;
+    private const MIN_NAME_SIMILARITY = DeviceAttributeValidationRatio::MIN_NAME_SIMILARITY;
 
     public function __construct(
         private Device $device,
     ) {
         $this->fuzz = new Fuzz();
 
-        $this->deviceUserName = $this->normalizeName(
+        $this->deviceOwnerName = $this->normalizeName(
             $this->device->user->name
         );
 
@@ -58,13 +57,13 @@ class NameAttributeValidationAction
     }
 
     /**
-     * Returns the ratio score between userCpf and consumerCpf.
+     * Calculates the ratio of similarity between names.
      */
     private function calculateRatio(): int
     {
         return $this->fuzz->ratio(
-            $this->deviceUserName,
-            $this->invoiceConsumerName,
+            $this->deviceOwnerName,
+            $this->invoiceConsumerName
         );
     }
 
@@ -80,7 +79,7 @@ class NameAttributeValidationAction
             'device_id' => $this->device->id,
             'attribute_context' => get_class($this->device->user),
             'attribute_name' => 'name',
-            'attribute_value' => $this->deviceUserName,
+            'attribute_value' => $this->deviceOwnerName,
             'provided_value' => $this->invoiceConsumerName,
             'similarity_ratio' => $similarityRatio,
             'min_similarity_ratio' => self::MIN_NAME_SIMILARITY,
