@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Actions\ValidateDeviceRegistration;
+namespace Tests\Unit\Actions\DeviceOwnerInvoiceValidation;
 
 use App\Actions\DeviceOwnerInvoiceValidation\DeviceOwnerCpfValidationAction;
 use App\Models\Device;
