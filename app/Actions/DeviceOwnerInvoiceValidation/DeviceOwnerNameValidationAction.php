@@ -39,10 +39,11 @@ class DeviceOwnerNameValidationAction
     public function execute(): DeviceAttributeValidationLog
     {
         try {
-            $similarityRatio = $this->calculateRatio();
-            $this->persistResult($similarityRatio);
+            $similarityRatio = $this->calculateSimilarityRatio();
+            $this->persistValidationResult($similarityRatio);
         } catch (Exception $e) {
-            $this->persistResult(0);
+            dd($e);
+            $this->persistValidationResult(0);
         } finally {
             return $this->result;
         }
@@ -57,9 +58,9 @@ class DeviceOwnerNameValidationAction
     }
 
     /**
-     * Calculates the ratio of similarity between names.
+     * Calculate ratio score between deviceOwnerName and invoiceConsumerName.
      */
-    private function calculateRatio(): int
+    private function calculateSimilarityRatio(): int
     {
         return $this->fuzz->ratio(
             $this->deviceOwnerName,
@@ -68,19 +69,21 @@ class DeviceOwnerNameValidationAction
     }
 
     /**
-     * Persists the results in the database.
+     * Persists the validation results in the database.
      */
-    private function persistResult($similarityRatio): void
+    private function persistValidationResult($similarityRatio): void
     {
         $validated = $similarityRatio >= self::MIN_NAME_SIMILARITY;
 
         $this->result = DeviceAttributeValidationLog::create([
             'user_id' => $this->device->user->id,
             'device_id' => $this->device->id,
-            'attribute_context' => get_class($this->device->user),
-            'attribute_name' => 'name',
+            'attribute_source' => get_class($this->device->user),
+            'attribute_label' => 'name',
             'attribute_value' => $this->deviceOwnerName,
-            'provided_value' => $this->invoiceConsumerName,
+            'invoice_attribute_label' => 'consumer_name',
+            'invoice_attribute_value' => $this->invoiceConsumerName,
+            'invoice_validated_value' => $validated ? $this->invoiceConsumerName : null,
             'similarity_ratio' => $similarityRatio,
             'min_similarity_ratio' => self::MIN_NAME_SIMILARITY,
             'validated' => $validated,
