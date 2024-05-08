@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('device_id')->constrained();
-            $table->string('attribute_context');
-            $table->string('attribute_name');
+            $table->string('attribute_source');
+            $table->string('attribute_label');
             $table->string('attribute_value');
-            $table->text('provided_value');
+            $table->string('invoice_attribute_label');
+            $table->text('invoice_attribute_value');
+            $table->string('invoice_validated_value')->nullable();
             $table->unsignedDecimal('similarity_ratio', total: 5, places: 2);
             $table->unsignedDecimal('min_similarity_ratio', total: 5, places: 2);
             $table->boolean('validated');
