@@ -3,6 +3,7 @@
 namespace App\Actions\DeviceOwnerInvoiceValidation;
 
 use App\Constants\DeviceAttributeValidationRatio;
+use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceAttributeValidationLog;
 use App\Traits\StringNormalizer;
@@ -90,7 +91,7 @@ class DeviceBrandValidationAction
         $this->result = DeviceAttributeValidationLog::create([
             'user_id' => $this->device->user->id,
             'device_id' => $this->device->id,
-            'attribute_source' => get_class($this->device),
+            'attribute_source' => Brand::class,
             'attribute_label' => 'brand.name',
             'attribute_value' => $this->deviceBrand,
             'invoice_attribute_label' => 'product_description',

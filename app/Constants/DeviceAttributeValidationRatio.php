@@ -17,5 +17,5 @@ class DeviceAttributeValidationRatio
     /**
      * Brand name similarity must be equal to or greater than 90%.
      */
-    public const MIN_BRAND_SIMILARITY = 90;
+    public const MIN_BRAND_SIMILARITY = 80;
 }
