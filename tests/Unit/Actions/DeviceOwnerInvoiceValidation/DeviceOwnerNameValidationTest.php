@@ -84,7 +84,7 @@ class DeviceOwnerNameValidationTest extends TestCase
         $this->assertDatabaseHas('device_attribute_validation_logs', [
             'user_id' => $this->device->user->id,
             'device_id' => $this->device->id,
-            'attribute_source' => get_class($this->device->user),
+            'attribute_source' => User::class,
             'attribute_label' => 'name',
             'attribute_value' => $name,
             'invoice_attribute_label' => 'consumer_name',

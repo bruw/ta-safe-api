@@ -84,7 +84,7 @@ class DeviceOwnerCpfValidationTest extends TestCase
         $this->assertDatabaseHas('device_attribute_validation_logs', [
             'user_id' => $this->user->id,
             'device_id' => $this->device->id,
-            'attribute_source' => get_class($this->user),
+            'attribute_source' => User::class,
             'attribute_label' => 'cpf',
             'attribute_value' => $cpf,
             'invoice_attribute_label' => 'consumer_cpf',

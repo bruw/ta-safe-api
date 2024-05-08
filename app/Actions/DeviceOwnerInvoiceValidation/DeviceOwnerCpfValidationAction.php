@@ -5,6 +5,7 @@ namespace App\Actions\DeviceOwnerInvoiceValidation;
 use App\Constants\DeviceAttributeValidationRatio;
 use App\Models\Device;
 use App\Models\DeviceAttributeValidationLog;
+use App\Models\User;
 use App\Traits\StringNormalizer;
 use Exception;
 use FuzzyWuzzy\Fuzz;
@@ -76,7 +77,7 @@ class DeviceOwnerCpfValidationAction
         $this->result = DeviceAttributeValidationLog::create([
             'user_id' => $this->device->user->id,
             'device_id' => $this->device->id,
-            'attribute_source' => get_class($this->device->user),
+            'attribute_source' => User::class,
             'attribute_label' => 'cpf',
             'attribute_value' => $this->deviceOwnerCpf,
             'invoice_attribute_label' => 'consumer_cpf',

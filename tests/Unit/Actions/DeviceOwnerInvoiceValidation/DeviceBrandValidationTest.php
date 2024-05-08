@@ -86,7 +86,7 @@ class DeviceBrandValidationTest extends TestCase
             'user_id' => $this->device->user->id,
             'device_id' => $this->device->id,
             'attribute_source' => Brand::class,
-            'attribute_label' => 'brand.name',
+            'attribute_label' => 'name',
             'attribute_value' => $brand,
             'invoice_attribute_label' => 'product_description',
             'invoice_attribute_value' => $products,
