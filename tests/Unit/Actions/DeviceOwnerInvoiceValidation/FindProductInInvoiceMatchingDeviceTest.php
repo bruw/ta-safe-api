@@ -71,7 +71,7 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
 
     public function test_must_return_the_product_description_when_the_score_is_greather_or_equal_to_650(): void
     {
-        $description = 'Apple iPhone 11';
+        $description = 'Smartphone Apple iPhone 11';
 
         $this->invoice->update([
             'product_description' => "<span>{$description}</span>",
@@ -81,7 +81,7 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
         $result = $action->execute();
 
         $this->assertEquals($result['product'], $description);
-        $this->assertEquals($result['score'], 686);
+        $this->assertEquals($result['score'], 525);
     }
 
     public function test_should_return_null_when_the_similarity_score_is_less_than_650(): void
@@ -135,7 +135,9 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
             'product_description' => '<span>Apple Iphone 13</span>'
                 . "<span>{$description}</span>"
                 . '<span>Apple iPhone 12 128gb</span>'
-                . '<span>Capa Apple Iphone 11</span>',
+                . '<span>Capa Apple Iphone 11</span>'
+                . '<span>Apple Iphone 11</span>'
+                . '<span>Carregador para Iphone 11 preto</span>',
         ]);
 
         $action = new FindProductInInvoiceMatchingDeviceAction($this->device);
@@ -154,13 +156,13 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
             'name' => 'Galaxy m52',
         ]);
 
-        $description = 'Samsung Galaxy m52';
+        $description = 'Samsung Galaxy M52 5g Dual Sim 128 Gb Black 6 Gb Ram';
 
         $this->invoice->update([
             'product_description' => '<span>Apple Iphone 13</span>'
                 . '<span>Poco x5 Pro</span>'
                 . '<span>Apple iPhone 12 128gb</span>'
-                . '<span>Samgung Galaxy S23 preto</span>'
+                . '<span>Samsung Galaxy S23 preto</span>'
                 . "<span>{$description}</span>",
         ]);
 
@@ -169,5 +171,4 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
 
         $this->assertEquals($result['product'], $description);
     }
-
 }
