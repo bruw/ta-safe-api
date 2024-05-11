@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\DeviceOwnerInvoiceValidation;
+namespace App\Actions\DeviceInvoiceProductValidation;
 
 use App\Models\Device;
 use App\Traits\StringNormalizer;
@@ -18,7 +18,7 @@ class FindProductInInvoiceMatchingDeviceAction
         $this->fuzz = new Fuzz();
     }
 
-    public function execute(): ?array
+    public function execute(): ?string
     {
         $invoiceProducts = $this->extractProductLines();
 
@@ -44,7 +44,7 @@ class FindProductInInvoiceMatchingDeviceAction
     /**
      * Search for the product with the greatest similarity to the device.
      */
-    private function findMatchingProduct(array $invoiceProducts): ?array
+    private function findMatchingProduct(array $invoiceProducts): ?string
     {
         $bestMatchingProduct = null;
         $bestMatchingScore = 0;
@@ -59,14 +59,10 @@ class FindProductInInvoiceMatchingDeviceAction
         }
 
         if ($bestMatchingScore >= $this::MIN_SIMILARITY_SCORE) {
-            return [
-                'product' => $bestMatchingProduct,
-                'score' => $bestMatchingScore,
-            ];
+            return $bestMatchingProduct;
         }
 
         return null;
-
     }
 
     /**

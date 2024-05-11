@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\DeviceOwnerInvoiceValidation;
+namespace App\Actions\DeviceInvoiceProductValidation;
 
 use App\Constants\DeviceAttributeValidationRatio;
 use App\Models\Brand;
@@ -18,13 +18,13 @@ class DeviceBrandValidationAction
     private Fuzz $fuzz;
     private Process $process;
     private string $deviceBrand;
-    private string $invoiceProductDescriptions;
     private array $bestBrandMatch;
     private DeviceAttributeValidationLog $result;
     private const MIN_BRAND_SIMILARITY = DeviceAttributeValidationRatio::MIN_BRAND_SIMILARITY;
 
     public function __construct(
         private Device $device,
+        private string $invoiceProduct,
     ) {
         $this->fuzz = new Fuzz();
         $this->process = new Process();
@@ -33,8 +33,8 @@ class DeviceBrandValidationAction
             $this->device->deviceModel->brand->name
         );
 
-        $this->invoiceProductDescriptions = $this->normalizeInvoiceProductDescriptions(
-            $this->device->invoice->product_description
+        $this->invoiceProduct = $this->normalizeInvoiceProduct(
+            $invoiceProduct
         );
     }
 
@@ -64,9 +64,9 @@ class DeviceBrandValidationAction
     /**
      * Normalizes the attribute invoiceProducts by removing accents, digits and special characters.
      */
-    private function normalizeInvoiceProductDescriptions(string $products): string
+    private function normalizeInvoiceProduct(string $product): string
     {
-        return $this->extractOnlyLetters($products);
+        return $this->extractOnlyLetters($product);
     }
 
     /**
@@ -74,7 +74,7 @@ class DeviceBrandValidationAction
      */
     private function calculateSimilarityRatio(): void
     {
-        $wordsOfDescriptions = explode(' ', $this->invoiceProductDescriptions);
+        $wordsOfDescriptions = explode(' ', $this->invoiceProduct);
 
         $this->bestBrandMatch = $this->process->extract(
             $this->deviceBrand, $wordsOfDescriptions, null, [$this->fuzz, 'ratio']
@@ -95,7 +95,7 @@ class DeviceBrandValidationAction
             'attribute_label' => 'name',
             'attribute_value' => $this->deviceBrand,
             'invoice_attribute_label' => 'product_description',
-            'invoice_attribute_value' => $this->invoiceProductDescriptions,
+            'invoice_attribute_value' => $this->invoiceProduct,
             'invoice_validated_value' => $validated ? $this->bestBrandMatch[0] : null,
             'similarity_ratio' => $similarityRatio,
             'min_similarity_ratio' => self::MIN_BRAND_SIMILARITY,

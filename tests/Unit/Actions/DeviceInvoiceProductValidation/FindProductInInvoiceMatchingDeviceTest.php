@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Actions\DeviceOwnerInvoiceValidation;
+namespace Tests\Unit\Actions\DeviceInvoiceProductValidation;
 
-use App\Actions\DeviceOwnerInvoiceValidation\FindProductInInvoiceMatchingDeviceAction;
+use App\Actions\DeviceInvoiceProductValidation\FindProductInInvoiceMatchingDeviceAction;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
@@ -80,8 +80,7 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
         $action = new FindProductInInvoiceMatchingDeviceAction($this->device);
         $result = $action->execute();
 
-        $this->assertEquals($result['product'], $description);
-        $this->assertEquals($result['score'], 525);
+        $this->assertEquals($result, $description);
     }
 
     public function test_should_return_null_when_the_similarity_score_is_less_than_650(): void
@@ -124,7 +123,7 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
         $action = new FindProductInInvoiceMatchingDeviceAction($this->device);
         $result = $action->execute();
 
-        $this->assertEquals($result['product'], $description);
+        $this->assertEquals($result, $description);
     }
 
     public function test_must_return_the_description_with_the_greatest_similarity_to_the_device_in_a_list_of_similar_products(): void
@@ -143,7 +142,7 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
         $action = new FindProductInInvoiceMatchingDeviceAction($this->device);
         $result = $action->execute();
 
-        $this->assertEquals($result['product'], $description);
+        $this->assertEquals($result, $description);
     }
 
     public function test_should_return_the_description_with_the_greatest_similarity_to_the_device_in_a_list_off_different_devices(): void
@@ -169,6 +168,6 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
         $action = new FindProductInInvoiceMatchingDeviceAction($this->device);
         $result = $action->execute();
 
-        $this->assertEquals($result['product'], $description);
+        $this->assertEquals($result, $description);
     }
 }

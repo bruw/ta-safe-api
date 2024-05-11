@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Actions\DeviceOwnerInvoiceValidation;
+namespace Tests\Unit\Actions\DeviceInvoiceProductValidation;
 
-use App\Actions\DeviceOwnerInvoiceValidation\DeviceBrandValidationAction;
+use App\Actions\DeviceInvoiceProductValidation\DeviceBrandValidationAction;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
@@ -57,7 +57,11 @@ class DeviceBrandValidationTest extends TestCase
         $this->invoice = InvoiceFactory::new()
             ->for($this->device)
             ->create([
-                'product_description' => $this->brand->name,
+                'product_description' => "{$this->brand->name}"
+                . " {$this->device->deviceModel->name}"
+                . " {$this->device->deviceModel->ram}"
+                . " {$this->device->deviceModel->storage}"
+                . " {$this->device->color}",
             ]);
     }
 
@@ -67,7 +71,10 @@ class DeviceBrandValidationTest extends TestCase
 
     public function test_must_validate_identical_brands(): void
     {
-        $brandSimilarityValidator = new DeviceBrandValidationAction($this->device);
+        $brandSimilarityValidator = new DeviceBrandValidationAction(
+            $this->device, $this->invoice->product_description
+        );
+
         $result = $brandSimilarityValidator->execute();
 
         $this->assertTrue($result->validated);
@@ -76,7 +83,10 @@ class DeviceBrandValidationTest extends TestCase
 
     public function test_should_generate_a_record_in_the_database_for_successful_validations(): void
     {
-        $brandSimilarityValidator = new DeviceBrandValidationAction($this->device);
+        $brandSimilarityValidator = new DeviceBrandValidationAction(
+            $this->device, $this->invoice->product_description
+        );
+
         $brandSimilarityValidator->execute();
 
         $brand = $this->extractOnlyLetters($this->brand->name);
@@ -92,7 +102,7 @@ class DeviceBrandValidationTest extends TestCase
             'invoice_attribute_value' => $products,
             'invoice_validated_value' => $brand,
             'similarity_ratio' => 100,
-            'min_similarity_ratio' => 80,
+            'min_similarity_ratio' => 75,
             'validated' => true,
         ]);
     }
@@ -100,15 +110,18 @@ class DeviceBrandValidationTest extends TestCase
     public function test_must_be_able_to_validate_a_brand_even_if_it_is_in_the_middle_of_a_text(): void
     {
         $this->invoice->update([
-            'product_description' => "Knowing defeat as well as victory, {$this->brand->name} walking around shedding tears, that's how you become a real man.",
+            'product_description' => "Smartphone {$this->brand->name} Galaxy S20 Ultra 5G, 128GB, Cosmic Gray, 12GB RAM, Tela de 6.9 polegadas",
         ]);
 
-        $brandSimilarityValidator = new DeviceBrandValidationAction($this->device);
+        $brandSimilarityValidator = new DeviceBrandValidationAction(
+            $this->device, $this->invoice->product_description
+        );
+
         $result = $brandSimilarityValidator->execute();
 
         $this->assertTrue($result->validated);
         $this->assertEquals($result->similarity_ratio, 100);
-        $this->assertEquals($result->min_similarity_ratio, 80);
+        $this->assertEquals($result->min_similarity_ratio, 75);
     }
 
     public function test_the_action_must_validate_with_a_similarity_ratio_of_more_than_80_porcent(): void
@@ -121,12 +134,15 @@ class DeviceBrandValidationTest extends TestCase
             'product_description' => 'Xiaoni',
         ]);
 
-        $brandSimilarityValidator = new DeviceBrandValidationAction($this->device);
+        $brandSimilarityValidator = new DeviceBrandValidationAction(
+            $this->device, $this->invoice->product_description
+        );
+
         $result = $brandSimilarityValidator->execute();
 
         $this->assertTrue($result->validated);
         $this->assertEquals($result->similarity_ratio, 83);
-        $this->assertEquals($result->min_similarity_ratio, 80);
+        $this->assertEquals($result->min_similarity_ratio, 75);
     }
 
     public function test_the_should_not_validate_brands_with_a_similarity_ratio_of_less_than_80_percent(): void
@@ -139,12 +155,15 @@ class DeviceBrandValidationTest extends TestCase
             'product_description' => 'Xiaon',
         ]);
 
-        $brandSimilarityValidator = new DeviceBrandValidationAction($this->device);
+        $brandSimilarityValidator = new DeviceBrandValidationAction(
+            $this->device, $this->invoice->product_description
+        );
+
         $result = $brandSimilarityValidator->execute();
 
         $this->assertFalse($result->validated);
         $this->assertEquals($result->similarity_ratio, 72);
-        $this->assertEquals($result->min_similarity_ratio, 80);
+        $this->assertEquals($result->min_similarity_ratio, 75);
     }
 
     public function test_should_validate_similar_brands_even_if_they_have_accents_or_other_special_characters(): void
@@ -157,12 +176,15 @@ class DeviceBrandValidationTest extends TestCase
             'product_description' => 'Âpple',
         ]);
 
-        $brandSimilarityValidator = new DeviceBrandValidationAction($this->device);
+        $brandSimilarityValidator = new DeviceBrandValidationAction(
+            $this->device, $this->invoice->product_description
+        );
+
         $result = $brandSimilarityValidator->execute();
 
         $this->assertTrue($result->validated);
         $this->assertEquals($result->similarity_ratio, 100);
-        $this->assertEquals($result->min_similarity_ratio, 80);
+        $this->assertEquals($result->min_similarity_ratio, 75);
     }
 
     public function test_should_not_validate_brands_that_are_empty_strings(): void
@@ -175,12 +197,15 @@ class DeviceBrandValidationTest extends TestCase
             'product_description' => '',
         ]);
 
-        $brandSimilarityValidator = new DeviceBrandValidationAction($this->device);
+        $brandSimilarityValidator = new DeviceBrandValidationAction(
+            $this->device, $this->invoice->product_description
+        );
+
         $result = $brandSimilarityValidator->execute();
 
         $this->assertFalse($result->validated);
         $this->assertEquals($result->similarity_ratio, 0);
-        $this->assertEquals($result->min_similarity_ratio, 80);
+        $this->assertEquals($result->min_similarity_ratio, 75);
     }
 
 }
