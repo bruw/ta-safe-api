@@ -7,6 +7,23 @@ use Normalizer;
 trait StringNormalizer
 {
     /**
+     * Normalizes the given string by removing accents, extra white spaces,
+     * and converting it to lowercase.
+     */
+    protected function basicNormalize(?string $value): string
+    {
+        if (is_null($value)) {
+            return '';
+        }
+
+        $unaccented = $this->removeAccents($value);
+        $whitoutExtraWhiteSpaces = $this->removeExtraWhiteSpaces($unaccented);
+        $result = strtolower($whitoutExtraWhiteSpaces);
+
+        return $result;
+    }
+
+    /**
      * Remove everything that is not a digit from the given string.
      */
     protected function extractOnlyDigits(?string $value): string
@@ -55,5 +72,13 @@ trait StringNormalizer
         $decomposedValue = Normalizer::normalize($value, Normalizer::FORM_D);
 
         return preg_replace('/\p{Mn}/u', '', $decomposedValue);
+    }
+
+    /**
+     * Remove all characters from the given string that are not alphanumeric.
+     */
+    protected function removeNonAlphanumeric(?string $value): string
+    {
+        return preg_replace('/[^A-Za-z\d\s]/', '', $value);
     }
 }
