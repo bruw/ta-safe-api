@@ -63,7 +63,7 @@ trait StringNormalizer
 
         $removedExtraWhiteSpaces = $this->removeExtraWhiteSpaces($value);
 
-        return preg_replace('/(\d+)(\s*)(GB|gb|G|g)/', '$1gb', $removedExtraWhiteSpaces);
+        return preg_replace('/(\d+)(\s*)(Gb|GB|gb|gB)/', '$1gb', $removedExtraWhiteSpaces);
     }
 
     /**

@@ -35,10 +35,11 @@ class NormalizeMemorySizeTest extends TestCase
     {
         $values = [
             'GB',
-            '12a GB',
-            'g',
             'gb',
+            '4 g',
             'GB 16',
+            '12a GB',
+            '4gb.',
             'Samsung galaxy GB12',
         ];
 
@@ -54,10 +55,9 @@ class NormalizeMemorySizeTest extends TestCase
     {
         $values = [
             '1 GB' => '1gb',
-            '256GB' => '256gb',
+            '256Gb' => '256gb',
             '8 gb' => '8gb',
-            '16 g' => '16gb',
-            '4 G' => '4gb',
+            '4 gB' => '4gb',
         ];
 
         foreach ($values as $originalValue => $expectedNormalizedValue) {
