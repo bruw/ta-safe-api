@@ -7,6 +7,7 @@ use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Device\RegisterDeviceRequest;
 use App\Http\Requests\Device\ValidateDeviceRegistrationRequest;
 use App\Http\Resources\Device\DeviceResource;
+use App\Jobs\Device\ValidateDeviceRegistrationJob;
 use App\Models\Device;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,6 +54,8 @@ class DeviceController extends Controller
             name: $data['name'],
             products: $data['products']
         );
+
+        ValidateDeviceRegistrationJob::dispatchAfterResponse($device);
 
         return response()->json(
             FlashMessage::success(trans('actions.device_validation.start'))->merge([
