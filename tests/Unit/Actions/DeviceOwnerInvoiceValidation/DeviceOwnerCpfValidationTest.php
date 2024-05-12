@@ -89,39 +89,10 @@ class DeviceOwnerCpfValidationTest extends TestCase
             'attribute_value' => $cpf,
             'invoice_attribute_label' => 'consumer_cpf',
             'invoice_attribute_value' => $cpf,
-            'invoice_validated_value' => $cpf,
             'similarity_ratio' => 100,
             'min_similarity_ratio' => 100,
             'validated' => true,
         ]);
-    }
-
-    public function test_the_action_must_be_able_to_validate_a_cpf_when_it_is_in_a_string_as_long_as_its_value_is_not_affected(): void
-    {
-        $this->invoice->update([
-            'consumer_cpf' => "Uniting @ll our dreams {$this->user->cpf} we'll find what we're looking for One Piece!.",
-        ]);
-
-        $this->invoice->refresh();
-
-        $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
-        $result = $cpfValidator->execute();
-
-        $this->assertTrue($result->validated);
-    }
-
-    public function test_the_action_must_not_be_able_to_validate_a_cpf_when_it_is_in_a_string_that_affects_its_value(): void
-    {
-        $this->invoice->update([
-            'consumer_cpf' => "Uniting @ll our dreams {$this->user->cpf}1 we'll find what we're looking for One Piece!.",
-        ]);
-
-        $this->invoice->refresh();
-
-        $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
-        $result = $cpfValidator->execute();
-
-        $this->assertFalse($result->validated);
     }
 
     public function test_the_action_must_not_be_able_to_validate_a_cpf_with_missing_digits(): void
@@ -130,7 +101,19 @@ class DeviceOwnerCpfValidationTest extends TestCase
             'consumer_cpf' => substr($this->user->cpf, 0, -1),
         ]);
 
-        $this->invoice->refresh();
+        $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
+        $result = $cpfValidator->execute();
+
+        $this->assertFalse($result->validated);
+    }
+
+    public function test_the_action_must_not_be_able_to_validate_a_cpf_with_extra_digits(): void
+    {
+        $cpfWithExtraDigit = $this->user->cpf . '0';
+
+        $this->invoice->update([
+            'consumer_cpf' => $cpfWithExtraDigit,
+        ]);
 
         $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
         $result = $cpfValidator->execute();
@@ -143,8 +126,6 @@ class DeviceOwnerCpfValidationTest extends TestCase
         $this->invoice->update([
             'consumer_cpf' => strrev($this->user->cpf),
         ]);
-
-        $this->invoice->refresh();
 
         $cpfValidator = new DeviceOwnerCpfValidationAction($this->device);
         $result = $cpfValidator->execute();
