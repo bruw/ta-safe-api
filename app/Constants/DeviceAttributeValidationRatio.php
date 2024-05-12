@@ -33,4 +33,9 @@ class DeviceAttributeValidationRatio
      * Device storage size similarity must be equal to or greater than 70%.
      */
     public const MIN_STORAGE_SIMILARITY = 70;
+
+    /**
+     * Device IMEIS similarity must be equal to or greater than 90%.
+     */
+    public const MIN_IMEI_SIMILARITY = 90;
 }
