@@ -53,6 +53,20 @@ trait StringNormalizer
     }
 
     /**
+     * Normalizes memory size product description by converting different representations.
+     */
+    protected function normalizeMemorySize(?string $value): string
+    {
+        if (is_null($value)) {
+            return '';
+        }
+
+        $removedExtraWhiteSpaces = $this->removeExtraWhiteSpaces($value);
+
+        return preg_replace('/(\d+)(\s*)(GB|gb|G|g)/', '$1gb', $removedExtraWhiteSpaces);
+    }
+
+    /**
      * Remove extra white spaces from the given string.
      */
     protected function removeExtraWhiteSpaces(?string $value): string

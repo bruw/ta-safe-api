@@ -17,7 +17,7 @@ class BasicNormalizeTest extends TestCase
     public function test_should_return_an_empty_string_when_the_param_is_a_null_value(): void
     {
         $this->assertEmpty(
-            $this->extractOnlyDigits(null),
+            $this->basicNormalize(null),
         );
     }
 
@@ -26,7 +26,7 @@ class BasicNormalizeTest extends TestCase
         $inputString = 'cafe e bao';
 
         $this->assertEquals(
-            $this->removeNonAlphanumeric($inputString),
+            $this->basicNormalize($inputString),
             $inputString
         );
     }
