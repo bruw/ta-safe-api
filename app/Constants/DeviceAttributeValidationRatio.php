@@ -28,4 +28,9 @@ class DeviceAttributeValidationRatio
      * Device ram size similarity must be equal to or greater than 70%.
      */
     public const MIN_RAM_SIMILARITY = 70;
+
+    /**
+     * Device storage size similarity must be equal to or greater than 70%.
+     */
+    public const MIN_STORAGE_SIMILARITY = 70;
 }

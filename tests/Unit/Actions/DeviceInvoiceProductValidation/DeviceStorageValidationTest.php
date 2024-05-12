@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Actions\DeviceInvoiceProductValidation;
 
-use App\Actions\DeviceInvoiceProductValidation\DeviceRamValidationAction;
+use App\Actions\DeviceInvoiceProductValidation\DeviceStorageValidationAction;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
@@ -16,7 +16,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class DeviceRamValidationTest extends TestCase
+class DeviceStorageValidationTest extends TestCase
 {
     use RefreshDatabase;
     use StringNormalizer;
@@ -48,7 +48,7 @@ class DeviceRamValidationTest extends TestCase
         $this->deviceModel = DeviceModelFactory::new()
             ->for($this->brand)
             ->create([
-                'ram' => '8 GB',
+                'storage' => '512 GB',
             ]);
 
         $this->device = DeviceFactory::new()
@@ -71,13 +71,13 @@ class DeviceRamValidationTest extends TestCase
      ================= **START OF TESTS** ==========================================================================
     */
 
-    public function test_must_validate_identical_device_ram_size(): void
+    public function test_must_validate_identical_device_storage_size(): void
     {
-        $deviceRamSimilarity = new DeviceRamValidationAction(
+        $deviceStorageSimilarity = new DeviceStorageValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $result = $deviceRamSimilarity->execute();
+        $result = $deviceStorageSimilarity->execute();
 
         $this->assertTrue($result->validated);
         $this->assertEquals($result->similarity_ratio, 100);
@@ -85,14 +85,14 @@ class DeviceRamValidationTest extends TestCase
 
     public function test_should_generate_a_record_in_the_database_for_successful_validations(): void
     {
-        $deviceRamSimilarity = new DeviceRamValidationAction(
+        $deviceStorageSimilarity = new DeviceStorageValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $deviceRamSimilarity->execute();
+        $deviceStorageSimilarity->execute();
 
-        $deviceModelRam = $this->normalizeMemorySize(
-            $this->device->deviceModel->ram
+        $deviceModelStorage = $this->normalizeMemorySize(
+            $this->device->deviceModel->storage
         );
 
         $product = $this->normalizeMemorySize(
@@ -103,8 +103,8 @@ class DeviceRamValidationTest extends TestCase
             'user_id' => $this->device->user->id,
             'device_id' => $this->device->id,
             'attribute_source' => DeviceModel::class,
-            'attribute_label' => 'ram',
-            'attribute_value' => $deviceModelRam,
+            'attribute_label' => 'storage',
+            'attribute_value' => $deviceModelStorage,
             'invoice_attribute_label' => 'product_description',
             'invoice_attribute_value' => $product,
             'similarity_ratio' => 100,
@@ -113,66 +113,66 @@ class DeviceRamValidationTest extends TestCase
         ]);
     }
 
-    public function test_must_be_able_to_validate_a_device_model_ram_even_if_it_is_between_a_text(): void
+    public function test_must_be_able_to_validate_a_device_model_storage_even_if_it_is_between_a_text(): void
     {
         $this->invoice->update([
-            'product_description' => "Smartphone Samsung Galaxy s23 Ultra 5G, 128GB/{$this->device->deviceModel->ram}, Tela de 6.9 polegadas",
+            'product_description' => "Smartphone Samsung Galaxy s23 Ultra 5G, {$this->device->deviceModel->storage}/8gb, Tela de 6.9 polegadas",
         ]);
 
-        $deviceRamSimilarity = new DeviceRamValidationAction(
+        $deviceStorageSimilarity = new DeviceStorageValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $result = $deviceRamSimilarity->execute();
+        $result = $deviceStorageSimilarity->execute();
 
         $this->assertTrue($result->validated);
         $this->assertEquals($result->similarity_ratio, 100);
         $this->assertEquals($result->min_similarity_ratio, 70);
     }
 
-    public function test_the_action_must_validate_a_device_model_ram_with_a_similarity_ratio_greater_than_or_equal_70_porcent(): void
+    public function test_the_action_must_validate_a_device_model_storage_with_a_similarity_ratio_greater_than_or_equal_70_porcent(): void
     {
         $this->deviceModel->update([
-            'ram' => '8 gb',
+            'storage' => '128 gb',
         ]);
 
         $this->invoice->update([
-            'product_description' => '256GB Armazenamento, 8 gB ram',
+            'product_description' => '128 GB Armaz. 8 Gb ram',
         ]);
 
         $this->device->refresh();
 
-        $deviceRamSimilarity = new DeviceRamValidationAction(
+        $deviceStorageSimilarity = new DeviceStorageValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $result = $deviceRamSimilarity->execute();
+        $result = $deviceStorageSimilarity->execute();
 
         $this->assertTrue($result->validated);
         $this->assertEquals($result->similarity_ratio, 100);
         $this->assertEquals($result->min_similarity_ratio, 70);
     }
 
-    public function test_the_action_must_not_validate_a_device_model_ram_with_a_similarity_ratio_of_less_than_70_porcent(): void
+    public function test_the_action_must_not_validate_a_device_model_storage_with_a_similarity_ratio_of_less_than_70_porcent(): void
     {
         $this->deviceModel->update([
-            'ram' => '16 GB',
+            'storage' => '20 GB',
         ]);
 
         $this->invoice->update([
-            'product_description' => '256GB Armazenamento, 16 Ram',
+            'product_description' => '20 Armazenamento, 16GB Ram',
         ]);
 
         $this->device->refresh();
 
-        $deviceRamSimilarity = new DeviceRamValidationAction(
+        $deviceStorageSimilarity = new DeviceStorageValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $result = $deviceRamSimilarity->execute();
+        $result = $deviceStorageSimilarity->execute();
 
         $this->assertFalse($result->validated);
-        $this->assertEquals($result->similarity_ratio, 26);
+        $this->assertEquals($result->similarity_ratio, 13);
         $this->assertEquals($result->min_similarity_ratio, 70);
     }
 }
