@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Actions\DeviceInvoiceProductValidation;
 
-use App\Actions\DeviceInvoiceProductValidation\DeviceModelNameValidationAction;
+use App\Actions\DeviceInvoiceProductValidation\DeviceColorValidationAction;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
@@ -16,7 +16,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class DeviceModelNameValidationTest extends TestCase
+class DeviceColorValidationTest extends TestCase
 {
     use RefreshDatabase;
     use StringNormalizer;
@@ -52,7 +52,9 @@ class DeviceModelNameValidationTest extends TestCase
         $this->device = DeviceFactory::new()
             ->for(UserFactory::new()->create())
             ->for($this->deviceModel)
-            ->create();
+            ->create([
+                'color' => 'Deep Purple',
+            ]);
 
         $this->invoice = InvoiceFactory::new()
             ->for($this->device)
@@ -69,13 +71,13 @@ class DeviceModelNameValidationTest extends TestCase
      ================= **START OF TESTS** ==========================================================================
     */
 
-    public function test_must_validate_identical_device_model_names(): void
+    public function test_must_validate_identical_device_color(): void
     {
-        $deviceNameSimilarity = new DeviceModelNameValidationAction(
+        $deviceColorSimilarity = new DeviceColorValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $result = $deviceNameSimilarity->execute();
+        $result = $deviceColorSimilarity->execute();
 
         $this->assertTrue($result->validated);
         $this->assertEquals($result->similarity_ratio, 100);
@@ -83,14 +85,14 @@ class DeviceModelNameValidationTest extends TestCase
 
     public function test_should_generate_a_record_in_the_database_for_successful_validations(): void
     {
-        $deviceNameSimilarity = new DeviceModelNameValidationAction(
+        $deviceColorSimilarity = new DeviceColorValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $deviceNameSimilarity->execute();
+        $deviceColorSimilarity->execute();
 
-        $deviceName = $this->removeNonAlphanumeric(
-            $this->basicNormalize($this->deviceModel->name)
+        $deviceColor = $this->removeNonAlphanumeric(
+            $this->basicNormalize($this->device->color)
         );
 
         $product = $this->removeNonAlphanumeric(
@@ -100,123 +102,100 @@ class DeviceModelNameValidationTest extends TestCase
         $this->assertDatabaseHas('device_attribute_validation_logs', [
             'user_id' => $this->device->user->id,
             'device_id' => $this->device->id,
-            'attribute_source' => DeviceModel::class,
-            'attribute_label' => 'name',
-            'attribute_value' => $deviceName,
+            'attribute_source' => Device::class,
+            'attribute_label' => 'color',
+            'attribute_value' => $deviceColor,
             'invoice_attribute_label' => 'product_description',
             'invoice_attribute_value' => $product,
             'similarity_ratio' => 100,
-            'min_similarity_ratio' => 85,
+            'min_similarity_ratio' => 70,
             'validated' => true,
         ]);
     }
 
-    public function test_must_be_able_to_validate_a_device_model_name_even_if_it_is_between_a_text(): void
+    public function test_must_be_able_to_validate_a_device_color_even_if_it_is_between_a_text(): void
     {
         $this->invoice->update([
-            'product_description' => "Smartphone Motorola {$this->device->deviceModel->name} Ultra 5G, 128GB, Cosmic Gray, 12GB RAM, Tela de 6.9 polegadas",
+            'product_description' => "Smartphone Samsung Galaxy s23 Ultra 5G, 128GB, {$this->device->color}, 12GB RAM, Tela de 6.9 polegadas",
         ]);
 
-        $deviceNameSimilarity = new DeviceModelNameValidationAction(
+        $deviceColorSimilarity = new DeviceColorValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $result = $deviceNameSimilarity->execute();
+        $result = $deviceColorSimilarity->execute();
 
         $this->assertTrue($result->validated);
         $this->assertEquals($result->similarity_ratio, 100);
-        $this->assertEquals($result->min_similarity_ratio, 85);
+        $this->assertEquals($result->min_similarity_ratio, 70);
     }
 
-    public function test_the_action_must_validate_a_device_model_name_with_a_similarity_ratio_greater_than_or_equal_85_porcent(): void
+    public function test_the_action_must_validate_a_device_color_with_a_similarity_ratio_greater_than_or_equal_70_porcent(): void
     {
-        $this->deviceModel->update([
-            'name' => 'Poco x5 Pro',
+        $this->device->update([
+            'color' => 'Roxo Cósmico',
         ]);
 
         $this->invoice->update([
-            'product_description' => 'Poc x5 Pr',
+            'product_description' => 'Roxo Co',
         ]);
 
         $this->device->refresh();
 
-        $deviceNameSimilarity = new DeviceModelNameValidationAction(
+        $deviceColorSimilarity = new DeviceColorValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $result = $deviceNameSimilarity->execute();
+        $result = $deviceColorSimilarity->execute();
 
         $this->assertTrue($result->validated);
-        $this->assertEquals($result->similarity_ratio, 90);
-        $this->assertEquals($result->min_similarity_ratio, 85);
+        $this->assertEquals($result->similarity_ratio, 73);
+        $this->assertEquals($result->min_similarity_ratio, 70);
     }
 
-    public function test_the_action_must_not_validate_a_device_model_name_with_a_similarity_ratio_of_less_than_85_porcent(): void
+    public function test_the_action_must_not_validate_a_device_color_with_a_similarity_ratio_of_less_than_70_porcent(): void
     {
-        $this->deviceModel->update([
-            'name' => 'Poco x5 Pro',
+        $this->device->update([
+            'color' => 'Roxo Cósmico',
         ]);
 
         $this->invoice->update([
-            'product_description' => 'Po x5 Pr',
+            'product_description' => 'Roxo Azul',
         ]);
 
         $this->device->refresh();
 
-        $deviceNameSimilarity = new DeviceModelNameValidationAction(
+        $deviceColorSimilarity = new DeviceColorValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $result = $deviceNameSimilarity->execute();
+        $result = $deviceColorSimilarity->execute();
 
         $this->assertFalse($result->validated);
-        $this->assertEquals($result->similarity_ratio, 84);
-        $this->assertEquals($result->min_similarity_ratio, 85);
+        $this->assertEquals($result->similarity_ratio, 61);
+        $this->assertEquals($result->min_similarity_ratio, 70);
     }
 
-    public function test_should_validate_similar_device_model_names_even_if_they_have_accents_or_other_special_characters(): void
+    public function test_should_validate_similar_device_color_even_if_they_have_accents_or_other_special_characters(): void
     {
-        $this->deviceModel->update([
-            'name' => 'Galaxy a54.',
+        $this->device->update([
+            'color' => 'Azul Petróleo',
         ]);
 
         $this->invoice->update([
-            'product_description' => 'Gâlaxy á54!',
+            'product_description' => 'Ázul (pêtróleo!)',
         ]);
 
         $this->device->refresh();
 
-        $deviceNameSimilarity = new DeviceModelNameValidationAction(
+        $deviceColorSimilarity = new DeviceColorValidationAction(
             $this->device, $this->invoice->product_description
         );
 
-        $result = $deviceNameSimilarity->execute();
+        $result = $deviceColorSimilarity->execute();
 
         $this->assertTrue($result->validated);
         $this->assertEquals($result->similarity_ratio, 100);
-        $this->assertEquals($result->min_similarity_ratio, 85);
-    }
-
-    public function test_should_not_validate_device_model_name_that_are_empty_strings(): void
-    {
-        $this->deviceModel->update([
-            'name' => '',
-        ]);
-
-        $this->invoice->update([
-            'product_description' => '',
-        ]);
-
-        $this->device->refresh();
-
-        $deviceNameSimilarity = new DeviceModelNameValidationAction(
-            $this->device, $this->invoice->product_description
-        );
-
-        $result = $deviceNameSimilarity->execute();
-
-        $this->assertFalse($result->validated);
-        $this->assertEquals($result->similarity_ratio, 0);
-        $this->assertEquals($result->min_similarity_ratio, 85);
+        $this->assertEquals($result->min_similarity_ratio, 70);
     }
 }
