@@ -23,4 +23,9 @@ class DeviceAttributeValidationRatio
      * Device color similarity must be equal to or greater than 70%.
      */
     public const MIN_COLOR_SIMILARITY = 70;
+
+    /**
+     * Device ram size similarity must be equal to or greater than 70%.
+     */
+    public const MIN_RAM_SIMILARITY = 70;
 }
