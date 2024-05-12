@@ -43,7 +43,6 @@ class DeviceOwnerNameValidationAction
             $similarityRatio = $this->calculateSimilarityRatio();
             $this->persistValidationResult($similarityRatio);
         } catch (Exception $e) {
-            dd($e);
             $this->persistValidationResult(0);
         } finally {
             return $this->result;
@@ -72,7 +71,7 @@ class DeviceOwnerNameValidationAction
     /**
      * Persists the validation results in the database.
      */
-    private function persistValidationResult($similarityRatio): void
+    private function persistValidationResult(int $similarityRatio): void
     {
         $validated = $similarityRatio >= self::MIN_NAME_SIMILARITY;
 
@@ -84,7 +83,6 @@ class DeviceOwnerNameValidationAction
             'attribute_value' => $this->deviceOwnerName,
             'invoice_attribute_label' => 'consumer_name',
             'invoice_attribute_value' => $this->invoiceConsumerName,
-            'invoice_validated_value' => $validated ? $this->invoiceConsumerName : null,
             'similarity_ratio' => $similarityRatio,
             'min_similarity_ratio' => self::MIN_NAME_SIMILARITY,
             'validated' => $validated,

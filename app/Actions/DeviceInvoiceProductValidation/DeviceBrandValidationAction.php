@@ -9,16 +9,13 @@ use App\Models\DeviceAttributeValidationLog;
 use App\Traits\StringNormalizer;
 use Exception;
 use FuzzyWuzzy\Fuzz;
-use FuzzyWuzzy\Process;
 
 class DeviceBrandValidationAction
 {
     use StringNormalizer;
 
     private Fuzz $fuzz;
-    private Process $process;
     private string $deviceBrand;
-    private array $bestBrandMatch;
     private DeviceAttributeValidationLog $result;
     private const MIN_BRAND_SIMILARITY = DeviceAttributeValidationRatio::MIN_BRAND_SIMILARITY;
 
@@ -27,13 +24,12 @@ class DeviceBrandValidationAction
         private string $invoiceProduct,
     ) {
         $this->fuzz = new Fuzz();
-        $this->process = new Process();
 
-        $this->deviceBrand = $this->normalizeBrand(
+        $this->deviceBrand = $this->normalizeAttribute(
             $this->device->deviceModel->brand->name
         );
 
-        $this->invoiceProduct = $this->normalizeInvoiceProduct(
+        $this->invoiceProduct = $this->normalizeAttribute(
             $invoiceProduct
         );
     }
@@ -44,8 +40,8 @@ class DeviceBrandValidationAction
     public function execute(): DeviceAttributeValidationLog
     {
         try {
-            $this->calculateSimilarityRatio();
-            $this->persistValidationResult($this->bestBrandMatch[1]);
+            $similarityRatio = $this->calculateSimilarityRatio();
+            $this->persistValidationResult($similarityRatio);
         } catch (Exception $e) {
             $this->persistValidationResult(0);
         } finally {
@@ -54,37 +50,28 @@ class DeviceBrandValidationAction
     }
 
     /**
-     * Normalizes the attribute brand by removing accents, digits and special characters.
+     * Normalizes the attribute by removing accents, digits, and special characters.
      */
-    private function normalizeBrand(string $brand): string
+    private function normalizeAttribute(string $attribute): string
     {
-        return $this->extractOnlyLetters($brand);
-    }
-
-    /**
-     * Normalizes the attribute invoiceProducts by removing accents, digits and special characters.
-     */
-    private function normalizeInvoiceProduct(string $product): string
-    {
-        return $this->extractOnlyLetters($product);
+        return $this->extractOnlyLetters($attribute);
     }
 
     /**
      * Calculate ratio score between deviceBrand and invoiceProductDescriptions.
      */
-    private function calculateSimilarityRatio(): void
+    private function calculateSimilarityRatio(): int
     {
-        $wordsOfDescriptions = explode(' ', $this->invoiceProduct);
-
-        $this->bestBrandMatch = $this->process->extract(
-            $this->deviceBrand, $wordsOfDescriptions, null, [$this->fuzz, 'ratio']
-        )[0];
+        return $this->fuzz->tokenSetRatio(
+            $this->deviceBrand,
+            $this->invoiceProduct
+        );
     }
 
     /**
      * Persists the validation results in the database.
      */
-    private function persistValidationResult($similarityRatio): void
+    private function persistValidationResult(int $similarityRatio): void
     {
         $validated = $similarityRatio >= self::MIN_BRAND_SIMILARITY;
 
@@ -96,7 +83,6 @@ class DeviceBrandValidationAction
             'attribute_value' => $this->deviceBrand,
             'invoice_attribute_label' => 'product_description',
             'invoice_attribute_value' => $this->invoiceProduct,
-            'invoice_validated_value' => $validated ? $this->bestBrandMatch[0] : null,
             'similarity_ratio' => $similarityRatio,
             'min_similarity_ratio' => self::MIN_BRAND_SIMILARITY,
             'validated' => $validated,

@@ -89,7 +89,6 @@ class DeviceOwnerNameValidationTest extends TestCase
             'attribute_value' => $name,
             'invoice_attribute_label' => 'consumer_name',
             'invoice_attribute_value' => $name,
-            'invoice_validated_value' => $name,
             'similarity_ratio' => 100,
             'min_similarity_ratio' => 75,
             'validated' => true,

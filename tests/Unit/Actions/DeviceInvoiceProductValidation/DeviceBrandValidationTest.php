@@ -100,7 +100,6 @@ class DeviceBrandValidationTest extends TestCase
             'attribute_value' => $brand,
             'invoice_attribute_label' => 'product_description',
             'invoice_attribute_value' => $products,
-            'invoice_validated_value' => $brand,
             'similarity_ratio' => 100,
             'min_similarity_ratio' => 75,
             'validated' => true,

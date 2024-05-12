@@ -20,9 +20,8 @@ return new class extends Migration
             $table->string('attribute_value');
             $table->string('invoice_attribute_label');
             $table->text('invoice_attribute_value');
-            $table->string('invoice_validated_value')->nullable();
-            $table->unsignedDecimal('similarity_ratio', total: 5, places: 2);
-            $table->unsignedDecimal('min_similarity_ratio', total: 5, places: 2);
+            $table->unsignedInteger('similarity_ratio');
+            $table->unsignedInteger('min_similarity_ratio');
             $table->boolean('validated');
             $table->timestamps();
         });
