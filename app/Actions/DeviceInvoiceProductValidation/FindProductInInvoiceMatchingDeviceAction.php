@@ -18,15 +18,15 @@ class FindProductInInvoiceMatchingDeviceAction
         $this->fuzz = new Fuzz();
     }
 
-    public function execute(): ?string
+    public function execute(): string
     {
         $invoiceProducts = $this->extractProductLines();
 
-        if ($invoiceProducts) {
+        if (! empty($invoiceProducts)) {
             return $this->findMatchingProduct($invoiceProducts);
         }
 
-        return null;
+        return '';
     }
 
     /**
@@ -44,9 +44,9 @@ class FindProductInInvoiceMatchingDeviceAction
     /**
      * Search for the product with the greatest similarity to the device.
      */
-    private function findMatchingProduct(array $invoiceProducts): ?string
+    private function findMatchingProduct(array $invoiceProducts): string
     {
-        $bestMatchingProduct = null;
+        $bestMatchingProduct = '';
         $bestMatchingScore = 0;
 
         foreach ($invoiceProducts as $product) {
@@ -62,7 +62,7 @@ class FindProductInInvoiceMatchingDeviceAction
             return $bestMatchingProduct;
         }
 
-        return null;
+        return '';
     }
 
     /**

@@ -83,7 +83,7 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
         $this->assertEquals($result, $description);
     }
 
-    public function test_should_return_null_when_the_similarity_score_is_less_than_650(): void
+    public function test_should_return_an_empty_string_when_the_similarity_score_is_less_than_650(): void
     {
         $description = 'Apple';
 
@@ -94,10 +94,10 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
         $action = new FindProductInInvoiceMatchingDeviceAction($this->device);
         $result = $action->execute();
 
-        $this->assertNull($result);
+        $this->assertEmpty($result);
     }
 
-    public function test_must_return_null_if_the_invoice_does_not_contain_products(): void
+    public function test_must_return_an_empty_string_if_the_invoice_does_not_contain_products(): void
     {
         $this->invoice->update([
             'product_description' => '',
@@ -106,7 +106,7 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
         $action = new FindProductInInvoiceMatchingDeviceAction($this->device);
         $result = $action->execute();
 
-        $this->assertNull($result);
+        $this->assertEmpty($result);
     }
 
     public function test_should_return_the_description_with_the_greatest_similarity_to_the_device_in_a_diverse_list(): void
