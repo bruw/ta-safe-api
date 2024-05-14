@@ -8,5 +8,6 @@ return [
     ],
     'device_validation' => [
         'start' => 'Informações enviadas com sucesso! Seu registro esta em análise.',
+        'invalid' => 'Não é possível validar este dispositivo pois a nota fiscal é inválida.',
     ],
 ];
