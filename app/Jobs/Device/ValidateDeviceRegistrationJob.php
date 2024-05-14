@@ -20,7 +20,8 @@ class ValidateDeviceRegistrationJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private Device $device) {
+    public function __construct(private Device $device)
+    {
         $this->validationService = new DeviceInvoiceValidationService($device);
     }
 
@@ -30,7 +31,7 @@ class ValidateDeviceRegistrationJob implements ShouldQueue
     public function handle(): void
     {
         $criticalLogs = $this->executeCriticalValidations();
-        $this->executeInformationalValidations();
+        $this->executeNonCriticalValidations();
 
         $this->validateByLogs($criticalLogs);
     }
@@ -52,7 +53,7 @@ class ValidateDeviceRegistrationJob implements ShouldQueue
     /**
      * Action important for some product features;
      */
-    private function executeInformationalValidations(): void
+    private function executeNonCriticalValidations(): void
     {
         $this->validationService->validateRam();
         $this->validationService->validateStorage();
@@ -71,14 +72,14 @@ class ValidateDeviceRegistrationJob implements ShouldQueue
             && $logs['brandLog']->validated
             && $logs['modelNameLog']->validated;
 
-        $this->modifyValidationStatus($isValid);
+        $this->updateDeviceRegistrationStatus($isValid);
     }
 
     /**
      * Updates device validation status;
      * Can be validated or rejecteded depending on critical validations.
      */
-    private function modifyValidationStatus(bool $isValid): void
+    private function updateDeviceRegistrationStatus(bool $isValid): void
     {
         $status = $isValid
             ? DeviceValidationStatus::VALIDATED
@@ -88,5 +89,4 @@ class ValidateDeviceRegistrationJob implements ShouldQueue
             'validation_status' => $status,
         ]);
     }
-
 }
