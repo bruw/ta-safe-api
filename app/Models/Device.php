@@ -3,27 +3,21 @@
 namespace App\Models;
 
 use App\Actions\Device\CreateSharingTokenAction;
+use App\Actions\Device\ValidateDeviceRegistrationAction;
 use App\Enums\Device\DeviceValidationStatus;
+use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 use Lib\Strings\StringHelper;
 
 class Device extends Model
 {
     use HasFactory;
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'validation_status' => DeviceValidationStatus::class,
-    ];
 
     /**
      * The attributes that are mass assignable.
@@ -38,6 +32,22 @@ class Device extends Model
         'imei_1',
         'imei_2',
         'validation_status',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'validation_status' => DeviceValidationStatus::class,
+    ];
+
+    /**
+     * The model's default values for attributes.
+     */
+    protected $attributes = [
+        'validation_status' => DeviceValidationStatus::PENDING,
     ];
 
     /**
@@ -75,6 +85,14 @@ class Device extends Model
     }
 
     /**
+     * Get the attribute validation logs associated with the device.
+     */
+    public function attributeValidationLogs(): HasMany
+    {
+        return $this->hasMany(DeviceAttributeValidationLog::class);
+    }
+
+    /**
      * Get device registration transfers.
      */
     public function transfers(): HasMany
@@ -108,5 +126,38 @@ class Device extends Model
         $createToken = new CreateSharingTokenAction($this);
 
         return $createToken->execute();
+    }
+
+    /**
+     * Invoke device registration validation.
+     */
+    public function validateRegistration(string $cpf, string $name, string $products): bool
+    {
+        $action = new ValidateDeviceRegistrationAction(
+            $this,
+            $cpf,
+            $name,
+            $products
+        );
+
+        return $action->execute();
+    }
+
+    /**
+     * Invalidates a device record with pending status only.
+     */
+    public function invalidateRegistration(): bool
+    {
+        return DB::transaction(function () {
+            if ($this->validation_status == DeviceValidationStatus::PENDING) {
+                $this->update([
+                    'validation_status' => DeviceValidationStatus::REJECTED,
+                ]);
+
+                return true;
+            }
+
+            return false;
+        });
     }
 }

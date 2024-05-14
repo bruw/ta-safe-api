@@ -110,7 +110,7 @@ return [
         'numbers' => 'O campo :attribute deve conter pelo menos um número.',
         'symbols' => 'O campo :attribute deve conter pelo menos um símbolo.',
         'uncompromised' => 'A senha que você inseriu em :attribute está em um vazamento de dados.'
-            .' Por favor escolha uma senha diferente.',
+            . ' Por favor escolha uma senha diferente.',
     ],
     'present' => 'O campo :attribute deve estar presente.',
     'regex' => 'O campo :attribute tem um formato inválido.',
@@ -166,7 +166,7 @@ return [
         ],
         'device_registration' => [
             'unable_to_register_device' => 'Houve um problema ao tentar registrar o díspositivo. '
-                .' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
         'device_transfer' => [
             'not_yourself' => 'Não é possível criar uma transferência de dispositivo para si mesmo',
@@ -174,22 +174,29 @@ return [
             'register_not_validated' => 'Não é possível realizar transferências de registros não validados.',
             'transfer_closed' => 'Não é possível alterar uma proposta de transferência finalizada.',
             'unable_to_create_transfer' => 'Houve um problema ao criar a transferência do dispositivo. '
-                .' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
             'unable_to_accept_transfer' => 'Houve um problema ao aceitar a transferência do dispositivo. '
-                .' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
             'unable_to_reject_transfer' => 'Houve um problema ao rejeitar a transferência do dispositivo. '
-                .' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
             'unable_to_cancel_transfer' => 'Houve um problema ao cancelar a transferência do dispositivo. '
-                .' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
         'register_user' => [
             'unable_to_register_user' => 'Houve um problema ao criar o novo usuário. '
-                .' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
         'device_sharing_token' => [
             'register_not_validated' => 'Não é possível compartilhar o registro de dispositivos não validados.',
             'unable_to_create_token' => 'Houve um problema ao gerar o token de compartilhamento do dispositivo. '
-                .' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
+        ],
+        'device_status' => [
+            'must_be_pending' => 'O status de validação do dispositivo deve ser pendente.',
+        ],
+        'device_validation' => [
+            'unable_to_validate' => 'Houve um problema ao validar o dispositivo. '
+                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
     ],
 
@@ -257,6 +264,8 @@ return [
         'imei_2' => 'IMEI 2',
         'search_term' => 'termo de pesquisa',
         'target_user_id' => 'identificador do usuário de destino',
+        'products' => 'produtos',
+        'cpf' => 'cpf',
     ],
 
 ];

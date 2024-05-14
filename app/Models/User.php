@@ -83,6 +83,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the device attribute validation logs associated with the user.
+     */
+    public function deviceAttributeValidationLogs(): HasMany
+    {
+        return $this->hasMany(DeviceAttributeValidationLog::class);
+    }
+
+    /**
      * Get user transfers devices.
      */
     public function userDevicesTransfers(): Collection

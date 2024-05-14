@@ -20,7 +20,7 @@ class DeviceTransfer extends Model
         'device_id',
         'source_user_id',
         'target_user_id',
-        'status'
+        'status',
     ];
 
     /**
@@ -29,7 +29,14 @@ class DeviceTransfer extends Model
      * @var array
      */
     protected $casts = [
-        'status' => DeviceTransferStatus::class
+        'status' => DeviceTransferStatus::class,
+    ];
+
+    /**
+     * The model's default values for attributes.
+     */
+    protected $attributes = [
+        'status' => DeviceTransferStatus::PENDING,
     ];
 
     /**
