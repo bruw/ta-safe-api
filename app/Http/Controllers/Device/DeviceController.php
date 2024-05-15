@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Device;
 
-use App\Enums\Device\DeviceValidationStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Device\RegisterDeviceRequest;
@@ -39,6 +38,11 @@ class DeviceController extends Controller
     public function viewDevice(Device $device): JsonResource
     {
         $this->authorize('view', $device);
+
+        $device->setAttribute(
+            'validation_attributes',
+            $device->validatedAttributes()
+        );
 
         return new DeviceResource($device);
     }

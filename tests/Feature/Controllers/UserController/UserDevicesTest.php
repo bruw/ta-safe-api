@@ -102,6 +102,7 @@ class UserDevicesTest extends TestCase
                             ->where('device_model.ram', $this->deviceModel2->ram)
                             ->where('device_model.storage', $this->deviceModel2->storage)
                             ->where('device_model.brand.name', $this->deviceModel2->brand->name)
+                            ->has('validation_attributes')
                     )
 
             );
