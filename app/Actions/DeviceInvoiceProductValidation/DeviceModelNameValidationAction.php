@@ -83,7 +83,7 @@ class DeviceModelNameValidationAction
             'user_id' => $this->device->user->id,
             'device_id' => $this->device->id,
             'attribute_source' => DeviceModel::class,
-            'attribute_label' => 'name',
+            'attribute_label' => 'model_name',
             'attribute_value' => $this->deviceModelName,
             'invoice_attribute_label' => 'product_description',
             'invoice_attribute_value' => $this->invoiceProduct,

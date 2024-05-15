@@ -79,7 +79,7 @@ class DeviceOwnerNameValidationAction
             'user_id' => $this->device->user->id,
             'device_id' => $this->device->id,
             'attribute_source' => User::class,
-            'attribute_label' => 'name',
+            'attribute_label' => 'user_name',
             'attribute_value' => $this->deviceOwnerName,
             'invoice_attribute_label' => 'consumer_name',
             'invoice_attribute_value' => $this->invoiceConsumerName,

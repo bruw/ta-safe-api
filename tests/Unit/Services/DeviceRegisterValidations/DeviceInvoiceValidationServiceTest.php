@@ -101,7 +101,7 @@ class DeviceInvoiceValidationServiceTest extends TestCase
 
         $this->assertInstanceOf(DeviceAttributeValidationLog::class, $userNameValidationLog);
         $this->assertEquals($userNameValidationLog->attribute_source, 'App\Models\User');
-        $this->assertEquals($userNameValidationLog->attribute_label, 'name');
+        $this->assertEquals($userNameValidationLog->attribute_label, 'user_name');
     }
 
     public function test_the_service_must_return_an_instance_of_device_brand_log_validation(): void
@@ -112,7 +112,7 @@ class DeviceInvoiceValidationServiceTest extends TestCase
 
         $this->assertInstanceOf(DeviceAttributeValidationLog::class, $deviceBrandValidationLog);
         $this->assertEquals($deviceBrandValidationLog->attribute_source, 'App\Models\Brand');
-        $this->assertEquals($deviceBrandValidationLog->attribute_label, 'name');
+        $this->assertEquals($deviceBrandValidationLog->attribute_label, 'brand_name');
     }
 
     public function test_the_service_must_return_an_instance_of_device_model_log_validation(): void
@@ -122,7 +122,7 @@ class DeviceInvoiceValidationServiceTest extends TestCase
 
         $this->assertInstanceOf(DeviceAttributeValidationLog::class, $deviceModelValidationLog);
         $this->assertEquals($deviceModelValidationLog->attribute_source, 'App\Models\DeviceModel');
-        $this->assertEquals($deviceModelValidationLog->attribute_label, 'name');
+        $this->assertEquals($deviceModelValidationLog->attribute_label, 'model_name');
     }
 
     public function test_the_service_must_return_an_instance_of_device_ram_memory_log_validation(): void
