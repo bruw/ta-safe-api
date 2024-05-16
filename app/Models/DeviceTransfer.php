@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Device\DeviceTransferStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,6 +39,15 @@ class DeviceTransfer extends Model
     protected $attributes = [
         'status' => DeviceTransferStatus::PENDING,
     ];
+
+    /**
+     * Scope a query to only include accepted transfers.
+     */
+    public function scopeAcceptedAndOrdered(Builder $query): void
+    {
+        $query->where('status', DeviceTransferStatus::ACCEPTED)
+            ->orderBy('id');
+    }
 
     /**
      * Get the device transfer.

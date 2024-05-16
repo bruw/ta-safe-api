@@ -54,7 +54,7 @@ class UserController extends Controller
     public function userDevices(Request $request): JsonResource
     {
         $currentUser = $request->user();
-        $devices = $currentUser->devicesOrderedByIdDesc();
+        $devices = $currentUser->devicesOrderedByUpdate();
 
         return DeviceResource::collection($devices);
     }

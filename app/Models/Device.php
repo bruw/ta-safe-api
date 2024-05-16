@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Actions\Device\CreateSharingTokenAction;
 use App\Actions\Device\ValidateDeviceRegistrationAction;
 use App\Enums\Device\DeviceValidationStatus;
-use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -126,6 +125,25 @@ class Device extends Model
         $createToken = new CreateSharingTokenAction($this);
 
         return $createToken->execute();
+    }
+
+    /**
+     * Returns a key-value array for the validated attributes.
+     */
+    public function validatedAttributes(): array
+    {
+        return $this->attributeValidationLogs->pluck(
+            'validated',
+            'attribute_label'
+        )->toArray();
+    }
+
+    /**
+     * Get device registration transfers history.
+     */
+    public function transfersHistory(): HasMany
+    {
+        return $this->hasMany(DeviceTransfer::class)->acceptedAndOrdered();
     }
 
     /**

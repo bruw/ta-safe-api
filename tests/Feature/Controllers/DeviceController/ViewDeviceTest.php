@@ -78,6 +78,8 @@ class ViewDeviceTest extends TestCase
                     ->where('device_model.ram', $this->device->deviceModel->ram)
                     ->where('device_model.storage', $this->device->deviceModel->storage)
                     ->where('device_model.brand.name', $this->device->deviceModel->brand->name)
+                    ->has('validation_attributes')
+                    ->has('transfers_history')
             );
     }
 

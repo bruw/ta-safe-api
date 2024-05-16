@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\Device\DeviceValidationStatus;
+use App\Jobs\Device\ValidateDeviceRegistrationJob;
 use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\Invoice;
@@ -36,7 +37,7 @@ class DeviceSeeder extends Seeder
                 'color' => $item->color,
                 'imei_1' => $item->imei1,
                 'imei_2' => $item->imei2,
-                'validation_status' => DeviceValidationStatus::VALIDATED,
+                'validation_status' => DeviceValidationStatus::IN_ANALYSIS,
                 'user_id' => $user->id,
                 'device_model_id' => $deviceModel->id,
             ]);
@@ -48,6 +49,8 @@ class DeviceSeeder extends Seeder
                 'product_description' => $item->invoice->product_description,
                 'device_id' => $device->id
             ]);
+
+            ValidateDeviceRegistrationJob::dispatch($device);
         }
     }
 }

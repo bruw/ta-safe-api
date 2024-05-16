@@ -103,13 +103,13 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user's devices sorted by Id Desc.
+     * Get the user's devices sorted by updated_at desc.
      */
-    public function devicesOrderedByIdDesc()
+    public function devicesOrderedByUpdate()
     {
         return Device::where([
             'user_id' => $this->id,
-        ])->orderByDesc('id')->get();
+        ])->orderByDesc('updated_at')->get();
     }
 
     /**
