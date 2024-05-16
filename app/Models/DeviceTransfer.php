@@ -46,7 +46,7 @@ class DeviceTransfer extends Model
     public function scopeAcceptedAndOrdered(Builder $query): void
     {
         $query->where('status', DeviceTransferStatus::ACCEPTED)
-            ->orderBy('id', 'desc');
+            ->orderBy('id');
     }
 
     /**
