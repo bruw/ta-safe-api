@@ -22,7 +22,7 @@
             "access_key": "73948592610726394857263504972658304792635123",
             "consumer_name": "Monkey D. Luffy",
             "consumer_cpf": "273.623.457-04",
-            "product_description": "Smartphone Samsung Galaxy S22 5G, 128GB, 8GB RAM, Tela Infinita de 6.1''s Preto"
+            "product_description": "<span>Smartphone Samsung Galaxy S22 5G, 128GB, 8GB RAM, Tela Infinita de 6.1''s Preto</span>"
         }
     },
     {
@@ -48,7 +48,7 @@
             "access_key": "79234105813792645820314980236571492703628154",
             "consumer_name": "Roronoa Zoro",
             "consumer_cpf": "548.074.611-17",
-            "product_description": "Apple iPhone 11 (64 GB) - Branco"
+            "product_description": "<span>Apple iPhone 11 (64 GB) - Branco</span>"
         }
     },
     {
@@ -74,7 +74,7 @@
             "access_key": "83597246108472319506783241950682714305972631",
             "consumer_name": "Nami",
             "consumer_cpf": "354.273.593-03",
-            "product_description": "Smartphone xiaomi poco x3 pro tela 6,67'' 6gb/128gb azul"
+            "product_description": "<span>Smartphone xiaomi poco x3 pro tela 6,67'' 6gb/128gb azul</span>"
         }
     },
     {
@@ -100,7 +100,7 @@
             "access_key": "42983507614902836751079468273104582679301428",
             "consumer_name": "Nico Robin",
             "consumer_cpf": "323.699.455-08",
-            "product_description": "Smartphone Motorola Edge 30 Fusion 256GB Preto 5G Tela 6,55'' P-OLED 144Hz Câmera Tripla 50MP 8K Selfie 32MP 4K Dual Chip"
+            "product_description": "<span>Smartphone Motorola Edge 30 Fusion 256GB Preto 5G Tela 6,55'' P-OLED 144Hz Câmera Tripla 50MP 8K Selfie 32MP 4K Dual Chip</span>"
         }
     }
 ]
