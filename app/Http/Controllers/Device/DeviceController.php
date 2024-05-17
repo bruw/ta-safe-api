@@ -59,6 +59,11 @@ class DeviceController extends Controller
             $device->validatedAttributes()
         );
 
+        $device->setAttribute(
+            'transfers_history',
+            $device->transfers()->acceptedAndOrdered()->get()
+        );
+
         return new DeviceResource($device);
     }
 

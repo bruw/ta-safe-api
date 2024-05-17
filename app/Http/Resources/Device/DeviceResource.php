@@ -30,8 +30,10 @@ class DeviceResource extends JsonResource
             'updated_at' => $this->updated_at,
             'user' => new UserResource($this->user),
             'device_model' => new DeviceModelResource($this->deviceModel),
-            'validation_attributes' => $this->validation_attributes,
-            'transfers_history' => DeviceTransferBasicResource::collection($this->transfersHistory),
+            'validation_attributes' => $this->whenNotNull($this->validation_attributes),
+            'transfers_history' => DeviceTransferBasicResource::collection(
+                $this->whenNotNull($this->transfers_history)
+            ),
         ];
     }
 }

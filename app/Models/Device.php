@@ -141,14 +141,6 @@ class Device extends Model
     }
 
     /**
-     * Get device registration transfers history.
-     */
-    public function transfersHistory(): HasMany
-    {
-        return $this->hasMany(DeviceTransfer::class)->acceptedAndOrdered();
-    }
-
-    /**
      * Invoke device registration validation.
      */
     public function validateRegistration(string $cpf, string $name, string $products): bool
