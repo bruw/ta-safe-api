@@ -271,6 +271,7 @@ return [
         'target_user_id' => 'identificador do usuário de destino',
         'products' => 'produtos',
         'cpf' => 'cpf',
+        'token' => 'código de acesso',
     ],
 
 ];
