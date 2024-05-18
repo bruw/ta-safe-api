@@ -25,6 +25,7 @@ class DeviceSharingController extends Controller
             FlashMessage::success(trans_choice('flash_messages.success.created.m', 1, [
                 'model' => trans_choice('model.sharing_token', 1),
             ]))->merge([
+                'id' => $sharingToken->id,
                 'token' => $sharingToken->token,
                 'expires_at' => $sharingToken->expires_at,
             ]),
@@ -38,6 +39,16 @@ class DeviceSharingController extends Controller
     public function viewDeviceByToken(ViewDeviceByTokenRequest $request): JsonResource
     {
         $device = $request->deviceSharingToken()->device;
+
+        $device->setAttribute(
+            'validation_attributes',
+            $device->validatedAttributes()
+        );
+
+        $device->setAttribute(
+            'transfers_history',
+            $device->transfers()->acceptedAndOrdered()->get()
+        );
 
         return new DevicePublicResource($device);
     }
