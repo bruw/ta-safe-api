@@ -102,7 +102,7 @@ class ViewDeviceByTokenTest extends TestCase
             fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
                 ->where('message.text', trans('flash_messages.errors'))
                 ->where('errors.token.0', trans('validation.required', [
-                    'attribute' => 'token',
+                    'attribute' => trans('validation.attributes.token'),
                 ]))
         );
     }
@@ -120,7 +120,7 @@ class ViewDeviceByTokenTest extends TestCase
                 ->where('message.text', trans('flash_messages.errors'))
                 ->where('errors.token.0', trans('validation.digits', [
                     'digits' => 8,
-                    'attribute' => 'token',
+                    'attribute' => trans('validation.attributes.token'),
                 ]))
         );
     }
