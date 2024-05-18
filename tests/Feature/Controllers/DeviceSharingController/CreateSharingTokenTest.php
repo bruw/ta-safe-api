@@ -77,6 +77,7 @@ class CreateSharingTokenTest extends TestCase
                 ->where('message.text', trans_choice('flash_messages.success.created.m', 1, [
                     'model' => trans_choice('model.sharing_token', 1),
                 ]))
+                ->has('id')
                 ->has('token')
                 ->has('expires_at')
         );
