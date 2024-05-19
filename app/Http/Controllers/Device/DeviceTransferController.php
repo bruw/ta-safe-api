@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Device;
 use App\Http\Controllers\Controller;
 use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Device\CreateDeviceTransferRequest;
+use App\Http\Resources\DeviceTransfer\DeviceTransferResource;
 use App\Models\Device;
 use App\Models\DeviceTransfer;
 use Illuminate\Http\Request;
@@ -42,7 +43,9 @@ class DeviceTransferController extends Controller
         return response()->json(
             FlashMessage::success(trans_choice('flash_messages.success.accepted.f', 1, [
                 'model' => trans('model.device_transfer'),
-            ])),
+            ]))->merge([
+                'transfer' => new DeviceTransferResource($deviceTransfer),
+            ]),
             Response::HTTP_OK
         );
     }
@@ -60,7 +63,9 @@ class DeviceTransferController extends Controller
         return response()->json(
             FlashMessage::success(trans_choice('flash_messages.success.rejected.f', 1, [
                 'model' => trans('model.device_transfer'),
-            ])),
+            ]))->merge([
+                'transfer' => new DeviceTransferResource($deviceTransfer),
+            ]),
             Response::HTTP_OK
         );
     }
@@ -78,7 +83,9 @@ class DeviceTransferController extends Controller
         return response()->json(
             FlashMessage::success(trans_choice('flash_messages.success.canceled.f', 1, [
                 'model' => trans('model.device_transfer'),
-            ])),
+            ]))->merge([
+                'transfer' => new DeviceTransferResource($deviceTransfer),
+            ]),
             Response::HTTP_OK
         );
     }
