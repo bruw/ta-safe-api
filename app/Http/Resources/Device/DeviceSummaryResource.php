@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Device;
 
 use App\Http\Resources\DeviceModel\DeviceModelResource;
+use App\Http\Resources\DeviceSharingToken\DeviceSharingTokenResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,6 +24,7 @@ class DeviceSummaryResource extends JsonResource
             'validation_status' => $this->validation_status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'sharing_token' => new DeviceSharingTokenResource($this->sharingToken),
             'device_model' => new DeviceModelResource($this->deviceModel),
         ];
     }
