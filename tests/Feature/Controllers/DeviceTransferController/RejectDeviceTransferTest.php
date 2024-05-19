@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\DeviceTransferController;
 
+use App\Enums\Device\DeviceTransferStatus;
 use App\Enums\Device\DeviceValidationStatus;
 use App\Http\Messages\FlashMessage;
 use App\Models\Brand;
@@ -95,6 +96,10 @@ class RejectDeviceTransferTest extends TestCase
                 ->where('message.text', trans_choice('flash_messages.success.rejected.f', 1, [
                     'model' => trans_choice('model.device_transfer', 1),
                 ]))
+                ->has('transfer')
+                ->where('transfer.id', $this->deviceTransfer->id)
+                ->where('transfer.status', DeviceTransferStatus::REJECTED->value)
+                ->etc()
         );
     }
 }
