@@ -10,7 +10,6 @@ use App\Http\Resources\Device\DeviceResource;
 use App\Http\Resources\DeviceTransfer\DeviceTransferResource;
 use App\Http\Resources\User\UserPublicResource;
 use App\Http\Resources\User\UserResource;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
@@ -71,13 +70,12 @@ class UserController extends Controller
     }
 
     /**
-     * Search for users by term.
+     * Search user by email.
      */
-    public function search(SearchUserRequest $request): JsonResource
+    public function searchByEmail(SearchUserRequest $request): JsonResource
     {
-        $data = $request->validated();
-        $users = User::search($data['search_term']);
-
-        return UserPublicResource::collection($users);
+        return new UserPublicResource(
+            $request->userByEmail()
+        );
     }
 }

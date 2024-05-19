@@ -113,18 +113,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Search for users by email or phone.
-     */
-    public static function search(string $searchTerm): Collection
-    {
-        $searchTerm = strtolower($searchTerm);
-
-        return User::where('email', $searchTerm)
-            ->orWhere('phone', $searchTerm)
-            ->get();
-    }
-
-    /**
      * Invoke the user registration action.
      */
     public static function registerUser(array $data): User

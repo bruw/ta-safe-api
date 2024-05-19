@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\User;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseFormRequest;
+use App\Models\User;
 
-class SearchUserRequest extends FormRequest
+class SearchUserRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,6 +16,14 @@ class SearchUserRequest extends FormRequest
     }
 
     /**
+     * Validate the email field and return the user linked to it.
+     */
+    public function userByEmail(): User
+    {
+        return User::where('email', $this->email)->first();
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
@@ -22,7 +31,24 @@ class SearchUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search_term' => ['required', 'max:255']
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'exists:users,email'
+            ]
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'email.exists' => trans('validation.custom.attribute.email_not_registered'),
         ];
     }
 }
