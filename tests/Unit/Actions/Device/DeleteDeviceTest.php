@@ -47,13 +47,11 @@ class DeleteDeviceTest extends TestCase
 
     public function test_should_be_possible_delete_a_device_when_the_status_is_rejected(): void
     {
-        $this->assertTrue(
-            $this->device->safeDelete()
-        );
+        $this->assertTrue($this->device->safeDelete());
 
-        $this->assertTrue(
-            Device::withTrashed()->find($this->device->id)->trashed()
-        );
+        $this->assertDatabaseMissing('devices', [
+            'id' => $this->device->id,
+        ]);
     }
 
     public function test_should_throw_an_exception_when_the_validation_status_is_pending(): void
@@ -62,29 +60,15 @@ class DeleteDeviceTest extends TestCase
             'validation_status' => DeviceValidationStatus::PENDING,
         ]);
 
-        $exceptionOcurred = false;
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->expectExceptionMessage(trans('validation.custom.device_delete.invalid'));
 
-        try {
-            $this->device->safeDelete();
-        } catch (Exception $e) {
-            $exceptionOcurred = true;
+        $this->device->safeDelete();
 
-            $this->assertEquals(
-                $e->getCode(),
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-
-            $this->assertEquals(
-                $e->getMessage(),
-                trans('validation.custom.device_delete.invalid'),
-            );
-        }
-
-        $this->assertTrue($exceptionOcurred);
-
-        $this->assertFalse(
-            Device::withTrashed()->find($this->device->id)->trashed()
-        );
+        $this->assertDatabaseHas('devices', [
+            'id' => $this->device->id,
+        ]);
     }
 
     public function test_should_throw_an_exception_when_the_validation_status_is_in_analysis(): void
@@ -93,29 +77,15 @@ class DeleteDeviceTest extends TestCase
             'validation_status' => DeviceValidationStatus::IN_ANALYSIS,
         ]);
 
-        $exceptionOcurred = false;
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->expectExceptionMessage(trans('validation.custom.device_delete.invalid'));
 
-        try {
-            $this->device->safeDelete();
-        } catch (Exception $e) {
-            $exceptionOcurred = true;
+        $this->device->safeDelete();
 
-            $this->assertEquals(
-                $e->getCode(),
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-
-            $this->assertEquals(
-                $e->getMessage(),
-                trans('validation.custom.device_delete.invalid'),
-            );
-        }
-
-        $this->assertTrue($exceptionOcurred);
-
-        $this->assertFalse(
-            Device::withTrashed()->find($this->device->id)->trashed()
-        );
+        $this->assertDatabaseHas('devices', [
+            'id' => $this->device->id,
+        ]);
     }
 
     public function test_should_throw_an_exception_when_the_validation_status_is_in_validated(): void
@@ -124,28 +94,14 @@ class DeleteDeviceTest extends TestCase
             'validation_status' => DeviceValidationStatus::VALIDATED,
         ]);
 
-        $exceptionOcurred = false;
+        $this->expectException(Exception::class);
+        $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->expectExceptionMessage(trans('validation.custom.device_delete.invalid'));
 
-        try {
-            $this->device->safeDelete();
-        } catch (Exception $e) {
-            $exceptionOcurred = true;
+        $this->device->safeDelete();
 
-            $this->assertEquals(
-                $e->getCode(),
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-
-            $this->assertEquals(
-                $e->getMessage(),
-                trans('validation.custom.device_delete.invalid'),
-            );
-        }
-
-        $this->assertTrue($exceptionOcurred);
-
-        $this->assertFalse(
-            Device::withTrashed()->find($this->device->id)->trashed()
-        );
+        $this->assertDatabaseHas('devices', [
+            'id' => $this->device->id,
+        ]);
     }
 }
