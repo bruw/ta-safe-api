@@ -25,7 +25,7 @@ class DeleteDeviceAction
             });
         } catch (Exception $e) {
             throw new HttpJsonResponseException(
-                trans('validation.custom.delete_device.unable_to_delete'),
+                trans('validation.custom.device_delete.unable_to_delete'),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
