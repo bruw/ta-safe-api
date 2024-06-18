@@ -244,7 +244,7 @@ return [
         'neighborhood' => 'bairro',
         'number' => 'número',
         'password' => 'senha',
-        'phone' => 'telefone',
+        'phone' => 'celular',
         'second' => 'segundo',
         'sex' => 'sexo',
         'state' => 'estado',
