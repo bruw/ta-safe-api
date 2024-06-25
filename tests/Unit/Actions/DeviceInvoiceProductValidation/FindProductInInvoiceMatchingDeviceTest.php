@@ -49,8 +49,8 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
             ->for($this->brand)
             ->create([
                 'name' => 'iPhone 11',
-                'ram' => '128',
-                'storage' => '8',
+                'ram' => '128 gb',
+                'storage' => '8 gb',
             ]);
 
         $this->device = DeviceFactory::new()
