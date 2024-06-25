@@ -106,7 +106,8 @@ class FindProductInInvoiceMatchingDeviceAction
     {
         $withoutAccents = $this->removeAccents($description);
         $withoutExtraWhiteSpaces = $this->removeExtraWhiteSpaces($withoutAccents);
-        $result = strtolower($withoutExtraWhiteSpaces);
+        $normalizeMemorys = $this->normalizeMemorySize($withoutExtraWhiteSpaces);
+        $result = strtolower($normalizeMemorys);
 
         return $result;
     }
