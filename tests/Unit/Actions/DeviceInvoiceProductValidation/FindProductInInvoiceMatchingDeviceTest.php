@@ -71,7 +71,7 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
 
     public function test_must_return_the_product_description_when_the_score_is_greather_or_equal_to_650(): void
     {
-        $description = 'Smartphone Apple iPhone 11';
+        $description = 'Smartphone Apple iPhone 11 8 gb';
 
         $this->invoice->update([
             'product_description' => "<span>{$description}</span>",
@@ -111,7 +111,7 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
 
     public function test_should_return_the_description_with_the_greatest_similarity_to_the_device_in_a_diverse_list(): void
     {
-        $description = 'iPhone 11 128GB';
+        $description = 'iPhone 11 128 GB';
 
         $this->invoice->update([
             'product_description' => '<span>calca Sarja Liso Jogger Cargo Caribe HKM BS_FW21_CAL_0013B:P:Stretch Limo</span>'
@@ -128,7 +128,7 @@ class FindProductInInvoiceMatchingDeviceTest extends TestCase
 
     public function test_must_return_the_description_with_the_greatest_similarity_to_the_device_in_a_list_of_similar_products(): void
     {
-        $description = 'iPhone 11 128GB';
+        $description = 'iPhone 11 128 GB';
 
         $this->invoice->update([
             'product_description' => '<span>Apple Iphone 13</span>'

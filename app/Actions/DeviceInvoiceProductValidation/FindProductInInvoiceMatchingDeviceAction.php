@@ -11,7 +11,7 @@ class FindProductInInvoiceMatchingDeviceAction
     use StringNormalizer;
 
     private Fuzz $fuzz;
-    private const MIN_SIMILARITY_SCORE = 500;
+    private const MIN_SIMILARITY_SCORE = 795;
 
     public function __construct(private Device $device)
     {
@@ -91,11 +91,11 @@ class FindProductInInvoiceMatchingDeviceAction
     private function assignAttributeWeights(): array
     {
         return [
-            ['value' => $this->device->deviceModel->brand->name, 'weight' => 0.1],
-            ['value' => $this->device->deviceModel->name, 'weight' => 5],
-            ['value' => $this->device->deviceModel->ram, 'weight' => 1],
-            ['value' => $this->device->deviceModel->storage, 'weight' => 1],
-            ['value' => $this->device->color, 'weight' => 0.5],
+            ['value' => $this->device->deviceModel->brand->name, 'weight' => 1],
+            ['value' => $this->device->deviceModel->name, 'weight' => 6],
+            ['value' => $this->device->deviceModel->ram, 'weight' => 3],
+            ['value' => $this->device->deviceModel->storage, 'weight' => 3],
+            ['value' => $this->device->color, 'weight' => 1],
         ];
     }
 
