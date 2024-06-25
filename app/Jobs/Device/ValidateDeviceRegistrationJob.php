@@ -47,6 +47,8 @@ class ValidateDeviceRegistrationJob implements ShouldQueue
             'ownerNameLog' => $this->validationService->validateOwnerName(),
             'brandLog' => $this->validationService->validateBrand(),
             'modelNameLog' => $this->validationService->validateModel(),
+            'ramLog' => $this->validationService->validateRam(),
+            'storageLog' => $this->validationService->validateStorage(),
         ];
     }
 
@@ -55,8 +57,6 @@ class ValidateDeviceRegistrationJob implements ShouldQueue
      */
     private function executeNonCriticalValidations(): void
     {
-        $this->validationService->validateRam();
-        $this->validationService->validateStorage();
         $this->validationService->validateColor();
         $this->validationService->validateImei1();
         $this->validationService->validateImei2();
@@ -70,7 +70,8 @@ class ValidateDeviceRegistrationJob implements ShouldQueue
         $isValid = $logs['ownerCpfLog']->validated
             && $logs['ownerNameLog']->validated
             && $logs['brandLog']->validated
-            && $logs['modelNameLog']->validated;
+            && $logs['modelNameLog']->validated
+            && ($logs['ramLog']->validated || $logs['storageLog']->validated);
 
         $this->updateDeviceRegistrationStatus($isValid);
     }
