@@ -1,5 +1,5 @@
 # TA-SAFE-API
-API para o backend do sistema de rastreabilidade de celulares Tá Safe.
+API para o backend do sistema de rastreabilidade de celulares - Tá Safe.
 
 ## Tecnologias
 
@@ -10,23 +10,23 @@ API para o backend do sistema de rastreabilidade de celulares Tá Safe.
 
 ## Instalação Local
 
-1. Requisitos
+### Requisitos
+- Docker Engine
+- Docker Compose
 
-Instale o Docker Engine e o Docker Compose conforme a documentação oficial
-- Docker Engine: https://docs.docker.com/engine/install/ubuntu/
-- Docker Compose: https://docs.docker.com/compose/install/linux/
+### Passos
 
-2. Clone o Repositório
+1. Clone o Repositório
 ~~~git
 git clone git@github.com:bruw/ta-safe-api.git
 ~~~
 
-3. Acesse a Pasta do Projeto
+2. Acesse a Pasta do Projeto
 ~~~bash
 cd ta-safe-api
 ~~~
 
-4. Instale as Dependências:
+3. Instale as Dependências:
 
 ~~~bash
 docker run --rm \
@@ -37,21 +37,28 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ~~~
 
-5. Iniciar o Ambiente Docker
+4. Copie o arquivo `example.env` e renomeie para `.env`
+
+5. Modifique o `.env` com suas variáveis
+~~~bash
+DB_DATABASE=ta_safe_api
+DB_USERNAME=root
+DB_PASSWORD=root
+~~~
+
+6. Iniciar o Ambiente Docker
 ~~~bash
 ./vendor/bin/sail up -d
 ~~~
 
-6. Executar Migrations e Seeders
-~~~bash
-./vendor/bin/sail artisan migrate:refresh --seed
-~~~
-
-7. Copie o arquivo `example.env` e renomeie para `.env`
- 
-8. Gere uma APP_KEY
+7. Gere uma APP_KEY
 ~~~bash
 ./vendor/bin/sail artisan key:generate
+~~~
+
+8. Executar Migrations e Seeders
+~~~bash
+./vendor/bin/sail artisan migrate:refresh --seed
 ~~~
 
 ## Testes
