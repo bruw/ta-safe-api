@@ -41,7 +41,6 @@ docker run --rm \
 
 5. Modifique o `.env` com suas variáveis
 ~~~bash
-DB_DATABASE=ta_safe_api
 DB_USERNAME=sail
 DB_PASSWORD=password
 ~~~
