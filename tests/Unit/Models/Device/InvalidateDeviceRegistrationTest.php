@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models\User\Collections;
+namespace Tests\Unit\Models\Device;
 
 use App\Enums\Device\DeviceValidationStatus;
 use App\Models\Device;

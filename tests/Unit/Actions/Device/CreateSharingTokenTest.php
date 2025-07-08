@@ -55,11 +55,8 @@ class CreateSharingTokenTest extends TestCase
         $this->device->createSharingToken();
         $this->device->refresh();
 
-        $tokenValidity = now()->diffInRealHours(
-            $this->device->sharingToken->expires_at
-        );
-
-        $this->assertTrue($tokenValidity == 24);
+        $tokenValidity = now()->diffInRealHours($this->device->sharingToken->expires_at);
+        $this->assertEqualsWithDelta($tokenValidity, 24, 0.001);
     }
 
     public function test_when_a_token_already_exists_it_must_be_updated_without_generating_a_new_record_in_the_database(): void
