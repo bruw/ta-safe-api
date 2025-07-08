@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers\DeviceControllers;
+namespace Tests\Feature\Controllers\DeviceController;
 
 use App\Enums\Device\DeviceValidationStatus;
 use App\Http\Messages\FlashMessage;
