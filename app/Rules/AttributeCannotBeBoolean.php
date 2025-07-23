@@ -14,7 +14,6 @@ class AttributeCannotBeBoolean implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if ($value === true || $value === false)
-            $fail(trans('validation.custom.attribute.not_boolean'));
+        is_bool($value) && $fail(trans('validation.not_boolean'));
     }
 }

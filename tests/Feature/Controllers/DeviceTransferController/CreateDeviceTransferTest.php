@@ -155,7 +155,7 @@ class CreateDeviceTransferTest extends TestCase
                     ->where('errors.target_user_id.0', trans('validation.numeric', [
                         'attribute' => trans('validation.attributes.target_user_id'),
                     ]))
-                    ->where('errors.target_user_id.1', trans('validation.custom.attribute.not_boolean', [
+                    ->where('errors.target_user_id.1', trans('validation.not_boolean', [
                         'attribute' => trans('validation.attributes.target_user_id'),
                     ]))
             );

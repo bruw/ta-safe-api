@@ -31,6 +31,7 @@ return [
         'array' => 'O campo :attribute deve ter entre :min e :max itens.',
     ],
     'boolean' => 'O campo :attribute deve ser verdadeiro ou falso.',
+    'not_boolean' => 'O :attribute não pode ser booleano.',
     'confirmed' => 'O campo :attribute de confirmação não confere.',
     'current_password' => 'A senha está incorreta.',
     'date' => 'O campo :attribute não é uma data válida.',
@@ -154,8 +155,7 @@ return [
 
     'custom' => [
         'attribute' => [
-            'not_boolean' => 'O :attribute não pode ser booleano.',
-            'email_not_registered' => 'Não encontramos nenhum usuário associado a este e-mail em nosso sistema.'
+            'email_not_registered' => 'Não encontramos nenhum usuário associado a este e-mail em nosso sistema.',
         ],
         'cpf' => [
             'invalid_format' => 'O cpf deve possuir 11 dígitos.',
@@ -168,10 +168,6 @@ return [
         'device_delete' => [
             'invalid' => 'Só é possível excluir registros com status de validação rejeitada.',
             'unable_to_delete' => 'Houve um problema ao tentar excluir o dispositivo. '
-                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
-        ],
-        'device_registration' => [
-            'unable_to_register_device' => 'Houve um problema ao tentar registrar o dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
         'device_transfer' => [

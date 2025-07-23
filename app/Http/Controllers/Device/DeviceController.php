@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Device;
 
+use App\Dto\Device\CreateDeviceDto;
 use App\Http\Controllers\Controller;
 use App\Http\Messages\FlashMessage;
-use App\Http\Requests\Device\RegisterDeviceRequest;
+use App\Http\Requests\Device\Create\CreateDeviceRequest;
 use App\Http\Requests\Device\ValidateDeviceRegistrationRequest;
 use App\Http\Resources\Device\DeviceResource;
 use App\Jobs\Device\ValidateDeviceRegistrationJob;
@@ -15,20 +16,16 @@ use Symfony\Component\HttpFoundation\Response;
 class DeviceController extends Controller
 {
     /**
-     * Register new Device
+     * Create a new Device
      */
-    public function registerDevice(RegisterDeviceRequest $request): Response
+    public function create(CreateDeviceRequest $request): Response
     {
-        $data = $request->validated();
-        $currentUser = $request->user();
+        $request->user()->createDevice(CreateDeviceDto::for($request));
 
-        $currentUser->registerDevice($data);
-
-        return response()->json(
-            FlashMessage::success(trans_choice('flash_messages.success.registered.m', 1, [
+        return response()->json(FlashMessage::success(
+            trans_choice('flash_messages.success.registered.m', 1, [
                 'model' => trans_choice('model.device', 1),
-            ])),
-            Response::HTTP_CREATED
+            ])), Response::HTTP_CREATED
         );
     }
 

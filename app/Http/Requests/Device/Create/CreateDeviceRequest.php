@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Device;
+namespace App\Http\Requests\Device\Create;
 
 use App\Http\Requests\BaseFormRequest;
+use App\Rules\AttributeCannotBeBoolean;
 
-class RegisterDeviceRequest extends BaseFormRequest
+class CreateDeviceRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +24,9 @@ class RegisterDeviceRequest extends BaseFormRequest
     {
         return [
             'device_model_id' => [
+                'bail',
                 'required',
-                'numeric',
+                new AttributeCannotBeBoolean,
                 'exists:device_models,id',
             ],
             'color' => [
@@ -32,11 +34,13 @@ class RegisterDeviceRequest extends BaseFormRequest
                 'max:255',
             ],
             'access_key' => [
+                'bail',
                 'required',
                 'digits:44',
                 'unique:invoices,access_key',
             ],
             'imei_1' => [
+                'bail',
                 'required',
                 'digits:15',
                 'different:imei_2',
@@ -44,6 +48,7 @@ class RegisterDeviceRequest extends BaseFormRequest
                 'unique:devices,imei_2',
             ],
             'imei_2' => [
+                'bail',
                 'required',
                 'digits:15',
                 'unique:devices,imei_1',
