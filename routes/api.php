@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::controller(DeviceController::class)->group(function () {
         Route::post('devices', 'create')->name('api.users.devices.create');
-        Route::delete('devices/{device}', 'deleteDevice');
+        Route::delete('devices/{device}', 'delete')->name('api.users.devices.delete');
         Route::get('devices/{device}', 'viewDevice');
         Route::post('devices/{device}/validate', 'validateRegistration');
         Route::post('devices/{device}/invalidate', 'invalidateRegistration');

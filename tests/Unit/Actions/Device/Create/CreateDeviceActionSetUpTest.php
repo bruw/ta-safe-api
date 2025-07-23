@@ -19,7 +19,6 @@ class CreateDeviceActionSetUpTest extends TestCase
     protected User $user;
     protected Device $device;
     protected CreateDeviceDto $data;
-    protected CreateDeviceDto $invalidData;
 
     protected function setUp(): void
     {
@@ -34,14 +33,6 @@ class CreateDeviceActionSetUpTest extends TestCase
             color: 'black',
             imei1: $this->generateRandomNumber(15),
             imei2: $this->generateRandomNumber(15)
-        );
-
-        $this->invalidData = new CreateDeviceDto(
-            deviceModelId: 0,
-            accessKey: $this->generateRandomNumber(1),
-            color: 'black',
-            imei1: $this->generateRandomNumber(1),
-            imei2: $this->generateRandomNumber(1)
         );
     }
 }

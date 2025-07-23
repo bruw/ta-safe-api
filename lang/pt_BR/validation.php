@@ -166,7 +166,6 @@ return [
             'exists' => 'O código informado não é válido.',
         ],
         'device_delete' => [
-            'invalid' => 'Só é possível excluir registros com status de validação rejeitada.',
             'unable_to_delete' => 'Houve um problema ao tentar excluir o dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],

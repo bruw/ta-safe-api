@@ -5,6 +5,8 @@ namespace Tests\Unit\Actions\Device\Create;
 use App\Enums\Device\DeviceValidationStatus;
 use App\Exceptions\HttpJsonResponseException;
 use App\Models\Device;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateDeviceActionTest extends CreateDeviceActionSetUpTest
@@ -58,7 +60,13 @@ class CreateDeviceActionTest extends CreateDeviceActionSetUpTest
         $this->expectExceptionCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         $this->expectExceptionMessage(trans('device.errors.create'));
 
-        $this->user->createDevice($this->invalidData);
+        DB::shouldReceive('transaction')
+            ->once()
+            ->andThrow(new Exception('Simulates a transaction error',
+                Response::HTTP_INTERNAL_SERVER_ERROR)
+            );
+
+        $this->user->createDevice($this->data);
         $this->user->refresh();
         $this->assertCount(0, $this->user->devices);
     }

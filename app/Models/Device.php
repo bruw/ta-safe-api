@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Actions\Device\CreateSharingTokenAction;
-use App\Actions\Device\DeleteDeviceAction;
+use App\Actions\Device\Delete\DeleteDeviceAction;
 use App\Actions\Device\ValidateDeviceRegistrationAction;
 use App\Enums\Device\DeviceValidationStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -175,10 +175,8 @@ class Device extends Model
     /**
      * Delete a device with rejected validation
      */
-    public function safeDelete(): bool
+    public function safeDelete(User $user): bool
     {
-        $deleteAction = new DeleteDeviceAction($this);
-
-        return $deleteAction->execute();
+        return (new DeleteDeviceAction($user, $this))->execute();
     }
 }

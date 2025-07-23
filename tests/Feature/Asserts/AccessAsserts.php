@@ -47,4 +47,26 @@ trait AccessAsserts
             }
         }
     }
+
+    /**
+     * Asserts that the given $users do not have access to the given $route.
+     */
+    public function assertNoAccessTo(
+        string $route,
+        string $httpVerb,
+        array $users,
+        array $params = [],
+    ) {
+        $method = strtolower($httpVerb) . 'Json';
+
+        foreach ($users as $user) {
+            $this->actingAs($user)
+                ->$method($route, $params)
+                ->assertForbidden()
+                ->assertJson(
+                    fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
+                        ->where('message.text', trans('http_exceptions.unauthorized'))
+                );
+        }
+    }
 }
