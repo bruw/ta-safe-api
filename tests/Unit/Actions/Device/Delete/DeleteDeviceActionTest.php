@@ -60,7 +60,7 @@ class DeleteDeviceActionTest extends DeleteDeviceActionSetUpTest
     {
         $this->expectException(HttpJsonResponseException::class);
         $this->expectExceptionCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        $this->expectExceptionMessage(trans('device.errors.delete'));
+        $this->expectExceptionMessage(trans('actions.device.errors.delete'));
 
         DB::shouldReceive('transaction')
             ->once()

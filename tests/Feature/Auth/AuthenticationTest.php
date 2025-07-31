@@ -65,7 +65,7 @@ class AuthenticationTest extends TestCase
 
         $response->assertUnprocessable()->assertJson(
             fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
-                ->where('message.text', trans('actions.auth.login_failed'))
+                ->where('message.text', trans('actions.auth.errors.login'))
                 ->etc()
         );
     }

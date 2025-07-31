@@ -87,7 +87,7 @@ class CreateDeviceAction
         ]);
 
         throw new HttpJsonResponseException(
-            trans('device.errors.create'),
+            trans('actions.device.errors.create'),
             Response::HTTP_INTERNAL_SERVER_ERROR
         );
     }

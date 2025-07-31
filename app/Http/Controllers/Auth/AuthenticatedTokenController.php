@@ -23,7 +23,7 @@ class AuthenticatedTokenController extends Controller
             $user = $request->user();
 
             return response()->json(
-                FlashMessage::success(trans('actions.auth.login'))
+                FlashMessage::success(trans('actions.auth.success.login'))
                     ->merge(['user' => new UserLoginResource($user)]),
                 Response::HTTP_OK
             );
@@ -39,7 +39,7 @@ class AuthenticatedTokenController extends Controller
             $request->user()->currentAccessToken()->delete();
 
             return response()->json(
-                FlashMessage::success(trans('actions.auth.logout')),
+                FlashMessage::success(trans('actions.auth.success.logout')),
                 Response::HTTP_OK
             );
         });

@@ -58,7 +58,7 @@ class CreateDeviceActionTest extends CreateDeviceActionSetUpTest
     {
         $this->expectException(HttpJsonResponseException::class);
         $this->expectExceptionCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        $this->expectExceptionMessage(trans('device.errors.create'));
+        $this->expectExceptionMessage(trans('actions.device.errors.create'));
 
         DB::shouldReceive('transaction')
             ->once()

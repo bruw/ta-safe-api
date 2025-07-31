@@ -47,7 +47,7 @@ class LoginRequest extends BaseFormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw new HttpJsonResponseException(
-                trans('actions.auth.login_failed'),
+                trans('actions.auth.errors.login'),
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }

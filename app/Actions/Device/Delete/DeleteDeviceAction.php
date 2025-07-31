@@ -78,7 +78,7 @@ class DeleteDeviceAction
         ]);
 
         throw new HttpJsonResponseException(
-            trans('device.errors.delete'),
+            trans('actions.device.errors.delete'),
             Response::HTTP_INTERNAL_SERVER_ERROR
         );
     }
