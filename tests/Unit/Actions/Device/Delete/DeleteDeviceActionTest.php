@@ -14,7 +14,7 @@ class DeleteDeviceActionTest extends DeleteDeviceActionSetUpTest
     {
         $this->expectException(HttpJsonResponseException::class);
         $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
-        $this->expectExceptionMessage(trans('device_validator.user_must_be_owner'));
+        $this->expectExceptionMessage(trans('validators.device.user.owner'));
 
         $this->deviceRejected->safeDelete(UserFactory::new()->create());
         $this->assertDatabaseHas('devices', ['id' => $this->deviceRejected->id]);
@@ -30,7 +30,7 @@ class DeleteDeviceActionTest extends DeleteDeviceActionSetUpTest
     {
         $this->expectException(HttpJsonResponseException::class);
         $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
-        $this->expectExceptionMessage(trans('device_validator.status_must_be_rejected'));
+        $this->expectExceptionMessage(trans('validators.device.status.rejected'));
 
         $this->devicePending->safeDelete($this->user);
         $this->assertDatabaseHas('devices', ['id' => $this->devicePending->id]);
@@ -40,7 +40,7 @@ class DeleteDeviceActionTest extends DeleteDeviceActionSetUpTest
     {
         $this->expectException(HttpJsonResponseException::class);
         $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
-        $this->expectExceptionMessage(trans('device_validator.status_must_be_rejected'));
+        $this->expectExceptionMessage(trans('validators.device.status.rejected'));
 
         $this->deviceInAnalysis->safeDelete($this->user);
         $this->assertDatabaseHas('devices', ['id' => $this->deviceInAnalysis->id]);
@@ -50,7 +50,7 @@ class DeleteDeviceActionTest extends DeleteDeviceActionSetUpTest
     {
         $this->expectException(HttpJsonResponseException::class);
         $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
-        $this->expectExceptionMessage(trans('device_validator.status_must_be_rejected'));
+        $this->expectExceptionMessage(trans('validators.device.status.rejected'));
 
         $this->deviceValidated->safeDelete($this->user);
         $this->assertDatabaseHas('devices', ['id' => $this->deviceValidated->id]);

@@ -26,8 +26,10 @@ class DeviceValidator
      */
     public function userMustBeOwner(User $user): self
     {
-        throw_if($user->id !== $this->device->user_id, new HttpJsonResponseException(
-            trans('device_validator.user_must_be_owner'),
+        $isOwner = $this->device->user_id === $user->id;
+
+        throw_unless($isOwner, new HttpJsonResponseException(
+            trans('validators.device.user.owner'),
             Response::HTTP_UNPROCESSABLE_ENTITY
         ));
 
@@ -42,7 +44,7 @@ class DeviceValidator
         $isRejected = $this->device->validation_status->isRejected();
 
         throw_unless($isRejected, new HttpJsonResponseException(
-            trans('device_validator.status_must_be_rejected'),
+            trans('validators.device.status.rejected'),
             Response::HTTP_UNPROCESSABLE_ENTITY
         ));
 
