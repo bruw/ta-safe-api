@@ -9,8 +9,6 @@ use App\Http\Controllers\DeviceModel\DeviceModelController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
-require __DIR__ . '/auth.php';
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
