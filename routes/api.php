@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Brand\BrandController;
 use App\Http\Controllers\Device\DeviceController;
 use App\Http\Controllers\Device\DeviceSharingController;
@@ -7,8 +8,6 @@ use App\Http\Controllers\Device\DeviceTransferController;
 use App\Http\Controllers\DeviceModel\DeviceModelController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
-
-require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +20,18 @@ require __DIR__ . '/auth.php';
 |
 */
 
+Route::middleware('guest')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('register', 'register')->name('api.auth.register');
+        Route::post('login', 'login')->name('api.auth.login');
+    });
+});
+
 Route::middleware('auth:sanctum')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::delete('logout', 'logout')->name('api.auth.logout');
+    });
+
     Route::controller(UserController::class)->group(function () {
         Route::get('user', 'currentUser');
         Route::put('user', 'update');

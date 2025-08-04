@@ -2,19 +2,11 @@
 
 namespace App\Http\Requests\Device;
 
-use App\Http\Requests\BaseFormRequest;
+use App\Http\Requests\ApiFormRequest;
 use App\Models\DeviceSharingToken;
 
-class ViewDeviceByTokenRequest extends BaseFormRequest
+class ViewDeviceByTokenRequest extends ApiFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Validates the token field and returns an instance of DeviceSharingToken.
      */

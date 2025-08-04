@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions\Validations;
+namespace App\Exceptions;
 
 use App\Http\Messages\FlashMessage;
 use Illuminate\Http\JsonResponse;
@@ -8,23 +8,29 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
-class ValidationRequestMessagesException extends ValidationException
+class ApiValidationException extends ValidationException
 {
     protected FlashMessage $flashMessage;
 
     public function __construct($validator, $response = null, $errorBag = 'default')
     {
-        $this->flashMessage = FlashMessage::error(__('messages.errors'));
         parent::__construct($validator, $response, $errorBag);
+        $this->flashMessage = FlashMessage::error(__('messages.errors'));
     }
 
-    public function setFlashMessage(FlashMessage $msg = null): ValidationRequestMessagesException
+    /**
+     * Set the FlashMessage instance for the exception.
+     */
+    public function setFlashMessage(?FlashMessage $msg = null): ApiValidationException
     {
         $this->flashMessage = $msg;
 
         return $this;
     }
 
+    /**
+     * Render the exception into an HTTP response.
+     */
     public function render(Request $request): JsonResponse
     {
         $response = $this->flashMessage->toArray($request);
