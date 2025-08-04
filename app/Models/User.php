@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Actions\Auth\Register\RegisterUserAction;
 use App\Actions\Device\AcceptDeviceTransferAction;
 use App\Actions\Device\CancelDeviceTransferAction;
 use App\Actions\Device\CreateDeviceTransferAction;
 use App\Actions\Device\RegisterDeviceAction;
 use App\Actions\Device\RejectDeviceTransferAction;
-use App\Actions\User\RegisterUserAction;
+use App\Dto\Auth\LoginDto;
+use App\Dto\Auth\RegisterUserDto;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -112,13 +114,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Invoke the user registration action.
+     * Register a new user.
      */
-    public static function registerUser(array $data): User
+    public static function register(RegisterUserDto $data): LoginDto
     {
-        $registerUser = new RegisterUserAction($data);
-
-        return $registerUser->execute();
+        return (new RegisterUserAction($data))->execute();
     }
 
     /**

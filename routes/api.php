@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Brand\BrandController;
 use App\Http\Controllers\Device\DeviceController;
 use App\Http\Controllers\Device\DeviceSharingController;
@@ -20,6 +21,12 @@ require __DIR__ . '/auth.php';
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::middleware('guest')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('register', 'register')->name('api.auth.register');
+    });
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserController::class)->group(function () {

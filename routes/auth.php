@@ -1,13 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\AuthenticatedTokenController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
-
-Route::post('/register', [RegisteredUserController::class, 'store'])
-    ->middleware('guest');
 
 Route::post('/login', [AuthenticatedTokenController::class, 'store'])
     ->middleware('guest');
