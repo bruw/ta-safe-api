@@ -14,9 +14,7 @@ class RegisterUserAccessTest extends RegisterUserTestSetUp
         $this->postJson($this->route(), $data)
             ->assertCreated()
             ->assertJson(fn (AssertableJson $json) => $json->where('message.type', FlashMessage::SUCCESS)
-                ->where('message.text', trans_choice('flash_messages.success.registered.m', 1, [
-                    'model' => trans_choice('model.user', 1),
-                ]))
+                ->where('message.text', trans('actions.auth.success.register'))
                 ->where('user.name', $data['name'])
                 ->where('user.email', fn (string $email) => str($email)->is($data['email']))
                 ->where('user.cpf', fn (string $cpf) => str($cpf)->is($data['cpf']))

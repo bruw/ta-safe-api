@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Actions\Auth\Login\LoginAction;
 use App\Actions\Auth\Register\RegisterUserAction;
 use App\Actions\Device\AcceptDeviceTransferAction;
 use App\Actions\Device\CancelDeviceTransferAction;
@@ -113,12 +114,24 @@ class User extends Authenticatable
         ])->orderByDesc('updated_at')->get();
     }
 
+    /*
+    ================= ** Actions ** ==========================================================================
+    */
+
     /**
      * Register a new user.
      */
     public static function register(RegisterUserDto $data): LoginDto
     {
         return (new RegisterUserAction($data))->execute();
+    }
+
+    /**
+     * Authenticated the user in to the application.
+     */
+    public static function login(User $user, string $password): LoginDto
+    {
+        return (new LoginAction($user, $password))->execute();
     }
 
     /**

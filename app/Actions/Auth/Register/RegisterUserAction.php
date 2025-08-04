@@ -23,9 +23,10 @@ class RegisterUserAction
         try {
             return DB::transaction(function () {
                 $user = $this->register();
+                $token = $this->createToken($user);
                 $this->logSuccess($user);
 
-                return new LoginDto($user, $this->createToken($user));
+                return new LoginDto($user, $token);
             });
         } catch (Exception $e) {
             $this->handleException($e);

@@ -2,17 +2,28 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Exceptions\HttpJsonResponseException;
 use App\Http\Requests\ApiFormRequest;
-use Illuminate\Auth\Events\Lockout;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpFoundation\Response;
+use App\Models\User;
+use Illuminate\Contracts\Validation\Validator;
 
 class LoginRequest extends ApiFormRequest
 {
+    /**
+     * Retrieve the user associated with the provided email.
+     */
+    public function userByEmail(): ?User
+    {
+        return User::where('email', $this->email)->first();
+    }
+
+    /**
+     * Return the password from the request.
+     */
+    public function password(): string
+    {
+        return $this->password;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,59 +33,21 @@ class LoginRequest extends ApiFormRequest
     {
         return [
             'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'password' => ['required', 'string', 'max:255'],
         ];
     }
 
     /**
-     * Attempt to authenticate the request's credentials.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * Get the "after" validation callables for the request.
      */
-    public function authenticate(): void
+    public function after(): array
     {
-        $this->ensureIsNotRateLimited();
-
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-
-            throw new HttpJsonResponseException(
-                trans('actions.auth.login_failed'),
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
-
-        RateLimiter::clear($this->throttleKey());
-    }
-
-    /**
-     * Ensure the login request is not rate limited.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function ensureIsNotRateLimited(): void
-    {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
-            return;
-        }
-
-        event(new Lockout($this));
-
-        $seconds = RateLimiter::availableIn($this->throttleKey());
-
-        throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
-        ]);
-    }
-
-    /**
-     * Get the rate limiting throttle key for the request.
-     */
-    public function throttleKey(): string
-    {
-        return Str::transliterate(Str::lower($this->input('email')) . '|' . $this->ip());
+        return [
+            function (Validator $validator) {
+                if (is_null($this->userByEmail())) {
+                    $validator->errors()->add('email', trans('auth.failed'));
+                }
+            },
+        ];
     }
 }
