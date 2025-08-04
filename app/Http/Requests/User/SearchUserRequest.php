@@ -2,19 +2,11 @@
 
 namespace App\Http\Requests\User;
 
-use App\Http\Requests\BaseFormRequest;
+use App\Http\Requests\ApiFormRequest;
 use App\Models\User;
 
-class SearchUserRequest extends BaseFormRequest
+class SearchUserRequest extends ApiFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Validate the email field and return the user linked to it.
      */
@@ -35,8 +27,8 @@ class SearchUserRequest extends BaseFormRequest
                 'required',
                 'email',
                 'max:255',
-                'exists:users,email'
-            ]
+                'exists:users,email',
+            ],
         ];
     }
 

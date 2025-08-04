@@ -2,20 +2,12 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Http\Requests\BaseFormRequest;
+use App\Http\Requests\ApiFormRequest;
 use App\Rules\CpfRule;
 use Illuminate\Validation\Rules;
 
-class RegisterUserRequest extends BaseFormRequest
+class RegisterUserRequest extends ApiFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -31,7 +23,7 @@ class RegisterUserRequest extends BaseFormRequest
                 'required',
                 'unique:users,cpf',
                 'regex:/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/',
-                new CpfRule(),
+                new CpfRule,
             ],
             'phone' => [
                 'required',
