@@ -2,9 +2,16 @@
 
 return [
     'auth' => [
-        'login' => 'Usuário autenticado com sucesso.',
-        'login_failed' => 'Essas credenciais não foram encontradas em nossos registros.',
-        'logout' => 'Usuário desconectado com sucesso.',
+        'success' => [
+            'register' => 'Usuário registrado com sucesso.',
+            'login' => 'Usuário autenticado com sucesso.',
+            'logout' => 'Usuário desconectado com sucesso.',
+        ],
+        'errors' => [
+            'register' => 'Ocorreu um erro ao registrar o usuário.',
+            'login' => 'Ocorreu um erro ao autenticar o usuário.',
+            'logout' => 'Ocorreu um erro ao desconectar o usuário.',
+        ],
     ],
     'device_validation' => [
         'start' => 'Informações enviadas com sucesso! Seu registro esta em análise.',

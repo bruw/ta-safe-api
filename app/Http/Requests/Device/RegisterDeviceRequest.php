@@ -2,18 +2,10 @@
 
 namespace App\Http\Requests\Device;
 
-use App\Http\Requests\BaseFormRequest;
+use App\Http\Requests\ApiFormRequest;
 
-class RegisterDeviceRequest extends BaseFormRequest
+class RegisterDeviceRequest extends ApiFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *

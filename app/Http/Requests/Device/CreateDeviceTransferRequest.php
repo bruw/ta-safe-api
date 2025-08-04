@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\Device;
 
-use App\Http\Requests\BaseFormRequest;
+use App\Http\Requests\ApiFormRequest;
 use App\Models\User;
 use App\Rules\AttributeCannotBeBoolean;
 
-class CreateDeviceTransferRequest extends BaseFormRequest
+class CreateDeviceTransferRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
