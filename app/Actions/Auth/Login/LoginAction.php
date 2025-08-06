@@ -2,7 +2,7 @@
 
 namespace App\Actions\Auth\Login;
 
-use App\Actions\Validator\UserValidator;
+use App\Actions\Validator\AuthValidator;
 use App\Dto\Auth\LoginDto;
 use App\Exceptions\HttpJsonResponseException;
 use App\Models\User;
@@ -13,13 +13,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LoginAction
 {
+    private readonly ?User $user;
+
     public function __construct(
-        private readonly User $user,
+        private readonly string $email,
         private readonly string $password
     ) {}
 
     public function execute(): LoginDto
     {
+        $this->initializeAttributesBeforeAction();
         $this->validateAttributesBeforeAction();
 
         try {
@@ -31,17 +34,27 @@ class LoginAction
                 return new LoginDto($this->user, $token);
             });
         } catch (Exception $e) {
-            $this->handleException($e);
+            $this->logError($e);
+            $this->throwException();
         }
     }
 
     /**
-     * Validates the user's password before executing the action.
+     * Initialize the user before the action occurs.
+     */
+    private function initializeAttributesBeforeAction(): void
+    {
+        $this->user = User::where('email', $this->email)->first();
+    }
+
+    /**
+     * Validates the user's data before executing the action.
      */
     private function validateAttributesBeforeAction(): void
     {
-        UserValidator::for($this->user)
-            ->passwordMustBeTheUser($this->password);
+        AuthValidator::for($this->user, $this->password)
+            ->userMustBeExists()
+            ->passwordMustBeTheUser();
     }
 
     /**
@@ -72,9 +85,9 @@ class LoginAction
     }
 
     /**
-     * Handles exceptions that occur during a user login.
+     * Logs an error message when a user login attempt fails.
      */
-    private function handleException(Exception $e): void
+    private function logError(Exception $e): void
     {
         Log::error('User login failure.', [
             'errors' => [
@@ -82,7 +95,13 @@ class LoginAction
                 'message' => $e->getMessage(),
             ],
         ]);
+    }
 
+    /**
+     * Throws an exception when a login attempt fails.
+     */
+    private function throwException(): never
+    {
         throw new HttpJsonResponseException(
             trans('actions.auth.errors.login'),
             Response::HTTP_INTERNAL_SERVER_ERROR

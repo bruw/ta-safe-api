@@ -129,9 +129,9 @@ class User extends Authenticatable
     /**
      * Authenticated the user in to the application.
      */
-    public static function login(User $user, string $password): LoginDto
+    public static function login(string $email, string $password): LoginDto
     {
-        return (new LoginAction($user, $password))->execute();
+        return (new LoginAction($email, $password))->execute();
     }
 
     /**

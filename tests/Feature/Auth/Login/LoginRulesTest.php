@@ -40,20 +40,6 @@ class LoginRulesTest extends LoginTestSetUp
             );
     }
 
-    public function test_should_return_an_error_when_the_email_field_value_exists_in_the_database(): void
-    {
-        $this->postJson($this->route(), [
-            'email' => fake()->email(),
-            'password' => '12345678',
-        ])
-            ->assertUnprocessable()
-            ->assertJson(
-                fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
-                    ->where('message.text', trans('flash_messages.errors'))
-                    ->where('errors.email.0', trans('auth.failed'))
-            );
-    }
-
     public function test_should_return_an_error_when_the_password_field_value_is_longer_than_255_characters(): void
     {
         $this->postJson($this->route(), [

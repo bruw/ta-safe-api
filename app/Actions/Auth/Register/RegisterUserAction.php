@@ -29,7 +29,8 @@ class RegisterUserAction
                 return new LoginDto($user, $token);
             });
         } catch (Exception $e) {
-            $this->handleException($e);
+            $this->logError($e);
+            $this->throwException();
         }
     }
 
@@ -67,9 +68,9 @@ class RegisterUserAction
     }
 
     /**
-     * Handles exceptions that occur during user registration.
+     * Logs an error message when a new user registration fails.
      */
-    private function handleException(Exception $e): void
+    private function logError(Exception $e): void
     {
         Log::error('User registration failure.', [
             'cpf' => $this->data->cpf,
@@ -79,7 +80,13 @@ class RegisterUserAction
                 'message' => $e->getMessage(),
             ],
         ]);
+    }
 
+    /**
+     * Throws an exception when a registration attempt fails.
+     */
+    private function throwException(): never
+    {
         throw new HttpJsonResponseException(
             trans('actions.auth.errors.register'),
             Response::HTTP_INTERNAL_SERVER_ERROR

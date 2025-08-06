@@ -33,7 +33,7 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        $loginDto = User::login($request->userByEmail(), $request->password());
+        $loginDto = User::login($request->email, $request->password);
 
         return response()->json(
             FlashMessage::success(trans('actions.auth.success.login'))
