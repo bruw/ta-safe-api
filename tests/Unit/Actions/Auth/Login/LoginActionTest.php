@@ -4,7 +4,6 @@ namespace Tests\Unit\Actions\Auth\Login;
 
 use App\Dto\Auth\LoginDto;
 use App\Exceptions\HttpJsonResponseException;
-use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +12,7 @@ class LoginActionTest extends LoginActionTestSetUp
 {
     public function test_should_return_an_instance_of_login_dto_when_registration_is_successful(): void
     {
-        $this->assertInstanceOf(LoginDto::class, User::login($this->user->email, 'password'));
+        $this->assertInstanceOf(LoginDto::class, $this->auth->login($this->user->email, 'password'));
     }
 
     public function test_should_throw_an_exception_when_the_email_is_incorrect(): void
@@ -22,7 +21,7 @@ class LoginActionTest extends LoginActionTestSetUp
         $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->expectExceptionMessage(trans('auth.failed'));
 
-        User::login(fake()->email(), $this->user->password);
+        $this->auth->login(fake()->email(), $this->user->password);
     }
 
     public function test_should_throw_an_exception_when_the_password_is_incorrect(): void
@@ -31,7 +30,7 @@ class LoginActionTest extends LoginActionTestSetUp
         $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
         $this->expectExceptionMessage(trans('auth.failed'));
 
-        User::login($this->user->email, 'pass');
+        $this->auth->login($this->user->email, 'pass');
     }
 
     public function test_should_throw_an_exception_when_an_internal_server_error_occurs(): void
@@ -45,6 +44,6 @@ class LoginActionTest extends LoginActionTestSetUp
                 Response::HTTP_INTERNAL_SERVER_ERROR
             ));
 
-        User::login($this->user->email, 'password');
+        $this->auth->login($this->user->email, 'password');
     }
 }
