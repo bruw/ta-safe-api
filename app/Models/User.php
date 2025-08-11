@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Actions\Device\AcceptDeviceTransferAction;
 use App\Actions\Device\CancelDeviceTransferAction;
 use App\Actions\Device\CreateDeviceTransferAction;
-use App\Actions\Device\RegisterDeviceAction;
 use App\Actions\Device\RejectDeviceTransferAction;
+use App\Services\Device\DeviceService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -115,16 +115,12 @@ class User extends Authenticatable
     */
 
     /**
-     * Invoke the device registration action.
+     * Returns an instance of the DeviceService, which provides methods
+     * for performing operations with the user's devices.
      */
-    public function registerDevice(array $data): bool
+    public function deviceService(): DeviceService
     {
-        $registerDevice = new RegisterDeviceAction(
-            $this,
-            $data
-        );
-
-        return $registerDevice->execute();
+        return new DeviceService($this);
     }
 
     /**
