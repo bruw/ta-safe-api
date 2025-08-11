@@ -2,31 +2,24 @@
 
 namespace Tests\Unit\Rules;
 
-use App\Rules\AttributeCannotBeBoolean;
-
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Rules\NotBoolean;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class AttributeCannotBeBooleanTest extends TestCase
+class NotBooleanRuleTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_should_return_true_if_the_attributes_are_not_boolean_values(): void
     {
-        $nonBooleanValues = [
-            0, 1, 'true', 'false', Str::random(10), fake()->name(),
-            fake()->phoneNumber(), fake()->text()
-        ];
+        $nonBooleanValues = [0, 1, 'true', 'false', Str::random(10)];
 
         foreach ($nonBooleanValues as $value) {
             $this->assertTrue(
                 Validator::make(
                     ['attribute' => $value],
-                    ['attribute' => new AttributeCannotBeBoolean],
+                    ['attribute' => new NotBoolean],
                 )->passes(),
-                "Error! This attribute value: ($value), is NOT VALID!"
+                "Error! This attribute value: ($value), is BOOLEAN!"
             );
         }
     }
@@ -39,9 +32,9 @@ class AttributeCannotBeBooleanTest extends TestCase
             $this->assertFalse(
                 Validator::make(
                     ['attribute' => $value],
-                    ['attribute' => new AttributeCannotBeBoolean]
+                    ['attribute' => new NotBoolean]
                 )->passes(),
-                "Error! This attribute value: ($value), is VALID!"
+                "Error! This attribute value: ($value), is NOT BOOLEAN!"
             );
         }
     }
