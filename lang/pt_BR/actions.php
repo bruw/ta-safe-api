@@ -18,6 +18,12 @@ return [
         'invalid' => 'Não é possível validar este dispositivo pois a nota fiscal é inválida.',
     ],
     'device' => [
+        'success' => [
+            'register' => 'Dispositivo registrado com sucesso!',
+        ],
+        'errors' => [
+            'register' => 'Ocorreu um erro ao registrar o dispositivo.',
+        ],
         'deleted' => 'Registro excluído com sucesso!',
     ],
 ];

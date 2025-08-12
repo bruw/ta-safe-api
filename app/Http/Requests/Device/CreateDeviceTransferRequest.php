@@ -4,7 +4,7 @@ namespace App\Http\Requests\Device;
 
 use App\Http\Requests\ApiFormRequest;
 use App\Models\User;
-use App\Rules\AttributeCannotBeBoolean;
+use App\Rules\NotBoolean;
 
 class CreateDeviceTransferRequest extends ApiFormRequest
 {
@@ -36,7 +36,7 @@ class CreateDeviceTransferRequest extends ApiFormRequest
                 'required',
                 'numeric',
                 'exists:users,id',
-                new AttributeCannotBeBoolean,
+                new NotBoolean,
             ],
         ];
     }

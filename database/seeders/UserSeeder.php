@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
                 'email' => $item->email,
                 'cpf' => $item->cpf,
                 'phone' => $item->phone,
-                'password' => Hash::make($item->password)
+                'password' => Hash::make($item->password),
             ]);
         }
     }

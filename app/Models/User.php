@@ -2,15 +2,11 @@
 
 namespace App\Models;
 
-use App\Actions\Auth\Login\LoginAction;
-use App\Actions\Auth\Register\RegisterUserAction;
 use App\Actions\Device\AcceptDeviceTransferAction;
 use App\Actions\Device\CancelDeviceTransferAction;
 use App\Actions\Device\CreateDeviceTransferAction;
-use App\Actions\Device\RegisterDeviceAction;
 use App\Actions\Device\RejectDeviceTransferAction;
-use App\Dto\Auth\LoginDto;
-use App\Dto\Auth\RegisterUserDto;
+use App\Services\Device\DeviceService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -119,32 +115,12 @@ class User extends Authenticatable
     */
 
     /**
-     * Register a new user.
+     * Returns an instance of the DeviceService, which provides methods
+     * for performing operations with the user's devices.
      */
-    public static function register(RegisterUserDto $data): LoginDto
+    public function deviceService(): DeviceService
     {
-        return (new RegisterUserAction($data))->execute();
-    }
-
-    /**
-     * Authenticated the user in to the application.
-     */
-    public static function login(User $user, string $password): LoginDto
-    {
-        return (new LoginAction($user, $password))->execute();
-    }
-
-    /**
-     * Invoke the device registration action.
-     */
-    public function registerDevice(array $data): bool
-    {
-        $registerDevice = new RegisterDeviceAction(
-            $this,
-            $data
-        );
-
-        return $registerDevice->execute();
+        return new DeviceService($this);
     }
 
     /**

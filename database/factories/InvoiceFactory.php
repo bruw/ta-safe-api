@@ -20,7 +20,7 @@ class InvoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'access_key' => self::generateRandomNumber(44)
+            'access_key' => self::generateRandomNumber(44),
         ];
     }
 }

@@ -8,7 +8,7 @@ use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterUserRequest;
 use App\Http\Resources\Auth\UserLoginResource;
-use App\Models\User;
+use App\Services\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,9 +17,9 @@ class AuthController extends Controller
     /**
      * Registers a new user in the system.
      */
-    public function register(RegisterUserRequest $request): JsonResponse
+    public function register(RegisterUserRequest $request, AuthService $auth): JsonResponse
     {
-        $loginDto = User::register(RegisterUserDto::fromRequest($request));
+        $loginDto = $auth->register(RegisterUserDto::fromRequest($request));
 
         return response()->json(
             FlashMessage::success(trans('actions.auth.success.register'))
@@ -31,9 +31,9 @@ class AuthController extends Controller
     /**
      * Authenticate a user.
      */
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request, AuthService $auth): JsonResponse
     {
-        $loginDto = User::login($request->userByEmail(), $request->password());
+        $loginDto = $auth->login($request->email, $request->password);
 
         return response()->json(
             FlashMessage::success(trans('actions.auth.success.login'))

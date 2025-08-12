@@ -23,7 +23,7 @@ class DeviceOwnerNameValidationAction
     public function __construct(
         private Device $device,
     ) {
-        $this->fuzz = new Fuzz();
+        $this->fuzz = new Fuzz;
 
         $this->deviceOwnerName = $this->normalizeName(
             $this->device->user->name

@@ -3,6 +3,7 @@
 namespace Tests\Unit\Actions\Auth\Register;
 
 use App\Dto\Auth\RegisterUserDto;
+use App\Services\Auth\AuthService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -10,12 +11,20 @@ class RegisterUserActionTestSetUp extends TestCase
 {
     use RefreshDatabase;
 
+    protected AuthService $auth;
     protected RegisterUserDto $data;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->authSetUp();
         $this->dataSetUp();
+    }
+
+    private function authSetUp(): void
+    {
+        $this->auth = new AuthService;
     }
 
     private function dataSetUp(): void
