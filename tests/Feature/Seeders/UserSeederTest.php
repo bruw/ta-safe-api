@@ -19,7 +19,7 @@ class UserSeederTest extends TestCase
         parent::SetUp();
 
         $this->seed([
-            UserSeeder::class
+            UserSeeder::class,
         ]);
 
         $json = File::get(database_path('data/users.json'));

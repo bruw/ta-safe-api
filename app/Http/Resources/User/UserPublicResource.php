@@ -22,7 +22,7 @@ class UserPublicResource extends JsonResource
             'name' => $this->name,
             'cpf' => self::addAsteriskMaskForCpf($this->cpf),
             'phone' => self::addAsteriskMaskForPhone($this->phone),
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
         ];
     }
 }

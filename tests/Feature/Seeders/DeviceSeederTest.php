@@ -4,14 +4,10 @@ namespace Tests\Feature\Seeders;
 
 use App\Enums\Device\DeviceValidationStatus;
 use App\Models\Device;
-use App\Models\Invoice;
-use App\Models\User;
-
 use Database\Seeders\BrandSeeder;
 use Database\Seeders\DeviceModelSeeder;
 use Database\Seeders\DeviceSeeder;
 use Database\Seeders\UserSeeder;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
@@ -30,7 +26,7 @@ class DeviceSeederTest extends TestCase
             BrandSeeder::class,
             DeviceModelSeeder::class,
             UserSeeder::class,
-            DeviceSeeder::class
+            DeviceSeeder::class,
         ]);
 
         $json = File::get(database_path('data/devices.json'));
@@ -46,7 +42,7 @@ class DeviceSeederTest extends TestCase
     {
         foreach ($this->data as $item) {
             $device = Device::where([
-                'imei_1' => $item->imei1
+                'imei_1' => $item->imei1,
             ])->first();
 
             $this->assertNotNull($device);

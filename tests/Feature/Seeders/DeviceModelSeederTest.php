@@ -21,7 +21,7 @@ class DeviceModelSeederTest extends TestCase
 
         $this->seed([
             BrandSeeder::class,
-            DeviceModelSeeder::class
+            DeviceModelSeeder::class,
         ]);
 
         $json = File::get(database_path('data/device-models.json'));
@@ -39,7 +39,7 @@ class DeviceModelSeederTest extends TestCase
             $deviceModel = DeviceModel::where([
                 'name' => $item->name,
                 'ram' => $item->ram,
-                'storage' => $item->storage
+                'storage' => $item->storage,
             ])->first();
 
             $this->assertNotNull($deviceModel);

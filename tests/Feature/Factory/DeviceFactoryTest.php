@@ -6,7 +6,6 @@ use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\User;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
