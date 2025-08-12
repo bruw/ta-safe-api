@@ -15,20 +15,24 @@ class RegisterDeviceRequest extends ApiFormRequest
     {
         return [
             'device_model_id' => [
+                'bail',
                 'required',
-                'numeric',
+                'integer',
                 'exists:device_models,id',
             ],
             'color' => [
+                'bail',
                 'required',
                 'max:255',
             ],
             'access_key' => [
+                'bail',
                 'required',
                 'digits:44',
                 'unique:invoices,access_key',
             ],
             'imei_1' => [
+                'bail',
                 'required',
                 'digits:15',
                 'different:imei_2',
@@ -36,6 +40,7 @@ class RegisterDeviceRequest extends ApiFormRequest
                 'unique:devices,imei_2',
             ],
             'imei_2' => [
+                'bail',
                 'required',
                 'digits:15',
                 'unique:devices,imei_1',
