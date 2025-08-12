@@ -33,8 +33,7 @@ class RegisterDeviceAction
                 return $device;
             });
         } catch (Exception $e) {
-            $this->logError($e);
-            $this->throwException();
+            $this->handleException($e);
         }
     }
 
@@ -72,6 +71,15 @@ class RegisterDeviceAction
             'user_id' => $this->user->id,
             'device_id' => $device->id,
         ]);
+    }
+
+    /**
+     * Handles an exception that occurred during the registration of a device.
+     */
+    private function handleException(Exception $e): never
+    {
+        $this->logError($e);
+        $this->throwException();
     }
 
     /**

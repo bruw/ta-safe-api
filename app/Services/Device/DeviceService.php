@@ -2,6 +2,7 @@
 
 namespace App\Services\Device;
 
+use App\Actions\Device\Delete\DeleteDeviceAction;
 use App\Actions\Device\Register\RegisterDeviceAction;
 use App\Dto\Device\RegisterDeviceDto;
 use App\Models\Device;
@@ -19,5 +20,13 @@ class DeviceService
     public function register(RegisterDeviceDto $data): Device
     {
         return (new RegisterDeviceAction($this->user, $data))->execute();
+    }
+
+    /**
+     * Deletes a device for the given user.
+     */
+    public function delete(Device $device): bool
+    {
+        return (new DeleteDeviceAction($this->user, $device))->execute();
     }
 }

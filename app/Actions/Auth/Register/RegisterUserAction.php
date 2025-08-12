@@ -29,8 +29,7 @@ class RegisterUserAction
                 return new LoginDto($user, $token);
             });
         } catch (Exception $e) {
-            $this->logError($e);
-            $this->throwException();
+            $this->handleException($e);
         }
     }
 
@@ -65,6 +64,15 @@ class RegisterUserAction
             'user_id' => $user->id,
             'email' => $user->email,
         ]);
+    }
+
+    /**
+     * Handles an exception that occurred during the registration of a user.
+     */
+    private function handleException(Exception $e): never
+    {
+        $this->logError($e);
+        $this->throwException();
     }
 
     /**
