@@ -23,7 +23,7 @@ class DeviceColorValidationAction
         private Device $device,
         private string $invoiceProduct,
     ) {
-        $this->fuzz = new Fuzz();
+        $this->fuzz = new Fuzz;
 
         $this->deviceColor = $this->normalizeAttribute(
             $this->device->color

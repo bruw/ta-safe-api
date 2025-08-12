@@ -23,7 +23,7 @@ class DeviceBrandValidationAction
         private Device $device,
         private string $invoiceProduct,
     ) {
-        $this->fuzz = new Fuzz();
+        $this->fuzz = new Fuzz;
 
         $this->deviceBrand = $this->normalizeAttribute(
             $this->device->deviceModel->brand->name

@@ -17,7 +17,6 @@ class UserDevicesTransfersTest extends TestCase
 
     private User $sourceUser;
     private User $targetUser;
-
     private Device $device;
 
     protected function setUp(): void
@@ -56,14 +55,14 @@ class UserDevicesTransfersTest extends TestCase
             'device_id' => $this->device->id,
             'source_user_id' => $this->sourceUser->id,
             'target_user_id' => $this->targetUser->id,
-            'status' => DeviceTransferStatus::ACCEPTED
+            'status' => DeviceTransferStatus::ACCEPTED,
         ]);
 
         $lastTransfer = DeviceTransfer::create([
             'device_id' => $this->device->id,
             'source_user_id' => $this->targetUser->id,
             'target_user_id' => $this->sourceUser->id,
-            'status' => DeviceTransferStatus::PENDING
+            'status' => DeviceTransferStatus::PENDING,
         ]);
 
         $this->device->refresh();

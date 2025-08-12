@@ -18,7 +18,7 @@ class DeviceSharingToken extends Model
     protected $fillable = [
         'device_id',
         'token',
-        'expires_at'
+        'expires_at',
     ];
 
     /**

@@ -20,7 +20,7 @@ class Invoice extends Model
         'access_key',
         'consumer_cpf',
         'consumer_name',
-        'product_description'
+        'product_description',
     ];
 
     /**

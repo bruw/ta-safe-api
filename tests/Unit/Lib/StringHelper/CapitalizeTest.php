@@ -14,7 +14,7 @@ class CapitalizeTest extends TestCase
             'joão da silva',
             'guilherme dos santos',
             'maria das graças',
-            'andre'
+            'andre',
         ];
 
         $expectedResults = [
@@ -22,7 +22,7 @@ class CapitalizeTest extends TestCase
             'João da Silva',
             'Guilherme dos Santos',
             'Maria das Graças',
-            'Andre'
+            'Andre',
         ];
 
         $results = [];
@@ -41,7 +41,7 @@ class CapitalizeTest extends TestCase
             'cássia dos santos e silva',
             'verônica das graças e paula',
             'joão carlos de matos',
-            'ângela da costa e figueiredo'
+            'ângela da costa e figueiredo',
         ];
 
         $expectedResults = [
@@ -49,7 +49,7 @@ class CapitalizeTest extends TestCase
             'Cássia dos Santos e Silva',
             'Verônica das Graças e Paula',
             'João Carlos de Matos',
-            'Ângela da Costa e Figueiredo'
+            'Ângela da Costa e Figueiredo',
         ];
 
         $results = [];
@@ -68,7 +68,7 @@ class CapitalizeTest extends TestCase
             'Cássia dos Santos e Silva',
             'verÔnica Das graças e pauLA',
             'joão CARLOS de maTos',
-            'ângela da costa E FIGUEIREDO'
+            'ângela da costa E FIGUEIREDO',
         ];
 
         $expectedResults = [
@@ -76,7 +76,7 @@ class CapitalizeTest extends TestCase
             'Cássia dos Santos e Silva',
             'Verônica das Graças e Paula',
             'João Carlos de Matos',
-            'Ângela da Costa e Figueiredo'
+            'Ângela da Costa e Figueiredo',
         ];
 
         $results = [];
@@ -94,14 +94,14 @@ class CapitalizeTest extends TestCase
             'dr. joão da Silva',
             'dra ângela das graças',
             'sra. cássia dos santos',
-            'fernanda l. de nobrega e silva'
+            'fernanda l. de nobrega e silva',
         ];
 
         $expectedResults = [
             'Dr. João da Silva',
             'Dra Ângela das Graças',
             'Sra. Cássia dos Santos',
-            'Fernanda L. de Nobrega e Silva'
+            'Fernanda L. de Nobrega e Silva',
         ];
 
         $results = [];
@@ -120,7 +120,7 @@ class CapitalizeTest extends TestCase
             'cristina de paula  ',
             '  fernanda de amorim e santos  ',
             ' guilherme   dos    santos',
-            '   '
+            '   ',
         ];
 
         $expectedResults = [
@@ -128,7 +128,7 @@ class CapitalizeTest extends TestCase
             'Cristina de Paula',
             'Fernanda de Amorim e Santos',
             'Guilherme dos Santos',
-            ''
+            '',
         ];
 
         $results = [];
