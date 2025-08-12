@@ -24,7 +24,7 @@ class DeviceModelNameValidationAction
         private Device $device,
         private string $invoiceProduct,
     ) {
-        $this->fuzz = new Fuzz();
+        $this->fuzz = new Fuzz;
 
         $this->deviceModelName = $this->normalizeAttribute(
             $this->device->deviceModel->name

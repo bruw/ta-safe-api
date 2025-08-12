@@ -24,7 +24,7 @@ class DeviceStorageValidationAction
         private Device $device,
         private string $invoiceProduct,
     ) {
-        $this->fuzz = new Fuzz();
+        $this->fuzz = new Fuzz;
 
         $this->deviceModelStorage = $this->normalizeAttribute(
             $this->device->deviceModel->storage

@@ -23,7 +23,7 @@ class DeviceImei1ValidationAction
         private Device $device,
         private string $invoiceProduct,
     ) {
-        $this->fuzz = new Fuzz();
+        $this->fuzz = new Fuzz;
 
         $this->deviceImei1 = $this->normalizeAttribute(
             $this->device->imei_1
