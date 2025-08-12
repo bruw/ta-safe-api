@@ -34,14 +34,14 @@ class DeviceController extends Controller
     /**
      * Delete a device with rejected validation.
      */
-    public function deleteDevice(Device $device): Response
+    public function delete(Device $device): Response
     {
-        $this->authorize('delete', $device);
+        $this->authorize('accessAsOwner', $device);
 
-        $device->safeDelete();
+        request()->user()->deviceService()->delete($device);
 
         return response()->json(
-            FlashMessage::success(trans('actions.device.deleted')),
+            FlashMessage::success(trans('actions.device.success.delete')),
             Response::HTTP_OK
         );
     }

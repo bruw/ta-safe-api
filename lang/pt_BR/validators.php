@@ -6,7 +6,7 @@ return [
             'owner' => 'Somente o proprietário do dispositivo pode realizar esta ação.',
         ],
         'status' => [
-            'rejected' => 'O dispositivo deve estar com status "rejeitado" para esta ação.',
+            'rejected' => 'Esta ação só pode ser executada se o dispositivo estiver com status de validação "rejeitado.',
         ],
     ],
 ];

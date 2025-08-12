@@ -20,10 +20,10 @@ return [
     'device' => [
         'success' => [
             'register' => 'Dispositivo registrado com sucesso!',
+            'delete' => 'Dispositivo excluído com sucesso!',
         ],
         'errors' => [
             'register' => 'Ocorreu um erro ao registrar o dispositivo.',
         ],
-        'deleted' => 'Registro excluído com sucesso!',
     ],
 ];
