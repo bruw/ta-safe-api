@@ -34,8 +34,7 @@ class LoginAction
                 return new LoginDto($this->user, $token);
             });
         } catch (Exception $e) {
-            $this->logError($e);
-            $this->throwException();
+            $this->handleException($e);
         }
     }
 
@@ -82,6 +81,15 @@ class LoginAction
             'user_id' => $user->id,
             'email' => $user->email,
         ]);
+    }
+
+    /**
+     * Handles an exception that occurred during the login of a user.
+     */
+    private function handleException(Exception $e): never
+    {
+        $this->logError($e);
+        $this->throwException();
     }
 
     /**

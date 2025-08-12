@@ -3,16 +3,11 @@
 namespace Tests\Unit\Actions\Device\Register;
 
 use App\Dto\Device\RegisterDeviceDto;
-use App\Exceptions\HttpJsonResponseException;
-use App\Models\Device;
 use App\Models\User;
 use App\Traits\RandomNumberGenerator;
 use Database\Factories\DeviceModelFactory;
 use Database\Factories\UserFactory;
-use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class RegisterDeviceActionTestSetUp extends TestCase

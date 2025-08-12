@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Actions\DeviceInvoiceProductValidation;
 
-use App\Actions\DeviceInvoiceProductValidation\DeviceImei1ValidationAction;
 use App\Actions\DeviceInvoiceProductValidation\DeviceImei2ValidationAction;
 use App\Models\Brand;
 use App\Models\Device;

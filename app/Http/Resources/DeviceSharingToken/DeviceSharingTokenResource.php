@@ -17,7 +17,7 @@ class DeviceSharingTokenResource extends JsonResource
         return [
             'id' => $this->id,
             'token' => $this->token,
-            'expires_at' => $this->expires_at
+            'expires_at' => $this->expires_at,
         ];
     }
 }

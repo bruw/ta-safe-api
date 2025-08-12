@@ -24,7 +24,7 @@ class DeviceRamValidationAction
         private Device $device,
         private string $invoiceProduct,
     ) {
-        $this->fuzz = new Fuzz();
+        $this->fuzz = new Fuzz;
 
         $this->deviceModelRam = $this->normalizeAttribute(
             $this->device->deviceModel->ram

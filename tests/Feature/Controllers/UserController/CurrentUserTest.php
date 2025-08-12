@@ -4,7 +4,6 @@ namespace Tests\Feature\Controllers\UserController;
 
 use App\Http\Messages\FlashMessage;
 use App\Models\User;
-
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
@@ -16,8 +15,8 @@ class CurrentUserTest extends TestCase
 
     public function test_an_unauthenticated_user_does_not_have_authorization(): void
     {
-        $response = $this->getJson("/api/user");
-       
+        $response = $this->getJson('/api/user');
+
         $response->assertUnauthorized()->assertJson(
             fn (AssertableJson $json) => $json->where('message.type', FlashMessage::ERROR)
                 ->where('message.text', trans('http_exceptions.unauthenticated'))
@@ -33,12 +32,11 @@ class CurrentUserTest extends TestCase
             []
         );
 
-        $response = $this->getJson("/api/user");
+        $response = $this->getJson('/api/user');
         $response->assertOk();
 
         $response->assertJson(
-            fn (AssertableJson $json) =>
-            $json->has(7)
+            fn (AssertableJson $json) => $json->has(7)
                 ->where('id', $user->id)
                 ->where('name', $user->name)
                 ->where('email', $user->email)

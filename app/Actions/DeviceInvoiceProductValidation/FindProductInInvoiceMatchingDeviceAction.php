@@ -15,7 +15,7 @@ class FindProductInInvoiceMatchingDeviceAction
 
     public function __construct(private Device $device)
     {
-        $this->fuzz = new Fuzz();
+        $this->fuzz = new Fuzz;
     }
 
     public function execute(): string

@@ -167,12 +167,6 @@ return [
         ],
         'device_delete' => [
             'invalid' => 'Só é possível excluir registros com status de validação rejeitada.',
-            'unable_to_delete' => 'Houve um problema ao tentar excluir o dispositivo. '
-                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
-        ],
-        'device_registration' => [
-            'unable_to_register_device' => 'Houve um problema ao tentar registrar o dispositivo. '
-                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
         'device_transfer' => [
             'not_yourself' => 'Não é possível criar uma transferência de dispositivo para si mesmo',

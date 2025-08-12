@@ -5,7 +5,6 @@ namespace App\Actions\Device;
 use App\Enums\Device\DeviceTransferStatus;
 use App\Exceptions\HttpJsonResponseException;
 use App\Models\DeviceTransfer;
-
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,7 @@ class CancelDeviceTransferAction
         try {
             return DB::transaction(function () {
                 $this->deviceTransfer->update([
-                    'status' => DeviceTransferStatus::CANCELED
+                    'status' => DeviceTransferStatus::CANCELED,
                 ]);
 
                 return true;
