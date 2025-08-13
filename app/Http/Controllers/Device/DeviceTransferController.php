@@ -8,6 +8,7 @@ use App\Http\Requests\Device\CreateDeviceTransferRequest;
 use App\Http\Resources\DeviceTransfer\DeviceTransferResource;
 use App\Models\Device;
 use App\Models\DeviceTransfer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,16 +17,14 @@ class DeviceTransferController extends Controller
     /**
      * Create device transfer.
      */
-    public function createDeviceTransfer(CreateDeviceTransferRequest $request, Device $device): Response
+    public function create(CreateDeviceTransferRequest $request, Device $device): JsonResponse
     {
-        $currentUser = $request->user();
-
-        $currentUser->createDeviceTransfer($request->targetUser(), $device);
+        $request->user()
+            ->deviceTransferService()
+            ->create($request->targetUser(), $device);
 
         return response()->json(
-            FlashMessage::success(trans_choice('flash_messages.success.created.f', 1, [
-                'model' => trans_choice('model.device_transfer', 1),
-            ])),
+            FlashMessage::success(trans('actions.device_transfer.success.create')),
             Response::HTTP_CREATED
         );
     }
