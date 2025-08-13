@@ -6,7 +6,12 @@ return [
             'owner' => 'Somente o proprietário do dispositivo pode realizar esta ação.',
         ],
         'status' => [
-            'rejected' => 'Esta ação só pode ser executada se o dispositivo estiver com status de validação "rejeitado.',
+            'rejected' => 'O registro de validação do dispositivo precisa estar com status rejeitado.',
+            'validated' => 'O registro de validação do dispositivo precisa estar com status validado.',
+        ],
+        'transfer' => [
+            'same_user' => 'Não é possível transferir um dispositivo para si mesmo.',
+            'pending' => 'O dispositivo possui uma transferência pendente.',
         ],
     ],
 ];

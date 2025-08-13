@@ -50,4 +50,19 @@ class DeviceValidator
 
         return $this;
     }
+
+    /**
+     * Validate if the device status is 'validated'.
+     */
+    public function statusMustBeValidated(): self
+    {
+        $isValidate = $this->device->validation_status->isValidated();
+
+        throw_unless($isValidate, new HttpJsonResponseException(
+            trans('validators.device.status.validated'),
+            Response::HTTP_UNPROCESSABLE_ENTITY
+        ));
+
+        return $this;
+    }
 }

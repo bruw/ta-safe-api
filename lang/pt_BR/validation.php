@@ -173,8 +173,6 @@ return [
             'in_progress' => 'Já existe uma transferência em andamento ainda não finalizada para este dispositivo.',
             'register_not_validated' => 'Não é possível realizar transferências de registros não validados.',
             'transfer_closed' => 'Não é possível alterar uma proposta de transferência finalizada.',
-            'unable_to_create_transfer' => 'Houve um problema ao criar a transferência do dispositivo. '
-                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
             'unable_to_accept_transfer' => 'Houve um problema ao aceitar a transferência do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
             'unable_to_reject_transfer' => 'Houve um problema ao rejeitar a transferência do dispositivo. '

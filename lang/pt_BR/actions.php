@@ -26,4 +26,9 @@ return [
             'register' => 'Ocorreu um erro ao registrar o dispositivo.',
         ],
     ],
+    'device_transfer' => [
+        'errors' => [
+            'create' => 'Ocorreu um erro ao criar a transferência.',
+        ]
+    ]
 ];
