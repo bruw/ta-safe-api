@@ -4,7 +4,6 @@ namespace App\Http\Requests\Device;
 
 use App\Http\Requests\ApiFormRequest;
 use App\Models\User;
-use App\Rules\NotBoolean;
 
 class CreateDeviceTransferRequest extends ApiFormRequest
 {
@@ -13,7 +12,7 @@ class CreateDeviceTransferRequest extends ApiFormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('createDeviceTransfer', $this->device);
+        return $this->user()->can('accessAsOwner', $this->device);
     }
 
     /**
@@ -34,9 +33,8 @@ class CreateDeviceTransferRequest extends ApiFormRequest
         return [
             'target_user_id' => [
                 'required',
-                'numeric',
+                'integer',
                 'exists:users,id',
-                new NotBoolean,
             ],
         ];
     }
