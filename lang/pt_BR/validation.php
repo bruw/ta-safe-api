@@ -172,8 +172,6 @@ return [
             'not_yourself' => 'Não é possível criar uma transferência de dispositivo para si mesmo',
             'in_progress' => 'Já existe uma transferência em andamento ainda não finalizada para este dispositivo.',
             'register_not_validated' => 'Não é possível realizar transferências de registros não validados.',
-            'unable_to_reject_transfer' => 'Houve um problema ao rejeitar a transferência do dispositivo. '
-                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
         'register_user' => [
             'unable_to_register_user' => 'Houve um problema ao criar o novo usuário. '

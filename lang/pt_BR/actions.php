@@ -34,8 +34,9 @@ return [
         ],
         'errors' => [
             'create' => 'Ocorreu um erro ao criar a transferência.',
-            'accept' => 'Ocorreu um ao aceitar a transferência.',
-            'cancel' => 'Ocorreu um ao cancelar a transferência.',
+            'accept' => 'Ocorreu um erro ao aceitar a transferência.',
+            'cancel' => 'Ocorreu um erro ao cancelar a transferência.',
+            'reject' => 'Ocorreu um erro ao rejeitar a transferência.',
         ],
     ],
 ];
