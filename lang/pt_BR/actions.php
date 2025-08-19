@@ -31,6 +31,7 @@ return [
             'create' => 'Transferência de registro criada com sucesso!',
             'accept' => 'Transferência aceita com sucesso!',
             'cancel' => 'Transferência cancelada com sucesso!',
+            'reject' => 'Transferência rejeitada com sucesso!',
         ],
         'errors' => [
             'create' => 'Ocorreu um erro ao criar a transferência.',
