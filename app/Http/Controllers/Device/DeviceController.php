@@ -51,7 +51,7 @@ class DeviceController extends Controller
      */
     public function viewDevice(Device $device): JsonResource
     {
-        $this->authorize('view', $device);
+        $this->authorize('accessAsOwner', $device);
 
         $device->setAttribute(
             'validation_attributes',
