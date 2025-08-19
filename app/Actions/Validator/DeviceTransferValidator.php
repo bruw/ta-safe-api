@@ -4,31 +4,38 @@ namespace App\Actions\Validator;
 
 use App\Exceptions\HttpJsonResponseException;
 use App\Models\Device;
+use App\Models\DeviceTransfer;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeviceTransferValidator
 {
     public function __construct(
-        private readonly Device $device,
-        private readonly User $sourceUser,
-        private readonly User $targetUser
+        private readonly ?DeviceTransfer $transfer
     ) {}
 
     /**
-     * Create a new DeviceValidator instance for the specified device.
+     * Creates a new instance for the validator.
      */
-    public static function for(Device $device, User $sourceUser, User $targetUser): self
+    public static function create(): self
     {
-        return new self($device, $sourceUser, $targetUser);
+        return new self(null);
+    }
+
+    /**
+     * Create a new instance for the validator with the given device transfer.
+     */
+    public static function for(DeviceTransfer $transfer): self
+    {
+        return new self($transfer);
     }
 
     /**
      * Validate that the target user is not the same as the source user.
      */
-    public function mustNotTransferToSelf(): self
+    public function mustNotTransferToSelf(User $sourceUser, User $targetUser): self
     {
-        $isSameUser = $this->sourceUser->id === $this->targetUser->id;
+        $isSameUser = $sourceUser->id === $targetUser->id;
 
         throw_if($isSameUser, new HttpJsonResponseException(
             trans('validators.device.transfer.same_user'),
@@ -41,9 +48,9 @@ class DeviceTransferValidator
     /**
      * Validate that there is no pending transfer for the device.
      */
-    public function mustNotExistPendingTransfer(): self
+    public function mustNotExistPendingTransfer(Device $device): self
     {
-        $transfer = $this->device->lastTransfer();
+        $transfer = $device->lastTransfer();
 
         throw_if($transfer?->status->isPending(), new HttpJsonResponseException(
             trans('validators.device.transfer.pending'),

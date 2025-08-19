@@ -46,9 +46,9 @@ class CreateDeviceTransferAction
             ->mustBeOwner($this->user)
             ->statusMustBeValidated();
 
-        DeviceTransferValidator::for($this->device, $this->user, $this->targetUser)
+        DeviceTransferValidator::create()
             ->mustNotTransferToSelf($this->user, $this->targetUser)
-            ->mustNotExistPendingTransfer();
+            ->mustNotExistPendingTransfer($this->device);
     }
 
     /**
