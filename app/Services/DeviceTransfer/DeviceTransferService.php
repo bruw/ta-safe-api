@@ -3,6 +3,7 @@
 namespace App\Services\DeviceTransfer;
 
 use App\Actions\DeviceTransfer\Accept\AcceptDeviceTransferAction;
+use App\Actions\DeviceTransfer\Cancel\CancelDeviceTransferAction;
 use App\Actions\DeviceTransfer\Create\CreateDeviceTransferAction;
 use App\Models\Device;
 use App\Models\DeviceTransfer;
@@ -28,5 +29,13 @@ class DeviceTransferService
     public function accept(DeviceTransfer $transfer): DeviceTransfer
     {
         return (new AcceptDeviceTransferAction($this->user, $transfer))->execute();
+    }
+
+    /**
+     * Cancel a device transfer.
+     */
+    public function cancel(DeviceTransfer $transfer): DeviceTransfer
+    {
+        return (new CancelDeviceTransferAction($this->user, $transfer))->execute();
     }
 }
