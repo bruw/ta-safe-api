@@ -57,7 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(DeviceSharingController::class)->group(function () {
-        Route::post('devices/{device}/share', 'createSharingToken');
+        Route::post('devices/{device}/share', 'createSharingToken')->name('api.device.share.create');
         Route::get('devices', 'viewDeviceByToken');
     });
 

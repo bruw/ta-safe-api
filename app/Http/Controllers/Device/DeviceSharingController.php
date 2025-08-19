@@ -13,23 +13,22 @@ use Symfony\Component\HttpFoundation\Response;
 class DeviceSharingController extends Controller
 {
     /**
-     * Create token to share device registration.
+     * Create a token to share device registration.
      */
     public function createSharingToken(Device $device): Response
     {
-        $this->authorize('createSharingToken', $device);
+        $this->authorize('accessAsOwner', $device);
 
-        $sharingToken = $device->createSharingToken();
+        $sharingToken = request()->user()
+            ->deviceService()
+            ->createSharingToken($device);
 
-        return response()->json(
-            FlashMessage::success(trans_choice('flash_messages.success.created.m', 1, [
-                'model' => trans_choice('model.sharing_token', 1),
-            ]))->merge([
+        return response()->json(FlashMessage::success(
+            trans('actions.device.success.token'))->merge([
                 'id' => $sharingToken->id,
                 'token' => $sharingToken->token,
                 'expires_at' => $sharingToken->expires_at,
-            ]),
-            Response::HTTP_CREATED
+            ]), Response::HTTP_CREATED
         );
     }
 

@@ -16,22 +16,6 @@ class DevicePolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Device $device): bool
-    {
-        return $user->id == $device->user->id;
-    }
-
-    /**
-     * Determine whether the user can create a device sharing token.
-     */
-    public function createSharingToken(User $user, Device $device): bool
-    {
-        return $user->id == $device->user->id;
-    }
-
-    /**
      *  Determine whether the user can validate the registration of a device.
      */
     public function validateDeviceRegistration(User $user, Device $device): bool

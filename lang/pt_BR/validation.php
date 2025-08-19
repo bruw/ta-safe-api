@@ -155,7 +155,7 @@ return [
     'custom' => [
         'attribute' => [
             'not_boolean' => 'O :attribute não pode ser booleano.',
-            'email_not_registered' => 'Não encontramos nenhum usuário associado a este e-mail em nosso sistema.'
+            'email_not_registered' => 'Não encontramos nenhum usuário associado a este e-mail em nosso sistema.',
         ],
         'cpf' => [
             'invalid_format' => 'O cpf deve possuir 11 dígitos.',
@@ -175,11 +175,6 @@ return [
         ],
         'register_user' => [
             'unable_to_register_user' => 'Houve um problema ao criar o novo usuário. '
-                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
-        ],
-        'device_sharing_token' => [
-            'register_not_validated' => 'Não é possível compartilhar o registro de dispositivos não validados.',
-            'unable_to_create_token' => 'Houve um problema ao gerar o token de compartilhamento do dispositivo. '
                 . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
         ],
         'device_status' => [
