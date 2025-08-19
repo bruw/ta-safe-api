@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Actions\Device\RejectDeviceTransferAction;
 use App\Services\Device\DeviceService;
 use App\Services\DeviceTransfer\DeviceTransferService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -109,7 +108,7 @@ class User extends Authenticatable
     }
 
     /*
-    ================= ** Actions ** ==========================================================================
+    ================= ** Services ** ==========================================================================
     */
 
     /**
@@ -128,17 +127,5 @@ class User extends Authenticatable
     public function deviceTransferService(): DeviceTransferService
     {
         return new DeviceTransferService($this);
-    }
-
-    /**
-     * Invoke the action to reject the device transfer.
-     */
-    public function rejectDeviceTransfer(DeviceTransfer $deviceTransfer): bool
-    {
-        $rejectTransfer = new RejectDeviceTransferAction(
-            $deviceTransfer
-        );
-
-        return $rejectTransfer->execute();
     }
 }

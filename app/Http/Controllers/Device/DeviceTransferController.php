@@ -50,7 +50,7 @@ class DeviceTransferController extends Controller
     /**
      * Cancel the device transfer.
      */
-    public function cancel(Request $request, DeviceTransfer $deviceTransfer): Response
+    public function cancel(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
     {
         $this->authorize('accessAsSourceUser', $deviceTransfer);
 
@@ -68,20 +68,18 @@ class DeviceTransferController extends Controller
     /**
      * Reject the device transfer.
      */
-    public function rejectDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    public function reject(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
     {
-        $this->authorize('rejectDeviceTransfer', $deviceTransfer);
+        $this->authorize('accessAsTargetUser', $deviceTransfer);
 
-        $currentUser = $request->user();
-        $currentUser->rejectDeviceTransfer($deviceTransfer);
+        $transfer = $request->user()
+            ->deviceTransferService()
+            ->reject($deviceTransfer);
 
-        return response()->json(
-            FlashMessage::success(trans_choice('flash_messages.success.rejected.f', 1, [
-                'model' => trans('model.device_transfer'),
-            ]))->merge([
-                'transfer' => new DeviceTransferResource($deviceTransfer),
-            ]),
-            Response::HTTP_OK
+        return response()->json(FlashMessage::success(
+            trans('actions.device_transfer.success.reject'))->merge([
+                'transfer' => new DeviceTransferResource($transfer),
+            ]), Response::HTTP_OK
         );
     }
 }
