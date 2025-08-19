@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\DeviceTransfer\Create;
+namespace App\Actions\DeviceTransfer\Accept;
 
 use App\Actions\Validator\DeviceTransferValidator;
-use App\Actions\Validator\DeviceValidator;
+use App\Enums\Device\DeviceTransferStatus;
 use App\Exceptions\HttpJsonResponseException;
 use App\Models\Device;
 use App\Models\DeviceTransfer;
@@ -13,12 +13,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateDeviceTransferAction
+class AcceptDeviceTransferAction
 {
     public function __construct(
         private readonly User $user,
-        private readonly User $targetUser,
-        private readonly Device $device
+        private DeviceTransfer $transfer
     ) {}
 
     public function execute(): DeviceTransfer
@@ -27,10 +26,11 @@ class CreateDeviceTransferAction
 
         try {
             return DB::transaction(function () {
-                $transfer = $this->createTransfer();
-                $this->logSuccess($transfer);
+                $this->updateDeviceTransfer();
+                $this->updateDeviceOwner();
+                $this->logSuccess();
 
-                return $transfer;
+                return $this->transfer;
             });
         } catch (Exception $e) {
             $this->handleException($e);
@@ -42,36 +42,35 @@ class CreateDeviceTransferAction
      */
     private function validateAttributesBeforeAction(): void
     {
-        DeviceValidator::for($this->device)
-            ->mustBeOwner($this->user)
-            ->statusMustBeValidated();
-
-        DeviceTransferValidator::create()
-            ->mustNotTransferToSelf($this->user, $this->targetUser)
-            ->mustNotExistPendingTransfer($this->device);
+        DeviceTransferValidator::for($this->transfer)
+            ->mustBeTargetUser($this->user)
+            ->mustBePending();
     }
 
     /**
-     * Create a new device transfer.
+     * Updates the device transfer to be accepted.
      */
-    private function createTransfer(): DeviceTransfer
+    private function updateDeviceTransfer(): void
     {
-        return DeviceTransfer::create([
-            'device_id' => $this->device->id,
-            'source_user_id' => $this->user->id,
-            'target_user_id' => $this->targetUser->id,
-        ]);
+        $this->transfer->update(['status' => DeviceTransferStatus::ACCEPTED]);
     }
 
     /**
-     * Log a success message for the device transfer creation.
+     * Updates the device owner to be the target user.
      */
-    private function logSuccess(DeviceTransfer $transfer): void
+    private function updateDeviceOwner(): void
     {
-        Log::info("The user {$this->user->name} successfully created device transfer.", [
+        $this->transfer->device->update(['user_id' => $this->user->id]);
+    }
+
+    /**
+     * Log a success message for the device transfer acceptance.
+     */
+    private function logSuccess(): void
+    {
+        Log::info("The user {$this->user->name} successfully accepted device transfer.", [
             'user_id' => $this->user->id,
-            'target_user_id' => $this->targetUser->id,
-            'transfer_id' => $transfer->id,
+            'transfer_id' => $this->transfer->id,
         ]);
     }
 
@@ -85,13 +84,13 @@ class CreateDeviceTransferAction
     }
 
     /**
-     * Log an error message for the device transfer creation failure.
+     * Logs an error message for the device transfer acceptance failure.
      */
     private function logError(Exception $e): void
     {
-        Log::error("The user {$this->user->name} failed to create device transfer.", [
+        Log::error("The user {$this->user->name} failed to accept device transfer.", [
             'user_id' => $this->user->id,
-            'target_user_id' => $this->targetUser->id,
+            'transfer_id' => $this->transfer->id,
             'context' => [
                 'code' => $e->getCode(),
                 'message' => $e->getMessage(),
@@ -100,12 +99,12 @@ class CreateDeviceTransferAction
     }
 
     /**
-     * Throws an exception when the device transfer creation fails.
+     * Throws an exception when the device transfer acceptance fails.
      */
     private function throwException(): never
     {
         throw new HttpJsonResponseException(
-            trans('actions.device_transfer.errors.create'),
+            trans('actions.device_transfer.errors.accept'),
             Response::HTTP_INTERNAL_SERVER_ERROR
         );
     }

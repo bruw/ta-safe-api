@@ -8,9 +8,9 @@ use App\Models\User;
 class DeviceTransferPolicy
 {
     /**
-     * determines whether the user can accept the device transfer.
+     * Determines whether the user is the target user of the device transfer.
      */
-    public function acceptDeviceTransfer(User $user, DeviceTransfer $deviceTransfer): bool
+    public function accessAsTargetUser(User $user, DeviceTransfer $deviceTransfer): bool
     {
         return $user->id == $deviceTransfer->target_user_id;
     }
