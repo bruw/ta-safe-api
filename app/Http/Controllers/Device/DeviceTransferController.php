@@ -36,11 +36,31 @@ class DeviceTransferController extends Controller
     {
         $this->authorize('accessAsTargetUser', $deviceTransfer);
 
-        $result = $request->user()->deviceTransferService()->accept($deviceTransfer);
+        $result = $request->user()
+            ->deviceTransferService()
+            ->accept($deviceTransfer);
 
         return response()->json(FlashMessage::success(
             trans('actions.device_transfer.success.accept'))->merge([
                 'transfer' => new DeviceTransferResource($result),
+            ]), Response::HTTP_OK
+        );
+    }
+
+    /**
+     * Cancel the device transfer.
+     */
+    public function cancel(Request $request, DeviceTransfer $deviceTransfer): Response
+    {
+        $this->authorize('accessAsSourceUser', $deviceTransfer);
+
+        $transfer = $request->user()
+            ->deviceTransferService()
+            ->cancel($deviceTransfer);
+
+        return response()->json(FlashMessage::success(
+            trans('actions.device_transfer.success.cancel'))->merge([
+                'transfer' => new DeviceTransferResource($transfer),
             ]), Response::HTTP_OK
         );
     }
@@ -57,26 +77,6 @@ class DeviceTransferController extends Controller
 
         return response()->json(
             FlashMessage::success(trans_choice('flash_messages.success.rejected.f', 1, [
-                'model' => trans('model.device_transfer'),
-            ]))->merge([
-                'transfer' => new DeviceTransferResource($deviceTransfer),
-            ]),
-            Response::HTTP_OK
-        );
-    }
-
-    /**
-     * Cancel the device transfer.
-     */
-    public function cancelDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
-    {
-        $this->authorize('cancelDeviceTransfer', $deviceTransfer);
-
-        $currentUser = $request->user();
-        $currentUser->cancelDeviceTransfer($deviceTransfer);
-
-        return response()->json(
-            FlashMessage::success(trans_choice('flash_messages.success.canceled.f', 1, [
                 'model' => trans('model.device_transfer'),
             ]))->merge([
                 'transfer' => new DeviceTransferResource($deviceTransfer),

@@ -29,6 +29,8 @@ return [
     'device_transfer' => [
         'success' => [
             'create' => 'Transferência de registro criada com sucesso!',
+            'accept' => 'Transferência aceita com sucesso!',
+            'cancel' => 'Transferência cancelada com sucesso!',
         ],
         'errors' => [
             'create' => 'Ocorreu um erro ao criar a transferência.',
