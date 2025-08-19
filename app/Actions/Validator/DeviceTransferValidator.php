@@ -61,6 +61,21 @@ class DeviceTransferValidator
     }
 
     /**
+     * Validate that the given user is the source user of the transfer.
+     */
+    public function mustBeSourceUser(User $user): self
+    {
+        $isSourceUser = $user->id === $this->transfer?->source_user_id;
+
+        throw_unless($isSourceUser, new HttpJsonResponseException(
+            trans('validators.device.transfer.not_source_user'),
+            Response::HTTP_UNPROCESSABLE_ENTITY
+        ));
+
+        return $this;
+    }
+
+    /**
      * Validate that the given user is the target user of the transfer.
      */
     public function mustBeTargetUser(User $user): self
