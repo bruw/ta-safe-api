@@ -2,6 +2,7 @@
 
 namespace App\Services\DeviceTransfer;
 
+use App\Actions\DeviceTransfer\Accept\AcceptDeviceTransferAction;
 use App\Actions\DeviceTransfer\Create\CreateDeviceTransferAction;
 use App\Models\Device;
 use App\Models\DeviceTransfer;
@@ -19,5 +20,13 @@ class DeviceTransferService
     public function create(User $targetUser, Device $device): DeviceTransfer
     {
         return (new CreateDeviceTransferAction($this->user, $targetUser, $device))->execute();
+    }
+
+    /**
+     * Accept a device transfer.
+     */
+    public function accept(DeviceTransfer $transfer): DeviceTransfer
+    {
+        return (new AcceptDeviceTransferAction($this->user, $transfer))->execute();
     }
 }

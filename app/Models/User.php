@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Actions\Device\AcceptDeviceTransferAction;
 use App\Actions\Device\CancelDeviceTransferAction;
 use App\Actions\Device\RejectDeviceTransferAction;
 use App\Services\Device\DeviceService;
@@ -130,19 +129,6 @@ class User extends Authenticatable
     public function deviceTransferService(): DeviceTransferService
     {
         return new DeviceTransferService($this);
-    }
-
-    /**
-     * Invoke the action of accepting the transfer of the device.
-     */
-    public function acceptDeviceTransfer(DeviceTransfer $deviceTransfer): bool
-    {
-        $acceptTransfer = new AcceptDeviceTransferAction(
-            $this,
-            $deviceTransfer
-        );
-
-        return $acceptTransfer->execute();
     }
 
     /**

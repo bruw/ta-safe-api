@@ -59,4 +59,34 @@ class DeviceTransferValidator
 
         return $this;
     }
+
+    /**
+     * Validate that the given user is the target user of the transfer.
+     */
+    public function mustBeTargetUser(User $user): self
+    {
+        $isTargetUser = $user->id === $this->transfer?->target_user_id;
+
+        throw_unless($isTargetUser, new HttpJsonResponseException(
+            trans('validators.device.transfer.not_target_user'),
+            Response::HTTP_UNPROCESSABLE_ENTITY
+        ));
+
+        return $this;
+    }
+
+    /**
+     * Validate that the device transfer status is 'pending'.
+     */
+    public function mustBePending(): self
+    {
+        $isPending = $this->transfer?->status->isPending();
+
+        throw_unless($isPending, new HttpJsonResponseException(
+            trans('validators.device.transfer.not_pending'),
+            Response::HTTP_UNPROCESSABLE_ENTITY
+        ));
+
+        return $this;
+    }
 }
