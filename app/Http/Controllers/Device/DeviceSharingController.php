@@ -33,22 +33,10 @@ class DeviceSharingController extends Controller
     }
 
     /**
-     * View the registration of a device via the sharing token.
+     * View device by sharing token.
      */
     public function viewDeviceByToken(ViewDeviceByTokenRequest $request): JsonResource
     {
-        $device = $request->deviceSharingToken()->device;
-
-        $device->setAttribute(
-            'validation_attributes',
-            $device->validatedAttributes()
-        );
-
-        $device->setAttribute(
-            'transfers_history',
-            $device->transfers()->acceptedAndOrdered()->get()
-        );
-
-        return new DevicePublicResource($device);
+        return new DevicePublicResource($request->deviceSharingToken()->device);
     }
 }

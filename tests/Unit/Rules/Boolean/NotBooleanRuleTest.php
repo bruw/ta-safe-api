@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Rules;
+namespace Tests\Unit\Rules\Boolean;
 
 use App\Rules\NotBoolean;
 use Illuminate\Support\Facades\Validator;

@@ -163,7 +163,8 @@ return [
             'invalid_check_digits' => 'O cpf é inválido.',
         ],
         'token' => [
-            'exists' => 'O código informado não é válido.',
+            'exists' => 'O código informado é inválido.',
+            'expired' => 'O código informado expirou.',
         ],
         'device_delete' => [
             'invalid' => 'Só é possível excluir registros com status de validação rejeitada.',
