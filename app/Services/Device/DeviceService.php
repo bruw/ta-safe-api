@@ -3,6 +3,7 @@
 namespace App\Services\Device;
 
 use App\Actions\Device\Delete\DeleteDeviceAction;
+use App\Actions\Device\Invalidate\InvalidateDeviceAction;
 use App\Actions\Device\Register\RegisterDeviceAction;
 use App\Actions\Device\Token\CreateSharingTokenAction;
 use App\Actions\Device\Validate\StartDeviceValidationAction;
@@ -44,6 +45,14 @@ class DeviceService
         ValidateDeviceRegistrationJob::dispatchAfterResponse($device);
 
         return $device;
+    }
+
+    /**
+     * Invalidates a device registration.
+     */
+    public function invalidate(Device $device): Device
+    {
+        return (new InvalidateDeviceAction($this->user, $device))->execute();
     }
 
     /**

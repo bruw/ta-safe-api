@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\DB;
 use Lib\Strings\StringHelper;
 
 class Device extends Model
@@ -113,23 +112,5 @@ class Device extends Model
     public function sharingToken(): HasOne
     {
         return $this->hasOne(DeviceSharingToken::class);
-    }
-
-    /**
-     * Invalidates a device record with pending status only.
-     */
-    public function invalidateRegistration(): bool
-    {
-        return DB::transaction(function () {
-            if ($this->validation_status == DeviceValidationStatus::PENDING) {
-                $this->update([
-                    'validation_status' => DeviceValidationStatus::REJECTED,
-                ]);
-
-                return true;
-            }
-
-            return false;
-        });
     }
 }

@@ -70,7 +70,7 @@ class DeviceController extends Controller
             ->validate($device, $request->invoiceData());
 
         return response()->json(
-            FlashMessage::success(trans('actions.device_validation.start'))
+            FlashMessage::success(trans('actions.device.errors.validate'))
                 ->merge(['device' => new DeviceResource($device)]),
             Response::HTTP_OK
         );
