@@ -21,9 +21,12 @@ return [
         'success' => [
             'register' => 'Dispositivo registrado com sucesso!',
             'delete' => 'Dispositivo excluído com sucesso!',
+            'token' => 'Código de visualização gerado com sucesso!',
         ],
         'errors' => [
             'register' => 'Ocorreu um erro ao registrar o dispositivo.',
+            'delete' => 'Ocorreu um erro ao excluir o dispositivo.',
+            'token' => 'Ocorreu um erro ao gerar o código de visualização.',
         ],
     ],
     'device_transfer' => [

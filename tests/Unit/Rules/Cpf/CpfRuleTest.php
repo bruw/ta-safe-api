@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Rules;
+namespace Tests\Unit\Rules\Cpf;
 
 use App\Rules\CpfRule;
 use Illuminate\Foundation\Testing\RefreshDatabase;

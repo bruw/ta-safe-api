@@ -28,4 +28,12 @@ class DeviceSharingToken extends Model
     {
         return $this->belongsTo(Device::class);
     }
+
+    /**
+     * Determine if the token is expired.
+     */
+    public function isExpired(): bool
+    {
+        return now()->isAfter($this->expires_at);
+    }
 }
