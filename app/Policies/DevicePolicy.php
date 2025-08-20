@@ -14,20 +14,4 @@ class DevicePolicy
     {
         return $user->id == $device->user->id;
     }
-
-    /**
-     *  Determine whether the user can validate the registration of a device.
-     */
-    public function validateDeviceRegistration(User $user, Device $device): bool
-    {
-        return $user->id == $device->user->id;
-    }
-
-    /**
-     *  Determine whether the user can invalidate the registration of a device.
-     */
-    public function invalidateDeviceRegistration(User $user, Device $device): bool
-    {
-        return $user->id == $device->user->id;
-    }
 }

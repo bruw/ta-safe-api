@@ -61,7 +61,7 @@ class DeviceController extends Controller
     }
 
     /**
-     * Validating the registration of a device.
+     * Validate a device's registration.
      */
     public function validation(StartDeviceValidationRequest $request, Device $device): JsonResponse
     {
@@ -79,21 +79,18 @@ class DeviceController extends Controller
     /**
      * Invalidate a device's registration.
      */
-    public function invalidateRegistration(Device $device): Response
+    public function invalidation(Device $device): JsonResponse
     {
-        $this->authorize('invalidateDeviceRegistration', $device);
+        $this->authorize('accessAsOwner', $device);
 
-        $invalidated = $device->invalidateRegistration();
+        request()->user()
+            ->deviceService()
+            ->invalidate($device);
 
-        if ($invalidated) {
-            return response()->json(
-                FlashMessage::success(trans('actions.device_validation.invalid'))->merge([
-                    'device' => new DeviceResource($device),
-                ]),
-                Response::HTTP_OK
-            );
-        }
-
-        return response()->noContent(Response::HTTP_OK);
+        return response()->json(
+            FlashMessage::success(trans('actions.device.success.invalidate'))
+                ->merge(['device' => new DeviceResource($device)]),
+            Response::HTTP_OK
+        );
     }
 }
