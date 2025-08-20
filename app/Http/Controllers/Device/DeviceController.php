@@ -53,15 +53,10 @@ class DeviceController extends Controller
     {
         $this->authorize('accessAsOwner', $device);
 
-        $device->setAttribute(
-            'validation_attributes',
-            $device->validatedAttributes()
-        );
-
-        $device->setAttribute(
-            'transfers_history',
-            $device->transfers()->acceptedAndOrdered()->get()
-        );
+        $device->loadMissing([
+            'attributeValidationLogs',
+            'transfers' => fn ($q) => $q->acceptedAndOrdered(),
+        ]);
 
         return new DeviceResource($device);
     }
