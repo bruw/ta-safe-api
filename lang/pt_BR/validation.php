@@ -181,10 +181,6 @@ return [
         'device_status' => [
             'must_be_pending' => 'O status de validação do dispositivo deve ser pendente.',
         ],
-        'device_validation' => [
-            'unable_to_validate' => 'Houve um problema ao validar o dispositivo. '
-                . ' Por favor, verifique se as informações estão corretas e tente novamente em breve.',
-        ],
     ],
 
     /*

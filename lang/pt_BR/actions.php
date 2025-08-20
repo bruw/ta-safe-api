@@ -27,6 +27,7 @@ return [
             'register' => 'Ocorreu um erro ao registrar o dispositivo.',
             'delete' => 'Ocorreu um erro ao excluir o dispositivo.',
             'token' => 'Ocorreu um erro ao gerar o código de visualização.',
+            'validate' => 'Ocorreu um erro ao validar o dispositivo.',
         ],
     ],
     'device_transfer' => [

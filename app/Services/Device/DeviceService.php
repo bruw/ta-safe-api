@@ -5,6 +5,8 @@ namespace App\Services\Device;
 use App\Actions\Device\Delete\DeleteDeviceAction;
 use App\Actions\Device\Register\RegisterDeviceAction;
 use App\Actions\Device\Token\CreateSharingTokenAction;
+use App\Actions\Device\Validate\StartDeviceValidationAction;
+use App\Dto\Device\Invoice\DeviceInvoiceDto;
 use App\Dto\Device\RegisterDeviceDto;
 use App\Models\Device;
 use App\Models\DeviceSharingToken;
@@ -30,6 +32,14 @@ class DeviceService
     public function delete(Device $device): bool
     {
         return (new DeleteDeviceAction($this->user, $device))->execute();
+    }
+
+    /**
+     * Starts the validation process of a device for the given user.
+     */
+    public function validate(Device $device, DeviceInvoiceDto $data): Device
+    {
+        return (new StartDeviceValidationAction($this->user, $device, $data))->execute();
     }
 
     /**
