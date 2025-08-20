@@ -45,7 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('devices', 'register')->name('api.device.register');
         Route::delete('devices/{device}', 'delete')->name('api.device.delete');
         Route::get('devices/{device}', 'viewDevice');
-        Route::post('devices/{device}/validate', 'validateRegistration');
+        Route::post('devices/{device}/validate', 'validation')->name('api.device.validation');
         Route::post('devices/{device}/invalidate', 'invalidateRegistration');
     });
 

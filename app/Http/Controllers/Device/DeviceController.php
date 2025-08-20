@@ -6,9 +6,8 @@ use App\Dto\Device\RegisterDeviceDto;
 use App\Http\Controllers\Controller;
 use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Device\RegisterDeviceRequest;
-use App\Http\Requests\Device\ValidateDeviceRegistrationRequest;
+use App\Http\Requests\Device\StartDeviceValidationRequest;
 use App\Http\Resources\Device\DeviceResource;
-use App\Jobs\Device\ValidateDeviceRegistrationJob;
 use App\Models\Device;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -64,22 +63,15 @@ class DeviceController extends Controller
     /**
      * Validating the registration of a device.
      */
-    public function validateRegistration(ValidateDeviceRegistrationRequest $request, Device $device)
+    public function validation(StartDeviceValidationRequest $request, Device $device): JsonResponse
     {
-        $data = $request->validated();
-
-        $device->validateRegistration(
-            cpf: $data['cpf'],
-            name: $data['name'],
-            products: $data['products']
-        );
-
-        ValidateDeviceRegistrationJob::dispatchAfterResponse($device);
+        $request->user()
+            ->deviceService()
+            ->validate($device, $request->invoiceData());
 
         return response()->json(
-            FlashMessage::success(trans('actions.device_validation.start'))->merge([
-                'device' => new DeviceResource($device),
-            ]),
+            FlashMessage::success(trans('actions.device_validation.start'))
+                ->merge(['device' => new DeviceResource($device)]),
             Response::HTTP_OK
         );
     }

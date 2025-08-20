@@ -8,6 +8,7 @@ use App\Actions\Device\Token\CreateSharingTokenAction;
 use App\Actions\Device\Validate\StartDeviceValidationAction;
 use App\Dto\Device\Invoice\DeviceInvoiceDto;
 use App\Dto\Device\RegisterDeviceDto;
+use App\Jobs\Device\ValidateDeviceRegistrationJob;
 use App\Models\Device;
 use App\Models\DeviceSharingToken;
 use App\Models\User;
@@ -39,7 +40,10 @@ class DeviceService
      */
     public function validate(Device $device, DeviceInvoiceDto $data): Device
     {
-        return (new StartDeviceValidationAction($this->user, $device, $data))->execute();
+        $device = (new StartDeviceValidationAction($this->user, $device, $data))->execute();
+        ValidateDeviceRegistrationJob::dispatchAfterResponse($device);
+
+        return $device;
     }
 
     /**
