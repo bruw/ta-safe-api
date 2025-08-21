@@ -6,9 +6,8 @@ use App\Dto\Device\RegisterDeviceDto;
 use App\Http\Controllers\Controller;
 use App\Http\Messages\FlashMessage;
 use App\Http\Requests\Device\RegisterDeviceRequest;
-use App\Http\Requests\Device\ValidateDeviceRegistrationRequest;
+use App\Http\Requests\Device\StartDeviceValidationRequest;
 use App\Http\Resources\Device\DeviceResource;
-use App\Jobs\Device\ValidateDeviceRegistrationJob;
 use App\Models\Device;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -17,39 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 class DeviceController extends Controller
 {
     /**
-     * Register a new device.
-     */
-    public function register(RegisterDeviceRequest $request): JsonResponse
-    {
-        $request->user()
-            ->deviceService()
-            ->register(RegisterDeviceDto::fromRequest($request));
-
-        return response()->json(
-            FlashMessage::success(trans('actions.device.success.register')),
-            Response::HTTP_CREATED,
-        );
-    }
-
-    /**
-     * Delete a device with rejected validation.
-     */
-    public function delete(Device $device): Response
-    {
-        $this->authorize('accessAsOwner', $device);
-
-        request()->user()->deviceService()->delete($device);
-
-        return response()->json(
-            FlashMessage::success(trans('actions.device.success.delete')),
-            Response::HTTP_OK
-        );
-    }
-
-    /**
      * View device data.
      */
-    public function viewDevice(Device $device): JsonResource
+    public function view(Device $device): JsonResource
     {
         $this->authorize('accessAsOwner', $device);
 
@@ -62,46 +31,68 @@ class DeviceController extends Controller
     }
 
     /**
-     * Validating the registration of a device.
+     * Register a new device.
      */
-    public function validateRegistration(ValidateDeviceRegistrationRequest $request, Device $device)
+    public function register(RegisterDeviceRequest $request): JsonResponse
     {
-        $data = $request->validated();
+        $request->user()
+            ->deviceService()
+            ->register(RegisterDeviceDto::fromRequest($request));
 
-        $device->validateRegistration(
-            cpf: $data['cpf'],
-            name: $data['name'],
-            products: $data['products']
+        return response()->json(FlashMessage::success(
+            trans('actions.device.success.register')),
+            Response::HTTP_CREATED,
         );
+    }
 
-        ValidateDeviceRegistrationJob::dispatchAfterResponse($device);
+    /**
+     * Delete a device with rejected validation.
+     */
+    public function delete(Device $device): Response
+    {
+        $this->authorize('accessAsOwner', $device);
 
-        return response()->json(
-            FlashMessage::success(trans('actions.device_validation.start'))->merge([
-                'device' => new DeviceResource($device),
-            ]),
+        request()->user()
+            ->deviceService()
+            ->delete($device);
+
+        return response()->json(FlashMessage::success(
+            trans('actions.device.success.delete')),
             Response::HTTP_OK
+        );
+    }
+
+    /**
+     * Validate a device's registration.
+     */
+    public function validation(StartDeviceValidationRequest $request, Device $device): JsonResponse
+    {
+        $request->user()
+            ->deviceService()
+            ->validate($device, $request->invoiceData());
+
+        return response()->json(FlashMessage::success(
+            trans('actions.device.errors.validate'))->merge([
+                'device' => new DeviceResource($device),
+            ]), Response::HTTP_OK
         );
     }
 
     /**
      * Invalidate a device's registration.
      */
-    public function invalidateRegistration(Device $device): Response
+    public function invalidation(Device $device): JsonResponse
     {
-        $this->authorize('invalidateDeviceRegistration', $device);
+        $this->authorize('accessAsOwner', $device);
 
-        $invalidated = $device->invalidateRegistration();
+        request()->user()
+            ->deviceService()
+            ->invalidate($device);
 
-        if ($invalidated) {
-            return response()->json(
-                FlashMessage::success(trans('actions.device_validation.invalid'))->merge([
-                    'device' => new DeviceResource($device),
-                ]),
-                Response::HTTP_OK
-            );
-        }
-
-        return response()->noContent(Response::HTTP_OK);
+        return response()->json(FlashMessage::success(
+            trans('actions.device.success.invalidate'))->merge([
+                'device' => new DeviceResource($device),
+            ]), Response::HTTP_OK
+        );
     }
 }

@@ -65,4 +65,19 @@ class DeviceValidator
 
         return $this;
     }
+
+    /**
+     * Validate if the device status is 'pending'.
+     */
+    public function statusMustBePending(): self
+    {
+        $isPending = $this->device->validation_status->isPending();
+
+        throw_unless($isPending, new HttpJsonResponseException(
+            trans('validators.device.status.pending'),
+            Response::HTTP_UNPROCESSABLE_ENTITY
+        ));
+
+        return $this;
+    }
 }
