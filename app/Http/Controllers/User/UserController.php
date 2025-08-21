@@ -40,6 +40,14 @@ class UserController extends Controller
     }
 
     /**
+     * Search user by email.
+     */
+    public function searchByEmail(SearchUserRequest $request): JsonResource
+    {
+        return new UserPublicResource($request->userByEmail());
+    }
+
+    /**
      * Get the user's devices.
      */
     public function userDevices(Request $request): JsonResource
@@ -59,15 +67,5 @@ class UserController extends Controller
         $transfers = $currentUser->userDevicesTransfers();
 
         return DeviceTransferResource::collection($transfers);
-    }
-
-    /**
-     * Search user by email.
-     */
-    public function searchByEmail(SearchUserRequest $request): JsonResource
-    {
-        return new UserPublicResource(
-            $request->userByEmail()
-        );
     }
 }

@@ -8,11 +8,11 @@ use App\Models\User;
 class SearchUserRequest extends ApiFormRequest
 {
     /**
-     * Validate the email field and return the user linked to it.
+     * Validate the 'email' field and return the user linked to it.
      */
     public function userByEmail(): User
     {
-        return User::where('email', $this->email)->first();
+        return User::where('email', $this->email)->firstOrFail();
     }
 
     /**
@@ -24,6 +24,7 @@ class SearchUserRequest extends ApiFormRequest
     {
         return [
             'email' => [
+                'bail',
                 'required',
                 'email',
                 'max:255',
@@ -40,7 +41,7 @@ class SearchUserRequest extends ApiFormRequest
     public function messages(): array
     {
         return [
-            'email.exists' => trans('validation.custom.attribute.email_not_registered'),
+            'email.exists' => trans('validation.custom.email.exists'),
         ];
     }
 }

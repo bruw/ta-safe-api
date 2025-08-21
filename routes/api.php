@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('user', 'view')->name('api.user.view');
         Route::patch('user', 'update')->name('api.user.update');
-        Route::get('user/search-by-email', 'searchByEmail');
+        Route::get('user/search-by-email', 'searchByEmail')->name('api.user.search');
 
         Route::get('user/devices', 'userDevices');
         Route::get('user/devices-transfers', 'userDevicesTransfers');
