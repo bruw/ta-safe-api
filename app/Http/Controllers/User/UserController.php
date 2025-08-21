@@ -12,7 +12,6 @@ use App\Http\Resources\User\UserPublicResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -30,19 +29,14 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request): Response
     {
-        return DB::transaction(function () use ($request) {
-            $user = $request->user();
-            $data = $request->validated();
+        $request->user()
+            ->userService()
+            ->update($request->toDto());
 
-            $user->update($data);
-
-            return response()->json(
-                FlashMessage::success(trans_choice('flash_messages.success.updated.m', 1, [
-                    'model' => trans_choice('model.profile', 1),
-                ])),
-                Response::HTTP_OK
-            );
-        });
+        return response()->json(FlashMessage::success(
+            trans('actions.user.success.update')),
+            Response::HTTP_OK
+        );
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\Device\DeviceService;
 use App\Services\DeviceTransfer\DeviceTransferService;
+use App\Services\User\UserService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -112,8 +113,15 @@ class User extends Authenticatable
     */
 
     /**
-     * Returns an instance of the DeviceService, which provides methods
-     * for performing operations with the user's devices.
+     * Get the user service.
+     */
+    public function userService(): UserService
+    {
+        return new UserService($this);
+    }
+
+    /**
+     * Get the device service.
      */
     public function deviceService(): DeviceService
     {
@@ -121,8 +129,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Returns an instance of the DeviceTransferService, which provides methods
-     * for performing operations with device transfers for the user.
+     * Get the device transfer service.
      */
     public function deviceTransferService(): DeviceTransferService
     {

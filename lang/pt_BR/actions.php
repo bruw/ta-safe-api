@@ -13,6 +13,14 @@ return [
             'logout' => 'Ocorreu um erro ao desconectar o usuário.',
         ],
     ],
+    'user' => [
+        'success' => [
+            'update' => 'Perfil atualizado com sucesso.',
+        ],
+        'errors' => [
+            'update' => 'Ocorreu um erro ao atualizar o perfil.',
+        ],
+    ],
     'device' => [
         'success' => [
             'register' => 'Dispositivo registrado com sucesso!',
