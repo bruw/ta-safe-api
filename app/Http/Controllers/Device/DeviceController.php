@@ -16,39 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 class DeviceController extends Controller
 {
     /**
-     * Register a new device.
-     */
-    public function register(RegisterDeviceRequest $request): JsonResponse
-    {
-        $request->user()
-            ->deviceService()
-            ->register(RegisterDeviceDto::fromRequest($request));
-
-        return response()->json(
-            FlashMessage::success(trans('actions.device.success.register')),
-            Response::HTTP_CREATED,
-        );
-    }
-
-    /**
-     * Delete a device with rejected validation.
-     */
-    public function delete(Device $device): Response
-    {
-        $this->authorize('accessAsOwner', $device);
-
-        request()->user()->deviceService()->delete($device);
-
-        return response()->json(
-            FlashMessage::success(trans('actions.device.success.delete')),
-            Response::HTTP_OK
-        );
-    }
-
-    /**
      * View device data.
      */
-    public function viewDevice(Device $device): JsonResource
+    public function view(Device $device): JsonResource
     {
         $this->authorize('accessAsOwner', $device);
 
@@ -61,6 +31,38 @@ class DeviceController extends Controller
     }
 
     /**
+     * Register a new device.
+     */
+    public function register(RegisterDeviceRequest $request): JsonResponse
+    {
+        $request->user()
+            ->deviceService()
+            ->register(RegisterDeviceDto::fromRequest($request));
+
+        return response()->json(FlashMessage::success(
+            trans('actions.device.success.register')),
+            Response::HTTP_CREATED,
+        );
+    }
+
+    /**
+     * Delete a device with rejected validation.
+     */
+    public function delete(Device $device): Response
+    {
+        $this->authorize('accessAsOwner', $device);
+
+        request()->user()
+            ->deviceService()
+            ->delete($device);
+
+        return response()->json(FlashMessage::success(
+            trans('actions.device.success.delete')),
+            Response::HTTP_OK
+        );
+    }
+
+    /**
      * Validate a device's registration.
      */
     public function validation(StartDeviceValidationRequest $request, Device $device): JsonResponse
@@ -69,10 +71,10 @@ class DeviceController extends Controller
             ->deviceService()
             ->validate($device, $request->invoiceData());
 
-        return response()->json(
-            FlashMessage::success(trans('actions.device.errors.validate'))
-                ->merge(['device' => new DeviceResource($device)]),
-            Response::HTTP_OK
+        return response()->json(FlashMessage::success(
+            trans('actions.device.errors.validate'))->merge([
+                'device' => new DeviceResource($device),
+            ]), Response::HTTP_OK
         );
     }
 
@@ -87,10 +89,10 @@ class DeviceController extends Controller
             ->deviceService()
             ->invalidate($device);
 
-        return response()->json(
-            FlashMessage::success(trans('actions.device.success.invalidate'))
-                ->merge(['device' => new DeviceResource($device)]),
-            Response::HTTP_OK
+        return response()->json(FlashMessage::success(
+            trans('actions.device.success.invalidate'))->merge([
+                'device' => new DeviceResource($device),
+            ]), Response::HTTP_OK
         );
     }
 }
