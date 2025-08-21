@@ -20,11 +20,9 @@ class UserController extends Controller
     /**
      * Show current user.
      */
-    public function currentUser(Request $request): UserResource
+    public function view(Request $request): JsonResource
     {
-        $currentUser = $request->user();
-
-        return new UserResource($currentUser);
+        return new UserResource($request->user());
     }
 
     /**

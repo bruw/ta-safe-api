@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::controller(UserController::class)->group(function () {
-        Route::get('user', 'currentUser');
+        Route::get('user', 'view')->name('api.user.view');
         Route::put('user', 'update');
         Route::get('user/search-by-email', 'searchByEmail');
 
