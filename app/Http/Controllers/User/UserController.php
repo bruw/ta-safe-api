@@ -17,14 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
     /**
-     * Show current user.
-     */
-    public function view(Request $request): JsonResource
-    {
-        return new UserResource($request->user());
-    }
-
-    /**
      * Update user profile.
      */
     public function update(UpdateUserRequest $request): Response
@@ -37,6 +29,14 @@ class UserController extends Controller
             trans('actions.user.success.update')),
             Response::HTTP_OK
         );
+    }
+
+    /**
+     * Show current user.
+     */
+    public function view(Request $request): JsonResource
+    {
+        return new UserResource($request->user());
     }
 
     /**
@@ -58,11 +58,8 @@ class UserController extends Controller
     /**
      * Get user devices transfers.
      */
-    public function userDevicesTransfers(Request $request): JsonResource
+    public function transfers(Request $request): JsonResource
     {
-        $currentUser = $request->user();
-        $transfers = $currentUser->userDevicesTransfers();
-
-        return DeviceTransferResource::collection($transfers);
+        return DeviceTransferResource::collection($request->user()->userDevicesTransfers());
     }
 }

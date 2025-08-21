@@ -92,10 +92,17 @@ class User extends Authenticatable
      */
     public function userDevicesTransfers(): Collection
     {
-        return DeviceTransfer::where(function ($query) {
-            $query->where('source_user_id', $this->id)
-                ->orWhere('target_user_id', $this->id);
-        })->orderByDesc('updated_at')->get();
+        return DeviceTransfer::with([
+            'device',
+            'sourceUser',
+            'targetUser',
+        ])
+            ->where(function ($query) {
+                $query->where('source_user_id', $this->id)
+                    ->orWhere('target_user_id', $this->id);
+            })
+            ->orderByDesc('updated_at')
+            ->get();
     }
 
     /**
