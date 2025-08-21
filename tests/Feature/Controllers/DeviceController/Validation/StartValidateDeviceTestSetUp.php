@@ -14,8 +14,8 @@ use Tests\TestCase;
 class StartValidateDeviceTestSetUp extends TestCase
 {
     use AccessAsserts;
-    use RefreshDatabase;
     use RandomNumberGenerator;
+    use RefreshDatabase;
 
     protected User $user;
     protected Device $device;

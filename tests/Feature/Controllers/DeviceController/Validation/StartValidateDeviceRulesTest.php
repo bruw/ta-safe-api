@@ -3,9 +3,9 @@
 namespace Tests\Feature\Controllers\DeviceController\Validation;
 
 use App\Http\Messages\FlashMessage;
+use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
-use Illuminate\Support\Str;
 
 class StartValidateDeviceRulesTest extends StartValidateDeviceTestSetUp
 {
