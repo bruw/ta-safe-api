@@ -153,9 +153,11 @@ return [
     */
 
     'custom' => [
+        'email' => [
+            'exists' => 'Email não encontrado em nossa base de dados.',
+        ],
         'attribute' => [
             'not_boolean' => 'O :attribute não pode ser booleano.',
-            'email_not_registered' => 'Não encontramos nenhum usuário associado a este e-mail em nosso sistema.',
         ],
         'cpf' => [
             'invalid_format' => 'O cpf deve possuir 11 dígitos.',
