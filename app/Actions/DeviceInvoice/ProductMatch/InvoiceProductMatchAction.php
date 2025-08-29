@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\DeviceInvoice\Search;
+namespace App\Actions\DeviceInvoice\ProductMatch;
 
 use App\Dto\Invoice\Search\InvoiceProductMatchResultDto;
 use App\Models\Device;

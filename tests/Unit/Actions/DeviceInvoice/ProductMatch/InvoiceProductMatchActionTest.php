@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Actions\DeviceInvoice\ProductMatch;
 
-use App\Actions\DeviceInvoice\Search\InvoiceProductMatchAction;
+use App\Actions\DeviceInvoice\ProductMatch\InvoiceProductMatchAction;
 use App\Dto\Invoice\Search\InvoiceProductMatchResultDto;
 
 class InvoiceProductMatchActionTest extends InvoiceProductMatchActionTestSetUp
