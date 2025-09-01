@@ -4,13 +4,11 @@ namespace App\Actions\DeviceInvoice\ProductMatch;
 
 use App\Dto\Invoice\Search\InvoiceProductMatchResultDto;
 use App\Models\Device;
-use App\Traits\StringNormalizer;
+use App\Utils\StringNormalize;
 use FuzzyWuzzy\Fuzz;
 
 class InvoiceProductMatchAction
 {
-    use StringNormalizer;
-
     private Fuzz $fuzz;
     private readonly array $attributes;
 
@@ -73,7 +71,9 @@ class InvoiceProductMatchAction
             $similarityScore = $this->calculateCumulativeSimilarity($product);
 
             if ($similarityScore > $matching['similarity_score']) {
-                $matching['product'] = $this->removeExtraWhiteSpaces($product);
+                $product = StringNormalize::for($product)->removeExtraWhiteSpaces()->get();
+
+                $matching['product'] = $product;
                 $matching['similarity_score'] = $similarityScore;
             }
         }
@@ -87,12 +87,11 @@ class InvoiceProductMatchAction
     private function calculateCumulativeSimilarity(string $product): int
     {
         $totalSimilarityScore = 0;
+        $normalizedProduct = $this->normalize($product);
 
         foreach ($this->attributes as $attribute) {
-            $deviceAttribute = $this->normalize($attribute['value']);
-            $product = $this->normalize($product);
-
-            $similarityScore = $this->fuzz->tokenSetRatio($deviceAttribute, $product);
+            $normalizedValue = $this->normalize($attribute['value']);
+            $similarityScore = $this->fuzz->tokenSetRatio($normalizedValue, $normalizedProduct);
             $totalSimilarityScore += $similarityScore * $attribute['weight'];
         }
 
@@ -100,14 +99,15 @@ class InvoiceProductMatchAction
     }
 
     /**
-     * Normalizes the given value by removing accents and whitespaces.
+     * Normalizes the given string value.
      */
     private function normalize(string $value): string
     {
-        $withoutAccents = $this->removeAccents($value);
-        $withoutExtraWhiteSpaces = $this->removeExtraWhiteSpaces($withoutAccents);
-        $normalizeMemories = $this->normalizeMemorySize($withoutExtraWhiteSpaces);
-
-        return strtolower($normalizeMemories);
+        return StringNormalize::for($value)
+            ->removeAccents()
+            ->removeExtraWhiteSpaces()
+            ->normalizeMemorySize()
+            ->toLowerCase()
+            ->get();
     }
 }

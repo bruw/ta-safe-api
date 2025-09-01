@@ -4,14 +4,11 @@ namespace App\Actions\DeviceInvoice\Validation\Base;
 
 use App\Models\Device;
 use App\Models\DeviceAttributeValidationLog;
-use App\Traits\StringNormalizer;
 use Exception;
 use FuzzyWuzzy\Fuzz;
 
 abstract class BaseDeviceProductValidationAction
 {
-    use StringNormalizer;
-
     protected Fuzz $fuzz;
     protected DeviceAttributeValidationLog $validationLog;
 

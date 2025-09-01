@@ -5,6 +5,7 @@ namespace App\Actions\DeviceInvoice\Validation\Brand;
 use App\Actions\DeviceInvoice\Validation\Base\BaseDeviceProductValidationAction;
 use App\Constants\DeviceAttributeValidationRatio;
 use App\Models\Brand;
+use App\Utils\StringNormalize;
 
 class DeviceBrandValidationAction extends BaseDeviceProductValidationAction
 {
@@ -13,7 +14,11 @@ class DeviceBrandValidationAction extends BaseDeviceProductValidationAction
      */
     protected function normalize(string $value): string
     {
-        return $this->extractOnlyLetters($value);
+        return StringNormalize::for($value)
+            ->keepOnlyLetters()
+            ->removeExtraWhiteSpaces()
+            ->toLowerCase()
+            ->get();
     }
 
     /**
