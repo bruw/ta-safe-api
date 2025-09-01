@@ -52,7 +52,6 @@ class StringNormalize
      */
     public function keepOnlyLetters(): self
     {
-        $this->removeAccents();
         $this->value = preg_replace('/[^A-Za-z\s]/', '', $this->value);
 
         return $this;
