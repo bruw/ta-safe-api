@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Actions\DeviceInvoice\ProductMatch;
+namespace Tests\Unit\Actions\DeviceInvoice\Validation\Brand;
 
 use App\Models\Brand;
 use App\Models\Device;
@@ -13,7 +13,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class InvoiceProductMatchActionTestSetUp extends TestCase
+class DeviceBrandValidationActionTestSetUp extends TestCase
 {
     use RefreshDatabase;
 
@@ -62,28 +62,14 @@ class InvoiceProductMatchActionTestSetUp extends TestCase
             ->create(['color' => 'preto']);
     }
 
-    protected function deviceDescription(): string
+    protected function invoiceProduct(?string $brand = null): string
     {
-        return "Smartphone {$this->deviceModel->brand->name}"
+        $brand ??= $this->brand->name;
+
+        return "Smartphone {$brand}"
             . " {$this->deviceModel->name}"
             . " {$this->deviceModel->ram}"
             . " {$this->deviceModel->storage}"
             . " {$this->device->color}";
-    }
-
-    protected function ambiguousInvoiceDescription(): string
-    {
-        $cover = "<span> Capa para smartphone {$this->deviceModel->brand->name}"
-                . " {$this->deviceModel->name}"
-                . " {$this->device->color}"
-                . '</span>';
-
-        $charger = "<span> Carregador {$this->deviceModel->brand->name}"
-                . " {$this->deviceModel->name}"
-                . " {$this->device->color}"
-                . ' 20w'
-                . '</span>';
-
-        return $cover . $charger;
     }
 }
