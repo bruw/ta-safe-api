@@ -55,7 +55,7 @@ class DeviceBrandValidationActionTest extends DeviceBrandValidationActionTestSet
         $log = (new DeviceBrandValidationAction($this->device, ''))->execute();
 
         $this->assertFalse($log->validated);
-        $this->assertEquals($log->similarity_ratio, 0);
-        $this->assertEquals($log->min_similarity_ratio, 75);
+        $this->assertEquals(0, $log->similarity_ratio);
+        $this->assertEquals(75, $log->min_similarity_ratio);
     }
 }

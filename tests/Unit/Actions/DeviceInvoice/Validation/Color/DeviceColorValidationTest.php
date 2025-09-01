@@ -38,8 +38,8 @@ class DeviceColorValidationTest extends DeviceColorValidationTestSetUp
         $log = (new DeviceColorValidationAction($this->device, 'Azulado'))->execute();
 
         $this->assertTrue($log->validated);
-        $this->assertEquals($log->similarity_ratio, 72);
-        $this->assertEquals($log->min_similarity_ratio, 70);
+        $this->assertEquals(72, $log->similarity_ratio);
+        $this->assertEquals(70, $log->min_similarity_ratio);
     }
 
     public function test_the_action_must_not_validate_a_device_color_with_a_similarity_ratio_of_less_than_70_porcent(): void
@@ -47,8 +47,8 @@ class DeviceColorValidationTest extends DeviceColorValidationTestSetUp
         $log = (new DeviceColorValidationAction($this->device, 'Azulado Verde'))->execute();
 
         $this->assertFalse($log->validated);
-        $this->assertEquals($log->similarity_ratio, 47);
-        $this->assertEquals($log->min_similarity_ratio, 70);
+        $this->assertEquals(47, $log->similarity_ratio);
+        $this->assertEquals(70, $log->min_similarity_ratio);
     }
 
     public function test_should_validate_similar_device_color_even_if_they_have_accents_or_other_special_characters(): void
@@ -57,8 +57,8 @@ class DeviceColorValidationTest extends DeviceColorValidationTestSetUp
         $log = (new DeviceColorValidationAction($this->device, 'Ázul (pêtróleo!)'))->execute();
 
         $this->assertTrue($log->validated);
-        $this->assertEquals($log->similarity_ratio, 100);
-        $this->assertEquals($log->min_similarity_ratio, 70);
+        $this->assertEquals(100, $log->similarity_ratio);
+        $this->assertEquals(70, $log->min_similarity_ratio);
     }
 
     public function test_should_invalidate_the_color_attribute_when_an_empty_string_is_provided_as_the_invoice_product(): void
@@ -66,7 +66,7 @@ class DeviceColorValidationTest extends DeviceColorValidationTestSetUp
         $log = (new DeviceColorValidationAction($this->device, ''))->execute();
 
         $this->assertFalse($log->validated);
-        $this->assertEquals($log->similarity_ratio, 0);
-        $this->assertEquals($log->min_similarity_ratio, 70);
+        $this->assertEquals(0, $log->similarity_ratio);
+        $this->assertEquals(70, $log->min_similarity_ratio);
     }
 }
