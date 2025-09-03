@@ -1,5 +1,14 @@
 # TA-SAFE-API
-API para o backend do sistema de rastreabilidade de celulares - Tá Safe.
+Este repositório contém a API responsável pelo backend do sistema Tá Safe, uma plataforma desenvolvida para rastreabilidade de celulares usados.
+O backend é responsável por gerenciar toda a lógica de negócio, persistência de dados e integrações externas, oferecendo segurança e confiabilidade no processo de compra e venda de aparelhos.
+
+## Principais funcionalidades
+
++ Cadastro e autenticação de usuários (com foco em segurança e privacidade).
++ Registro de celulares a partir da NF-e vinculada ao CPF do primeiro proprietário.
++ Consulta de histórico de propriedade, permitindo verificar a procedência do aparelho.
++ Transferência de propriedade entre usuários, com registro formal da transação.
++ Automatização para validação e extração de dados da NF-e.
 
 ## Tecnologias
 
