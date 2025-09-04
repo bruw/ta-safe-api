@@ -126,8 +126,6 @@ class DeviceFactory extends Factory
 
     private function createInvoiceProducts(?Device $device, array $product = []): array
     {
-        $deviceModel = $device->deviceModel;
-
         return array_merge([
             '<span> Placa de Vídeo ASUS TUF RX 9060 XT OC 16G Gaming AMD Radeon, 16GB, GDDR6, 128bits, RGB </span>',
         ], $product);
