@@ -9,6 +9,7 @@ return [
             'rejected' => 'O registro de validação do dispositivo precisa estar com status rejeitado.',
             'validated' => 'O registro de validação do dispositivo precisa estar com status validado.',
             'pending' => 'O registro de validação do dispositivo precisa estar com status pendente.',
+            'in_analysis' => 'O registro de validação do dispositivo precisa estar com status em análise.',
         ],
         'transfer' => [
             'same_user' => 'Não é possível transferir um dispositivo para si mesmo.',

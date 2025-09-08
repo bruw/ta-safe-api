@@ -80,4 +80,19 @@ class DeviceValidator
 
         return $this;
     }
+
+    /**
+     * Validate if the device status is 'in_analysis'.
+     */
+    public function statusMustBeInAnalysis(): self
+    {
+        $isInAnalysis = $this->device->validation_status->isInAnalysis();
+
+        throw_unless($isInAnalysis, new HttpJsonResponseException(
+            trans('validators.device.status.in_analysis'),
+            Response::HTTP_UNPROCESSABLE_ENTITY
+        ));
+
+        return $this;
+    }
 }

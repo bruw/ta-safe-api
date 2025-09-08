@@ -88,13 +88,46 @@ class DeviceFactory extends Factory
      */
     private function updateInvoice(Device $device, bool $rejected = false): void
     {
-        $model = $device->deviceModel;
-        $desc = "Smartphone {$model->brand->name} {$model->name} {$model->ram} {$model->storage} {$device->color}";
+        $description = $rejected
+            ? $this->invalidProductDescription($device)
+            : $this->validProductDescription($device);
 
         $device->invoice->update([
             'consumer_name' => $device->user->name,
             'consumer_cpf' => $device->user->cpf,
-            'product_description' => $rejected ? fake()->text(255) : $desc,
+            'product_description' => $description,
         ]);
+    }
+
+    /**
+     * Returns a randomly generated invalid description.
+     */
+    private function invalidProductDescription(Device $device): string
+    {
+        return implode('', $this->createInvoiceProducts($device));
+    }
+
+    /**
+     * Returns a valid description for the given device.
+     */
+    private function validProductDescription(Device $device): string
+    {
+        $product = ['<span>'
+            . " Smartphone {$device->deviceModel->brand->name}"
+            . " {$device->deviceModel->name}"
+            . " {$device->deviceModel->ram}"
+            . " {$device->deviceModel->storage}"
+            . " {$device->color}"
+            . ' </span>',
+        ];
+
+        return implode('', $this->createInvoiceProducts($device, $product));
+    }
+
+    private function createInvoiceProducts(?Device $device, array $product = []): array
+    {
+        return array_merge([
+            '<span> Placa de Vídeo ASUS TUF RX 9060 XT OC 16G Gaming AMD Radeon, 16GB, GDDR6, 128bits, RGB </span>',
+        ], $product);
     }
 }
