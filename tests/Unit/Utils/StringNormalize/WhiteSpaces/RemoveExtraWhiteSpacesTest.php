@@ -24,14 +24,14 @@ class RemoveExtraWhiteSpacesTest extends TestCase
         $expectedValueNormalized = '123 abc';
 
         $this->assertEquals(
-            $expectedValueNormalized, 
+            $expectedValueNormalized,
             StringNormalize::for($value)->removeExtraWhiteSpaces()->get()
         );
     }
 
     public function test_should_return_a_formatted_string_without_whitespaces_at_the_beginning_and_end_of_the_string_value(): void
     {
-        $value= ' 123abc ';
+        $value = ' 123abc ';
         $expectedValueNormalized = '123abc';
 
         $this->assertEquals(

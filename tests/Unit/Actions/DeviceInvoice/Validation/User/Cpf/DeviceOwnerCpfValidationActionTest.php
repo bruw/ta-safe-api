@@ -64,7 +64,7 @@ class DeviceOwnerCpfValidationActionTest extends DeviceOwnerCpfValidationActionT
         $this->assertFalse($log->validated);
     }
 
-     public function test_should_invalidate_the_invoice_consumer_cpf_when_an_empty_string_is_provided(): void
+    public function test_should_invalidate_the_invoice_consumer_cpf_when_an_empty_string_is_provided(): void
     {
         $this->invoiceUpdate(cpf: '');
         $log = (new DeviceOwnerCpfValidationAction($this->device))->execute();

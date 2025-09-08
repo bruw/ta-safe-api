@@ -36,8 +36,8 @@ class InvoiceProductMatchActionTest extends InvoiceProductMatchActionTestSetUp
     public function test_should_extract_the_expected_device_description_from_ambiguous_description(): void
     {
         $this->device->invoice->update([
-            'product_description' =>  $this->device->invoice->product_description
-                . $this->ambiguousInvoiceDescription()
+            'product_description' => $this->device->invoice->product_description
+                . $this->ambiguousInvoiceDescription(),
         ]);
 
         $result = (new InvoiceProductMatchAction($this->device))->execute();

@@ -16,7 +16,7 @@ class DeviceInvoiceValidateActionTestSetUp extends TestCase
     protected User $user;
     protected Device $device;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
