@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Actions\DeviceInvoice\Validation\Color;
+namespace Tests\Unit\Actions\DeviceInvoice\Validation\Device\Color;
 
-use App\Actions\DeviceInvoice\Validation\Color\DeviceColorValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Color\DeviceColorValidationAction;
 use App\Constants\DeviceAttributeValidationRatio;
 use App\Models\Device;
 use App\Models\DeviceAttributeValidationLog;

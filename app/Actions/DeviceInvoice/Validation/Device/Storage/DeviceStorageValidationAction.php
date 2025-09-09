@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Actions\DeviceInvoice\Validation\Model;
+namespace App\Actions\DeviceInvoice\Validation\Device\Storage;
 
-use App\Actions\DeviceInvoice\Validation\Base\BaseDeviceProductValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Base\BaseDeviceProductValidationAction;
 use App\Constants\DeviceAttributeValidationRatio;
 use App\Models\DeviceModel;
 use App\Utils\StringNormalize;
 
-class DeviceModelNameValidationAction extends BaseDeviceProductValidationAction
+class DeviceStorageValidationAction extends BaseDeviceProductValidationAction
 {
     /**
      * Returns the given value normalized.
@@ -15,10 +15,8 @@ class DeviceModelNameValidationAction extends BaseDeviceProductValidationAction
     protected function normalize(string $value): string
     {
         return StringNormalize::for($value)
-            ->removeAccents()
-            ->removeNonAlphanumeric()
             ->removeExtraWhiteSpaces()
-            ->toLowerCase()
+            ->normalizeMemorySize()
             ->get();
     }
 
@@ -27,7 +25,7 @@ class DeviceModelNameValidationAction extends BaseDeviceProductValidationAction
      */
     protected function deviceAttributeToValidate(): string
     {
-        return $this->device->deviceModel->name;
+        return $this->device->deviceModel->storage;
     }
 
     /**
@@ -35,7 +33,7 @@ class DeviceModelNameValidationAction extends BaseDeviceProductValidationAction
      */
     protected function minSimilarityRatio(): int
     {
-        return DeviceAttributeValidationRatio::MIN_MODEL_NAME_SIMILARITY;
+        return DeviceAttributeValidationRatio::MIN_STORAGE_SIMILARITY;
     }
 
     /**
@@ -51,6 +49,6 @@ class DeviceModelNameValidationAction extends BaseDeviceProductValidationAction
      */
     protected function attributeLabel(): string
     {
-        return 'model_name';
+        return 'storage';
     }
 }

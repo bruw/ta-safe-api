@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Actions\DeviceInvoice\Validation\Ram;
+namespace App\Actions\DeviceInvoice\Validation\Device\Color;
 
-use App\Actions\DeviceInvoice\Validation\Base\BaseDeviceProductValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Base\BaseDeviceProductValidationAction;
 use App\Constants\DeviceAttributeValidationRatio;
-use App\Models\DeviceModel;
+use App\Models\Device;
 use App\Utils\StringNormalize;
 
-class DeviceRamValidationAction extends BaseDeviceProductValidationAction
+class DeviceColorValidationAction extends BaseDeviceProductValidationAction
 {
     /**
      * Returns the given value normalized.
@@ -15,8 +15,10 @@ class DeviceRamValidationAction extends BaseDeviceProductValidationAction
     protected function normalize(string $value): string
     {
         return StringNormalize::for($value)
+            ->removeAccents()
+            ->removeNonAlphanumeric()
             ->removeExtraWhiteSpaces()
-            ->normalizeMemorySize()
+            ->toLowerCase()
             ->get();
     }
 
@@ -25,7 +27,7 @@ class DeviceRamValidationAction extends BaseDeviceProductValidationAction
      */
     protected function deviceAttributeToValidate(): string
     {
-        return $this->device->deviceModel->ram;
+        return $this->device->color;
     }
 
     /**
@@ -33,7 +35,7 @@ class DeviceRamValidationAction extends BaseDeviceProductValidationAction
      */
     protected function minSimilarityRatio(): int
     {
-        return DeviceAttributeValidationRatio::MIN_RAM_SIMILARITY;
+        return DeviceAttributeValidationRatio::MIN_COLOR_SIMILARITY;
     }
 
     /**
@@ -41,7 +43,7 @@ class DeviceRamValidationAction extends BaseDeviceProductValidationAction
      */
     protected function attributeSource(): string
     {
-        return DeviceModel::class;
+        return Device::class;
     }
 
     /**
@@ -49,6 +51,6 @@ class DeviceRamValidationAction extends BaseDeviceProductValidationAction
      */
     protected function attributeLabel(): string
     {
-        return 'ram';
+        return 'color';
     }
 }

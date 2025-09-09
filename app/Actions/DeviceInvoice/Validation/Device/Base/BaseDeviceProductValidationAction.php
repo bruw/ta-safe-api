@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\DeviceInvoice\Validation\Base;
+namespace App\Actions\DeviceInvoice\Validation\Device\Base;
 
 use App\Models\Device;
 use App\Models\DeviceAttributeValidationLog;

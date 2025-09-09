@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Actions\DeviceInvoice\Validation\Brand;
+namespace App\Actions\DeviceInvoice\Validation\Device\Model;
 
-use App\Actions\DeviceInvoice\Validation\Base\BaseDeviceProductValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Base\BaseDeviceProductValidationAction;
 use App\Constants\DeviceAttributeValidationRatio;
-use App\Models\Brand;
+use App\Models\DeviceModel;
 use App\Utils\StringNormalize;
 
-class DeviceBrandValidationAction extends BaseDeviceProductValidationAction
+class DeviceModelNameValidationAction extends BaseDeviceProductValidationAction
 {
     /**
      * Returns the given value normalized.
@@ -15,8 +15,8 @@ class DeviceBrandValidationAction extends BaseDeviceProductValidationAction
     protected function normalize(string $value): string
     {
         return StringNormalize::for($value)
-            ->keepOnlyLetters()
             ->removeAccents()
+            ->removeNonAlphanumeric()
             ->removeExtraWhiteSpaces()
             ->toLowerCase()
             ->get();
@@ -27,7 +27,7 @@ class DeviceBrandValidationAction extends BaseDeviceProductValidationAction
      */
     protected function deviceAttributeToValidate(): string
     {
-        return $this->device->deviceModel->brand->name;
+        return $this->device->deviceModel->name;
     }
 
     /**
@@ -35,7 +35,7 @@ class DeviceBrandValidationAction extends BaseDeviceProductValidationAction
      */
     protected function minSimilarityRatio(): int
     {
-        return DeviceAttributeValidationRatio::MIN_BRAND_SIMILARITY;
+        return DeviceAttributeValidationRatio::MIN_MODEL_NAME_SIMILARITY;
     }
 
     /**
@@ -43,7 +43,7 @@ class DeviceBrandValidationAction extends BaseDeviceProductValidationAction
      */
     protected function attributeSource(): string
     {
-        return Brand::class;
+        return DeviceModel::class;
     }
 
     /**
@@ -51,6 +51,6 @@ class DeviceBrandValidationAction extends BaseDeviceProductValidationAction
      */
     protected function attributeLabel(): string
     {
-        return 'brand_name';
+        return 'model_name';
     }
 }

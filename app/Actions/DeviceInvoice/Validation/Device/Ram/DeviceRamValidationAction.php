@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Actions\DeviceInvoice\Validation\Storage;
+namespace App\Actions\DeviceInvoice\Validation\Device\Ram;
 
-use App\Actions\DeviceInvoice\Validation\Base\BaseDeviceProductValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Base\BaseDeviceProductValidationAction;
 use App\Constants\DeviceAttributeValidationRatio;
 use App\Models\DeviceModel;
 use App\Utils\StringNormalize;
 
-class DeviceStorageValidationAction extends BaseDeviceProductValidationAction
+class DeviceRamValidationAction extends BaseDeviceProductValidationAction
 {
     /**
      * Returns the given value normalized.
@@ -25,7 +25,7 @@ class DeviceStorageValidationAction extends BaseDeviceProductValidationAction
      */
     protected function deviceAttributeToValidate(): string
     {
-        return $this->device->deviceModel->storage;
+        return $this->device->deviceModel->ram;
     }
 
     /**
@@ -33,7 +33,7 @@ class DeviceStorageValidationAction extends BaseDeviceProductValidationAction
      */
     protected function minSimilarityRatio(): int
     {
-        return DeviceAttributeValidationRatio::MIN_STORAGE_SIMILARITY;
+        return DeviceAttributeValidationRatio::MIN_RAM_SIMILARITY;
     }
 
     /**
@@ -49,6 +49,6 @@ class DeviceStorageValidationAction extends BaseDeviceProductValidationAction
      */
     protected function attributeLabel(): string
     {
-        return 'storage';
+        return 'ram';
     }
 }
