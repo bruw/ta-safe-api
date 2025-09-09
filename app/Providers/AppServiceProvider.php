@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +26,25 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->apiResourceSetUp();
+        $this->scrambleSetUp();
+    }
+
+    /**
+     * Disable wrapping of API resources in a "data" key.
+     */
+    private function apiResourceSetUp(): void
+    {
         JsonResource::withoutWrapping();
+    }
+
+    /**
+     * Set up Scramble to use Bearer token for API authorization.
+     */
+    private function scrambleSetUp(): void
+    {
+        Scramble::configure()->withDocumentTransformers(function (OpenApi $openApi) {
+            $openApi->secure(SecurityScheme::http('bearer'));
+        });
     }
 }
