@@ -2,11 +2,11 @@
 
 namespace App\Services\DeviceInvoice;
 
-use App\Actions\DeviceInvoice\Validation\Brand\DeviceBrandValidationAction;
-use App\Actions\DeviceInvoice\Validation\Color\DeviceColorValidationAction;
-use App\Actions\DeviceInvoice\Validation\Model\DeviceModelNameValidationAction;
-use App\Actions\DeviceInvoice\Validation\Ram\DeviceRamValidationAction;
-use App\Actions\DeviceInvoice\Validation\Storage\DeviceStorageValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Brand\DeviceBrandValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Color\DeviceColorValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Model\DeviceModelNameValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Ram\DeviceRamValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Storage\DeviceStorageValidationAction;
 use App\Actions\DeviceInvoice\Validation\User\Cpf\DeviceOwnerCpfValidationAction;
 use App\Actions\DeviceInvoice\Validation\User\Name\DeviceOwnerNameValidationAction;
 use App\Dto\Invoice\Search\InvoiceProductMatchResultDto;

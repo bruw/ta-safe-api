@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Actions\DeviceInvoice\Validation\Color;
+namespace App\Actions\DeviceInvoice\Validation\Device\Brand;
 
-use App\Actions\DeviceInvoice\Validation\Base\BaseDeviceProductValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Base\BaseDeviceProductValidationAction;
 use App\Constants\DeviceAttributeValidationRatio;
-use App\Models\Device;
+use App\Models\Brand;
 use App\Utils\StringNormalize;
 
-class DeviceColorValidationAction extends BaseDeviceProductValidationAction
+class DeviceBrandValidationAction extends BaseDeviceProductValidationAction
 {
     /**
      * Returns the given value normalized.
@@ -15,8 +15,8 @@ class DeviceColorValidationAction extends BaseDeviceProductValidationAction
     protected function normalize(string $value): string
     {
         return StringNormalize::for($value)
+            ->keepOnlyLetters()
             ->removeAccents()
-            ->removeNonAlphanumeric()
             ->removeExtraWhiteSpaces()
             ->toLowerCase()
             ->get();
@@ -27,7 +27,7 @@ class DeviceColorValidationAction extends BaseDeviceProductValidationAction
      */
     protected function deviceAttributeToValidate(): string
     {
-        return $this->device->color;
+        return $this->device->deviceModel->brand->name;
     }
 
     /**
@@ -35,7 +35,7 @@ class DeviceColorValidationAction extends BaseDeviceProductValidationAction
      */
     protected function minSimilarityRatio(): int
     {
-        return DeviceAttributeValidationRatio::MIN_COLOR_SIMILARITY;
+        return DeviceAttributeValidationRatio::MIN_BRAND_SIMILARITY;
     }
 
     /**
@@ -43,7 +43,7 @@ class DeviceColorValidationAction extends BaseDeviceProductValidationAction
      */
     protected function attributeSource(): string
     {
-        return Device::class;
+        return Brand::class;
     }
 
     /**
@@ -51,6 +51,6 @@ class DeviceColorValidationAction extends BaseDeviceProductValidationAction
      */
     protected function attributeLabel(): string
     {
-        return 'color';
+        return 'brand_name';
     }
 }
