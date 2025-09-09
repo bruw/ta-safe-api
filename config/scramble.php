@@ -24,12 +24,14 @@ return [
         /*
          * API version.
          */
-        'version' => env('API_VERSION', '0.0.1'),
+        'version' => env('API_VERSION', 'v.2025.9.9'),
 
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => '',
+        'description' => 'API responsible for the backend of the Tá Safe system, a platform developed for the traceability of used cell phones.' 
+            . ' It handles all business logic, data persistence, and external integrations, providing security and reliability throughout' 
+            . ' the process of buying and selling devices.',
     ],
 
     /*
@@ -39,7 +41,7 @@ return [
         /*
          * Define the title of the documentation's website. App name is used when this config is `null`.
          */
-        'title' => null,
+        'title' => 'Tá Safe API - Docs',
 
         /*
          * Define the theme of the documentation. Available options are `light`, `dark`, and `system`.
