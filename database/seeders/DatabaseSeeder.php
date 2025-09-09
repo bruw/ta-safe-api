@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             BrandSeeder::class,
             DeviceModelSeeder::class,
-            DeviceSeeder::class
+            DeviceSeeder::class,
         ]);
     }
 }

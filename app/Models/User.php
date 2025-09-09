@@ -2,12 +2,9 @@
 
 namespace App\Models;
 
-use App\Actions\Device\AcceptDeviceTransferAction;
-use App\Actions\Device\CancelDeviceTransferAction;
-use App\Actions\Device\CreateDeviceTransferAction;
-use App\Actions\Device\RegisterDeviceAction;
-use App\Actions\Device\RejectDeviceTransferAction;
-use App\Actions\User\RegisterUserAction;
+use App\Services\Device\DeviceService;
+use App\Services\DeviceTransfer\DeviceTransferService;
+use App\Services\User\UserService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -95,93 +92,59 @@ class User extends Authenticatable
      */
     public function userDevicesTransfers(): Collection
     {
-        return DeviceTransfer::where(function ($query) {
-            $query->where('source_user_id', $this->id)
-                ->orWhere('target_user_id', $this->id);
-        })->orderByDesc('updated_at')->get();
+        return DeviceTransfer::with([
+            'device',
+            'sourceUser',
+            'targetUser',
+        ])
+            ->where(function ($query) {
+                $query->where('source_user_id', $this->id)
+                    ->orWhere('target_user_id', $this->id);
+            })
+            ->orderByDesc('updated_at')
+            ->get();
     }
 
     /**
      * Get the user's devices sorted by updated_at desc.
      */
-    public function devicesOrderedByUpdate()
+    public function devicesOrderedByUpdate(): Collection
     {
-        return Device::where([
-            'user_id' => $this->id,
-        ])->orderByDesc('updated_at')->get();
+        return Device::with([
+            'transfers',
+            'deviceModel.brand',
+            'attributeValidationLogs',
+        ])
+            ->where('user_id', $this->id)
+            ->orderByDesc('updated_at')
+            ->get();
+    }
+
+    /*
+    ================= ** Services ** ==========================================================================
+    */
+
+    /**
+     * Get the user service.
+     */
+    public function userService(): UserService
+    {
+        return new UserService($this);
     }
 
     /**
-     * Invoke the user registration action.
+     * Get the device service.
      */
-    public static function registerUser(array $data): User
+    public function deviceService(): DeviceService
     {
-        $registerUser = new RegisterUserAction($data);
-
-        return $registerUser->execute();
+        return new DeviceService($this);
     }
 
     /**
-     * Invoke the device registration action.
+     * Get the device transfer service.
      */
-    public function registerDevice(array $data): bool
+    public function deviceTransferService(): DeviceTransferService
     {
-        $registerDevice = new RegisterDeviceAction(
-            $this,
-            $data
-        );
-
-        return $registerDevice->execute();
-    }
-
-    /**
-     * Invoke the create device transfer action.
-     */
-    public function createDeviceTransfer(User $targetUser, Device $device): bool
-    {
-        $transferDevice = new CreateDeviceTransferAction(
-            $this,
-            $targetUser,
-            $device,
-        );
-
-        return $transferDevice->execute();
-    }
-
-    /**
-     * Invoke the action of accepting the transfer of the device.
-     */
-    public function acceptDeviceTransfer(DeviceTransfer $deviceTransfer): bool
-    {
-        $acceptTransfer = new AcceptDeviceTransferAction(
-            $this,
-            $deviceTransfer
-        );
-
-        return $acceptTransfer->execute();
-    }
-
-    /**
-     * Invoke the action to reject the device transfer.
-     */
-    public function rejectDeviceTransfer(DeviceTransfer $deviceTransfer): bool
-    {
-        $rejectTransfer = new RejectDeviceTransferAction(
-            $deviceTransfer
-        );
-
-        return $rejectTransfer->execute();
-    }
-
-    /**
-     * Invoke the action to cancel the device transfer.
-     */
-    public function cancelDeviceTransfer(DeviceTransfer $deviceTransfer): bool
-    {
-        $cancelTransfer = new CancelDeviceTransferAction(
-            $deviceTransfer
-        );
-
-        return $cancelTransfer->execute();
+        return new DeviceTransferService($this);
     }
 }

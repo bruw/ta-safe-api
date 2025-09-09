@@ -2,18 +2,17 @@
 
 namespace App\Http\Requests\Device;
 
-use App\Http\Requests\BaseFormRequest;
+use App\Http\Requests\ApiFormRequest;
 use App\Models\User;
-use App\Rules\AttributeCannotBeBoolean;
 
-class CreateDeviceTransferRequest extends BaseFormRequest
+class CreateDeviceTransferRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->can('createDeviceTransfer', $this->device);
+        return $this->user()->can('accessAsOwner', $this->device);
     }
 
     /**
@@ -34,9 +33,8 @@ class CreateDeviceTransferRequest extends BaseFormRequest
         return [
             'target_user_id' => [
                 'required',
-                'numeric',
+                'integer',
                 'exists:users,id',
-                new AttributeCannotBeBoolean,
             ],
         ];
     }

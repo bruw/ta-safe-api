@@ -8,6 +8,7 @@ use App\Http\Requests\Device\CreateDeviceTransferRequest;
 use App\Http\Resources\DeviceTransfer\DeviceTransferResource;
 use App\Models\Device;
 use App\Models\DeviceTransfer;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,16 +17,14 @@ class DeviceTransferController extends Controller
     /**
      * Create device transfer.
      */
-    public function createDeviceTransfer(CreateDeviceTransferRequest $request, Device $device): Response
+    public function create(CreateDeviceTransferRequest $request, Device $device): JsonResponse
     {
-        $currentUser = $request->user();
-
-        $currentUser->createDeviceTransfer($request->targetUser(), $device);
+        $request->user()
+            ->deviceTransferService()
+            ->create($request->targetUser(), $device);
 
         return response()->json(
-            FlashMessage::success(trans_choice('flash_messages.success.created.f', 1, [
-                'model' => trans_choice('model.device_transfer', 1),
-            ])),
+            FlashMessage::success(trans('actions.device_transfer.success.create')),
             Response::HTTP_CREATED
         );
     }
@@ -33,60 +32,54 @@ class DeviceTransferController extends Controller
     /**
      * Accept the device transfer.
      */
-    public function acceptDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    public function accept(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
     {
-        $this->authorize('acceptDeviceTransfer', $deviceTransfer);
+        $this->authorize('accessAsTargetUser', $deviceTransfer);
 
-        $currentUser = $request->user();
-        $currentUser->acceptDeviceTransfer($deviceTransfer);
+        $result = $request->user()
+            ->deviceTransferService()
+            ->accept($deviceTransfer);
 
-        return response()->json(
-            FlashMessage::success(trans_choice('flash_messages.success.accepted.f', 1, [
-                'model' => trans('model.device_transfer'),
-            ]))->merge([
-                'transfer' => new DeviceTransferResource($deviceTransfer),
-            ]),
-            Response::HTTP_OK
-        );
-    }
-
-    /**
-     * Reject the device transfer.
-     */
-    public function rejectDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
-    {
-        $this->authorize('rejectDeviceTransfer', $deviceTransfer);
-
-        $currentUser = $request->user();
-        $currentUser->rejectDeviceTransfer($deviceTransfer);
-
-        return response()->json(
-            FlashMessage::success(trans_choice('flash_messages.success.rejected.f', 1, [
-                'model' => trans('model.device_transfer'),
-            ]))->merge([
-                'transfer' => new DeviceTransferResource($deviceTransfer),
-            ]),
-            Response::HTTP_OK
+        return response()->json(FlashMessage::success(
+            trans('actions.device_transfer.success.accept'))->merge([
+                'transfer' => new DeviceTransferResource($result),
+            ]), Response::HTTP_OK
         );
     }
 
     /**
      * Cancel the device transfer.
      */
-    public function cancelDeviceTransfer(Request $request, DeviceTransfer $deviceTransfer): Response
+    public function cancel(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
     {
-        $this->authorize('cancelDeviceTransfer', $deviceTransfer);
+        $this->authorize('accessAsSourceUser', $deviceTransfer);
 
-        $currentUser = $request->user();
-        $currentUser->cancelDeviceTransfer($deviceTransfer);
+        $transfer = $request->user()
+            ->deviceTransferService()
+            ->cancel($deviceTransfer);
 
-        return response()->json(
-            FlashMessage::success(trans_choice('flash_messages.success.canceled.f', 1, [
-                'model' => trans('model.device_transfer'),
-            ]))->merge([
-                'transfer' => new DeviceTransferResource($deviceTransfer),
-            ]),
-            Response::HTTP_OK
+        return response()->json(FlashMessage::success(
+            trans('actions.device_transfer.success.cancel'))->merge([
+                'transfer' => new DeviceTransferResource($transfer),
+            ]), Response::HTTP_OK
+        );
+    }
+
+    /**
+     * Reject the device transfer.
+     */
+    public function reject(Request $request, DeviceTransfer $deviceTransfer): JsonResponse
+    {
+        $this->authorize('accessAsTargetUser', $deviceTransfer);
+
+        $transfer = $request->user()
+            ->deviceTransferService()
+            ->reject($deviceTransfer);
+
+        return response()->json(FlashMessage::success(
+            trans('actions.device_transfer.success.reject'))->merge([
+                'transfer' => new DeviceTransferResource($transfer),
+            ]), Response::HTTP_OK
         );
     }
 }

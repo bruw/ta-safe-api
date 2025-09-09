@@ -2,17 +2,22 @@
 
 namespace App\Http\Requests\User;
 
-use App\Http\Requests\BaseFormRequest;
+use App\Dto\User\UpdateUserDto;
+use App\Http\Requests\ApiFormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateUserRequest extends BaseFormRequest
+class UpdateUserRequest extends ApiFormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Validate fields and convert the request into a UpdateUserDto instance.
      */
-    public function authorize(): bool
+    public function toDto(): UpdateUserDto
     {
-        return true;
+        return new UpdateUserDto(
+            name: $this->name,
+            email: $this->email,
+            phone: $this->phone,
+        );
     }
 
     /**
@@ -29,14 +34,15 @@ class UpdateUserRequest extends BaseFormRequest
                 'max:255',
             ],
             'email' => [
+                'bail',
                 'required',
-                'string',
                 'email',
                 'max:255',
                 Rule::unique('users')
                     ->ignore($this->user()->id),
             ],
             'phone' => [
+                'bail',
                 'required',
                 'regex:/^[(]\d{2}[)]\s\d{5}-\d{4}$/',
                 Rule::unique('users')

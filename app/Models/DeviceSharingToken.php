@@ -18,7 +18,7 @@ class DeviceSharingToken extends Model
     protected $fillable = [
         'device_id',
         'token',
-        'expires_at'
+        'expires_at',
     ];
 
     /**
@@ -27,5 +27,13 @@ class DeviceSharingToken extends Model
     public function device(): BelongsTo
     {
         return $this->belongsTo(Device::class);
+    }
+
+    /**
+     * Determine if the token is expired.
+     */
+    public function isExpired(): bool
+    {
+        return now()->isAfter($this->expires_at);
     }
 }

@@ -19,7 +19,7 @@ class DeviceModel extends Model
     protected $fillable = [
         'name',
         'ram',
-        'storage'
+        'storage',
     ];
 
     /**

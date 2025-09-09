@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Brand\BrandController;
 use App\Http\Controllers\Device\DeviceController;
 use App\Http\Controllers\Device\DeviceSharingController;
@@ -7,8 +8,6 @@ use App\Http\Controllers\Device\DeviceTransferController;
 use App\Http\Controllers\DeviceModel\DeviceModelController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
-
-require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -21,34 +20,44 @@ require __DIR__ . '/auth.php';
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::controller(UserController::class)->group(function () {
-        Route::get('user', 'currentUser');
-        Route::put('user', 'update');
-        Route::get('user/search-by-email', 'searchByEmail');
+Route::middleware('guest')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('register', 'register')->name('api.auth.register');
+        Route::post('login', 'login')->name('api.auth.login');
+    });
+});
 
-        Route::get('user/devices', 'userDevices');
-        Route::get('user/devices-transfers', 'userDevicesTransfers');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::delete('logout', 'logout')->name('api.auth.logout');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::patch('user', 'update')->name('api.user.update');
+        Route::get('user', 'view')->name('api.user.view');
+        Route::get('user/search-by-email', 'searchByEmail')->name('api.user.search');
+        Route::get('user/devices', 'devices')->name('api.user.devices');
+        Route::get('user/devices-transfers', 'transfers')->name('api.user.devices.transfers');
     });
 
     Route::controller(DeviceController::class)->group(function () {
-        Route::post('devices', 'registerDevice');
-        Route::delete('devices/{device}', 'deleteDevice');
-        Route::get('devices/{device}', 'viewDevice');
-        Route::post('devices/{device}/validate', 'validateRegistration');
-        Route::post('devices/{device}/invalidate', 'invalidateRegistration');
+        Route::get('devices/{device}', 'view')->name('api.device.view');
+        Route::post('devices', 'register')->name('api.device.register');
+        Route::delete('devices/{device}', 'delete')->name('api.device.delete');
+        Route::post('devices/{device}/validate', 'validation')->name('api.device.validation');
+        Route::post('devices/{device}/invalidate', 'invalidation')->name('api.device.invalidation');
     });
 
     Route::controller(DeviceTransferController::class)->group(function () {
-        Route::post('devices/{device}', 'createDeviceTransfer');
-        Route::put('device-transfers/{deviceTransfer}/accept', 'acceptDeviceTransfer');
-        Route::put('device-transfers/{deviceTransfer}/reject', 'rejectDeviceTransfer');
-        Route::put('device-transfers/{deviceTransfer}/cancel', 'cancelDeviceTransfer');
+        Route::post('devices/{device}', 'create')->name('api.device.transfer.create');
+        Route::post('device-transfers/{deviceTransfer}/accept', 'accept')->name('api.device.transfer.accept');
+        Route::post('device-transfers/{deviceTransfer}/cancel', 'cancel')->name('api.device.transfer.cancel');
+        Route::post('device-transfers/{deviceTransfer}/reject', 'reject')->name('api.device.transfer.reject');
     });
 
     Route::controller(DeviceSharingController::class)->group(function () {
-        Route::post('devices/{device}/share', 'createSharingToken');
-        Route::get('devices', 'viewDeviceByToken');
+        Route::post('devices/{device}/share', 'createSharingToken')->name('api.device.share.create');
+        Route::get('devices', 'viewDeviceByToken')->name('api.device.share.view');
     });
 
     Route::controller(BrandController::class)->group(function () {

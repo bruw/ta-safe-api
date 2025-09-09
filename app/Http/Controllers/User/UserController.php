@@ -12,61 +12,31 @@ use App\Http\Resources\User\UserPublicResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
     /**
-     * Show current user.
-     */
-    public function currentUser(Request $request): UserResource
-    {
-        $currentUser = $request->user();
-
-        return new UserResource($currentUser);
-    }
-
-    /**
      * Update user profile.
      */
     public function update(UpdateUserRequest $request): Response
     {
-        return DB::transaction(function () use ($request) {
-            $user = $request->user();
-            $data = $request->validated();
+        $request->user()
+            ->userService()
+            ->update($request->toDto());
 
-            $user->update($data);
-
-            return response()->json(
-                FlashMessage::success(trans_choice('flash_messages.success.updated.m', 1, [
-                    'model' => trans_choice('model.profile', 1),
-                ])),
-                Response::HTTP_OK
-            );
-        });
+        return response()->json(FlashMessage::success(
+            trans('actions.user.success.update')),
+            Response::HTTP_OK
+        );
     }
 
     /**
-     * Get the user's devices.
+     * Show current user.
      */
-    public function userDevices(Request $request): JsonResource
+    public function view(Request $request): JsonResource
     {
-        $currentUser = $request->user();
-        $devices = $currentUser->devicesOrderedByUpdate();
-
-        return DeviceResource::collection($devices);
-    }
-
-    /**
-     * Get user devices transfers.
-     */
-    public function userDevicesTransfers(Request $request): JsonResource
-    {
-        $currentUser = $request->user();
-        $transfers = $currentUser->userDevicesTransfers();
-
-        return DeviceTransferResource::collection($transfers);
+        return new UserResource($request->user());
     }
 
     /**
@@ -74,8 +44,22 @@ class UserController extends Controller
      */
     public function searchByEmail(SearchUserRequest $request): JsonResource
     {
-        return new UserPublicResource(
-            $request->userByEmail()
-        );
+        return new UserPublicResource($request->userByEmail());
+    }
+
+    /**
+     * Get the user's devices.
+     */
+    public function devices(Request $request): JsonResource
+    {
+        return DeviceResource::collection($request->user()->devicesOrderedByUpdate());
+    }
+
+    /**
+     * Get user devices transfers.
+     */
+    public function transfers(Request $request): JsonResource
+    {
+        return DeviceTransferResource::collection($request->user()->userDevicesTransfers());
     }
 }

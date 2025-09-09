@@ -23,7 +23,7 @@ class DeviceTransferResource extends JsonResource
             'target_user' => new UserResource($this->targetUser),
             'device' => new DeviceSummaryResource($this->device),
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
         ];
     }
 }

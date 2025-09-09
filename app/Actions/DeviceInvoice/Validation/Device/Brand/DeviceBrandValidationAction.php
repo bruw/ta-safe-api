@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Actions\DeviceInvoice\Validation\Device\Brand;
+
+use App\Actions\DeviceInvoice\Validation\Device\Base\BaseDeviceProductValidationAction;
+use App\Constants\DeviceAttributeValidationRatio;
+use App\Models\Brand;
+use App\Utils\StringNormalize;
+
+class DeviceBrandValidationAction extends BaseDeviceProductValidationAction
+{
+    /**
+     * Returns the given value normalized.
+     */
+    protected function normalize(string $value): string
+    {
+        return StringNormalize::for($value)
+            ->keepOnlyLetters()
+            ->removeAccents()
+            ->removeExtraWhiteSpaces()
+            ->toLowerCase()
+            ->get();
+    }
+
+    /**
+     * Returns the device attribute to validate.
+     */
+    protected function deviceAttributeToValidate(): string
+    {
+        return $this->device->deviceModel->brand->name;
+    }
+
+    /**
+     * Returns the minimum similarity ratio for this validation type.
+     */
+    protected function minSimilarityRatio(): int
+    {
+        return DeviceAttributeValidationRatio::MIN_BRAND_SIMILARITY;
+    }
+
+    /**
+     * Returns the source of the attribute to validate.
+     */
+    protected function attributeSource(): string
+    {
+        return Brand::class;
+    }
+
+    /**
+     * Returns the label of the attribute to validate.
+     */
+    protected function attributeLabel(): string
+    {
+        return 'brand_name';
+    }
+}

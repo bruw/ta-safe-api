@@ -30,10 +30,10 @@ class DeviceResource extends JsonResource
             'updated_at' => $this->updated_at,
             'user' => new UserResource($this->user),
             'device_model' => new DeviceModelResource($this->deviceModel),
-            'validation_attributes' => $this->whenNotNull($this->validation_attributes),
-            'transfers_history' => DeviceTransferBasicResource::collection(
-                $this->whenNotNull($this->transfers_history)
-            ),
+            'validated_attributes' => $this->attributeValidationLogs->mapWithKeys(fn ($log) => [
+                $log->attribute_label => $log->validated,
+            ]),
+            'transfers' => DeviceTransferBasicResource::collection($this->transfers),
         ];
     }
 }

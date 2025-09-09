@@ -19,7 +19,7 @@ class BrandFactory extends Factory
         $brands = ['Apple', 'Samsung', 'Motorola', 'Xiaomi'];
 
         return [
-            'name' => fake()->randomElement($brands)
+            'name' => fake()->randomElement($brands),
         ];
     }
 }

@@ -2,25 +2,17 @@
 
 namespace App\Http\Requests\User;
 
-use App\Http\Requests\BaseFormRequest;
+use App\Http\Requests\ApiFormRequest;
 use App\Models\User;
 
-class SearchUserRequest extends BaseFormRequest
+class SearchUserRequest extends ApiFormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
-    /**
-     * Validate the email field and return the user linked to it.
+     * Validate the 'email' field and return the user linked to it.
      */
     public function userByEmail(): User
     {
-        return User::where('email', $this->email)->first();
+        return User::where('email', $this->email)->firstOrFail();
     }
 
     /**
@@ -32,11 +24,12 @@ class SearchUserRequest extends BaseFormRequest
     {
         return [
             'email' => [
+                'bail',
                 'required',
                 'email',
                 'max:255',
-                'exists:users,email'
-            ]
+                'exists:users,email',
+            ],
         ];
     }
 
@@ -48,7 +41,7 @@ class SearchUserRequest extends BaseFormRequest
     public function messages(): array
     {
         return [
-            'email.exists' => trans('validation.custom.attribute.email_not_registered'),
+            'email.exists' => trans('validation.custom.email.exists'),
         ];
     }
 }

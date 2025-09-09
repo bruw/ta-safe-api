@@ -19,7 +19,7 @@ class BrandSeederTest extends TestCase
         parent::SetUp();
 
         $this->seed([
-            BrandSeeder::class
+            BrandSeeder::class,
         ]);
 
         $json = File::get(database_path('data/brands.json'));

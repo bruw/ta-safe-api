@@ -8,8 +8,8 @@ use App\Models\Device;
 use App\Models\DeviceModel;
 use App\Models\Invoice;
 use App\Models\User;
-use Illuminate\Support\Facades\File;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 
 class DeviceSeeder extends Seeder
 {
@@ -24,13 +24,13 @@ class DeviceSeeder extends Seeder
         foreach ($data as $item) {
             $user = User::where([
                 'name' => $item->user->name,
-                'cpf' => $item->user->cpf
+                'cpf' => $item->user->cpf,
             ])->first();
 
             $deviceModel = DeviceModel::where([
                 'name' => $item->model->name,
                 'ram' => $item->model->ram,
-                'storage' => $item->model->storage
+                'storage' => $item->model->storage,
             ])->first();
 
             $device = Device::updateOrCreate([
@@ -47,7 +47,7 @@ class DeviceSeeder extends Seeder
                 'consumer_cpf' => $user->cpf,
                 'consumer_name' => $user->name,
                 'product_description' => $item->invoice->product_description,
-                'device_id' => $device->id
+                'device_id' => $device->id,
             ]);
 
             ValidateDeviceRegistrationJob::dispatch($device);

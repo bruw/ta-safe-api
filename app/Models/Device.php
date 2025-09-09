@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Actions\Device\CreateSharingTokenAction;
-use App\Actions\Device\DeleteDeviceAction;
-use App\Actions\Device\ValidateDeviceRegistrationAction;
 use App\Enums\Device\DeviceValidationStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\DB;
 use Lib\Strings\StringHelper;
 
 class Device extends Model
@@ -116,69 +112,5 @@ class Device extends Model
     public function sharingToken(): HasOne
     {
         return $this->hasOne(DeviceSharingToken::class);
-    }
-
-    /**
-     * Invoke the create device sharing token action.
-     */
-    public function createSharingToken(): DeviceSharingToken
-    {
-        $createToken = new CreateSharingTokenAction($this);
-
-        return $createToken->execute();
-    }
-
-    /**
-     * Returns a key-value array for the validated attributes.
-     */
-    public function validatedAttributes(): array
-    {
-        return $this->attributeValidationLogs->pluck(
-            'validated',
-            'attribute_label'
-        )->toArray();
-    }
-
-    /**
-     * Invoke device registration validation.
-     */
-    public function validateRegistration(string $cpf, string $name, string $products): bool
-    {
-        $action = new ValidateDeviceRegistrationAction(
-            $this,
-            $cpf,
-            $name,
-            $products
-        );
-
-        return $action->execute();
-    }
-
-    /**
-     * Invalidates a device record with pending status only.
-     */
-    public function invalidateRegistration(): bool
-    {
-        return DB::transaction(function () {
-            if ($this->validation_status == DeviceValidationStatus::PENDING) {
-                $this->update([
-                    'validation_status' => DeviceValidationStatus::REJECTED,
-                ]);
-
-                return true;
-            }
-
-            return false;
-        });
-    }
-
-    /**
-     * Delete a device with rejected validation
-     */
-    public function safeDelete(): bool
-    {
-        $deleteAction = new DeleteDeviceAction($this);
-
-        return $deleteAction->execute();
     }
 }
