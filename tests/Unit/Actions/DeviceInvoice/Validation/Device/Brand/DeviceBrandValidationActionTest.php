@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Actions\DeviceInvoice\Validation\Brand;
+namespace Tests\Unit\Actions\DeviceInvoice\Validation\Device\Brand;
 
-use App\Actions\DeviceInvoice\Validation\Brand\DeviceBrandValidationAction;
+use App\Actions\DeviceInvoice\Validation\Device\Brand\DeviceBrandValidationAction;
 use App\Constants\DeviceAttributeValidationRatio;
 use App\Models\Brand;
 use App\Models\DeviceAttributeValidationLog;

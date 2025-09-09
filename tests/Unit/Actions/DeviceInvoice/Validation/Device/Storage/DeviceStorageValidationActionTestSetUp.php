@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Actions\DeviceInvoice\Validation\Ram;
+namespace Tests\Unit\Actions\DeviceInvoice\Validation\Device\Storage;
 
 use App\Models\Brand;
 use App\Models\Device;
@@ -13,7 +13,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class DeviceRamValidationActionTestSetUp extends TestCase
+class DeviceStorageValidationActionTestSetUp extends TestCase
 {
     use RefreshDatabase;
 
@@ -39,7 +39,7 @@ class DeviceRamValidationActionTestSetUp extends TestCase
 
     private function brandSetUp(): void
     {
-        $this->brand = BrandFactory::new()->create(['name' => 'Xiaomi']);
+        $this->brand = BrandFactory::new()->create(['name' => 'Apple']);
     }
 
     private function deviceModelSetUp(): void
@@ -47,9 +47,9 @@ class DeviceRamValidationActionTestSetUp extends TestCase
         $this->deviceModel = DeviceModelFactory::new()
             ->for($this->brand)
             ->create([
-                'name' => 'Poco x5 Pro',
-                'ram' => '256 gb',
-                'storage' => '8 gb',
+                'name' => 'iPhone 11',
+                'ram' => '64 gb',
+                'storage' => '4 gb',
             ]);
     }
 
@@ -62,14 +62,14 @@ class DeviceRamValidationActionTestSetUp extends TestCase
             ->create(['color' => 'Preto']);
     }
 
-    protected function invoiceProduct(?string $ram = null): string
+    protected function invoiceProduct(?string $storage = null): string
     {
-        $ram ??= $this->deviceModel->ram;
+        $storage ??= $this->deviceModel->storage;
 
         return "Smartphone {$this->brand->name}"
             . " {$this->deviceModel->name}"
-            . " {$ram}"
-            . " {$this->deviceModel->storage}"
+            . " {$this->deviceModel->ram}"
+            . " {$storage}"
             . " {$this->device->color}";
     }
 }

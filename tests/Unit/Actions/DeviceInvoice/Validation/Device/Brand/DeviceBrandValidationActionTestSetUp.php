@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Actions\DeviceInvoice\Validation\Storage;
+namespace Tests\Unit\Actions\DeviceInvoice\Validation\Device\Brand;
 
 use App\Models\Brand;
 use App\Models\Device;
@@ -13,7 +13,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class DeviceStorageValidationActionTestSetUp extends TestCase
+class DeviceBrandValidationActionTestSetUp extends TestCase
 {
     use RefreshDatabase;
 
@@ -48,8 +48,8 @@ class DeviceStorageValidationActionTestSetUp extends TestCase
             ->for($this->brand)
             ->create([
                 'name' => 'iPhone 11',
-                'ram' => '64 gb',
-                'storage' => '4 gb',
+                'ram' => '128 gb',
+                'storage' => '8 gb',
             ]);
     }
 
@@ -59,17 +59,17 @@ class DeviceStorageValidationActionTestSetUp extends TestCase
             ->for($this->user)
             ->for($this->deviceModel)
             ->inAnalysis()
-            ->create(['color' => 'Preto']);
+            ->create(['color' => 'preto']);
     }
 
-    protected function invoiceProduct(?string $storage = null): string
+    protected function invoiceProduct(?string $brand = null): string
     {
-        $storage ??= $this->deviceModel->storage;
+        $brand ??= $this->brand->name;
 
-        return "Smartphone {$this->brand->name}"
+        return "Smartphone {$brand}"
             . " {$this->deviceModel->name}"
             . " {$this->deviceModel->ram}"
-            . " {$storage}"
+            . " {$this->deviceModel->storage}"
             . " {$this->device->color}";
     }
 }

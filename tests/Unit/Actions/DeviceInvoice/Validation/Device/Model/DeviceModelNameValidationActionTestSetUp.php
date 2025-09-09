@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Actions\DeviceInvoice\Validation\Color;
+namespace Tests\Unit\Actions\DeviceInvoice\Validation\Device\Model;
 
 use App\Models\Brand;
 use App\Models\Device;
@@ -13,7 +13,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class DeviceColorValidationTestSetUp extends TestCase
+class DeviceModelNameValidationActionTestSetUp extends TestCase
 {
     use RefreshDatabase;
 
@@ -39,7 +39,7 @@ class DeviceColorValidationTestSetUp extends TestCase
 
     private function brandSetUp(): void
     {
-        $this->brand = BrandFactory::new()->create(['name' => 'Samsung']);
+        $this->brand = BrandFactory::new()->create(['name' => 'Xiaomi']);
     }
 
     private function deviceModelSetUp(): void
@@ -47,8 +47,8 @@ class DeviceColorValidationTestSetUp extends TestCase
         $this->deviceModel = DeviceModelFactory::new()
             ->for($this->brand)
             ->create([
-                'name' => 'Galaxy S23',
-                'ram' => '128 gb',
+                'name' => 'Poco x5 Pro',
+                'ram' => '256 gb',
                 'storage' => '8 gb',
             ]);
     }
@@ -59,7 +59,7 @@ class DeviceColorValidationTestSetUp extends TestCase
             ->for($this->user)
             ->for($this->deviceModel)
             ->inAnalysis()
-            ->create(['color' => 'Azul']);
+            ->create(['color' => 'Branco']);
     }
 
     protected function invoiceProduct(?string $brand = null): string
